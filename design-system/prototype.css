@@ -1,0 +1,192 @@
+/* ==========================================================================
+   SPROUT - prototype.css
+   --------------------------------------------------------------------------
+   Presentation scaffolding for the clickable prototype ONLY: the backdrop
+   each screen sits on, the flow breadcrumb strip, and the landing page.
+
+   This file contains no design decisions. Every value resolves from
+   tokens.css; the screens themselves are rendered entirely by components.css.
+
+   Load order:
+     tokens.css  ->  components.css  ->  prototype.css
+   ========================================================================== */
+
+/* Screen-to-screen navigation is a real page load, so soften the hand-off
+   with a short fade. Honours prefers-reduced-motion via --duration-page. */
+@keyframes proto-fade-in {
+  from { opacity: 0; }
+}
+body.proto {
+  animation: proto-fade-in var(--duration-page) var(--ease-out) both;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-16);
+  padding: var(--spacing-24) var(--spacing-16) var(--spacing-32);
+  background: var(--sage-200);
+  font-family: var(--font-family-body);
+  color: var(--text-primary);
+}
+
+/* --- Flow breadcrumb ------------------------------------------------------ */
+.proto__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  width: var(--screen-width);
+  max-width: 100%;
+}
+.proto__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  min-height: var(--tap-min);
+  padding: 0 var(--spacing-12);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  color: var(--text-link);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.proto__back:hover { background: var(--surface-tint); }
+.proto__back:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.proto__crumb {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Landing page
+   -------------------------------------------------------------------------- */
+body.proto-index {
+  display: block;
+  padding: var(--spacing-48) var(--spacing-24) var(--spacing-80);
+  background: var(--surface-canvas);
+}
+.index {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.index__eyebrow {
+  margin: 0 0 var(--spacing-8);
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.index__title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-black);
+  font-size: var(--font-size-display-lg);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+}
+.index__lede {
+  max-width: 62ch;
+  margin: var(--spacing-16) 0 0;
+  font-size: var(--font-size-16);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-secondary);
+}
+.index__flow { margin-top: var(--spacing-48); }
+.index__flow-title {
+  margin: 0 0 var(--spacing-4);
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-bold);
+}
+.index__flow-note {
+  margin: 0 0 var(--spacing-16);
+  font-size: var(--font-size-14);
+  color: var(--text-secondary);
+}
+.index__path { margin-top: var(--spacing-24); }
+.index__path-label {
+  margin: 0 0 var(--spacing-8);
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-lime);
+}
+.index__steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-8);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.index__step {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+.index__step a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  min-height: var(--tap-min);
+  padding: 0 var(--spacing-16);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  box-shadow: var(--shadow-xs);
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-fast) var(--ease-standard);
+}
+.index__step a:hover {
+  background: var(--surface-brand-subtle);
+  border-color: var(--border-brand);
+}
+.index__step a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.index__num {
+  display: grid;
+  place-items: center;
+  width: var(--step-marker-size);
+  height: var(--step-marker-size);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+}
+.index__arrow { color: var(--text-tertiary); flex: none; }
+.index__file {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-12);
+  color: var(--text-secondary);
+}
+.index__end {
+  margin-top: var(--spacing-48);
+  padding: var(--spacing-16);
+  border-left: 3px solid var(--border-brand);
+  border-radius: var(--radius-sm);
+  background: var(--lime-50);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+.index__end strong { color: var(--text-primary); }

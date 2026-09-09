@@ -1,0 +1,706 @@
+/* ==========================================================================
+   SPROUT DESIGN SYSTEM — tokens.css
+   "Fuel the Good"  ·  Light theme only
+   --------------------------------------------------------------------------
+   Three layers, in dependency order:
+     1. PRIMITIVES  raw palette + raw scales. Never referenced by components.
+     2. SEMANTIC    role-based aliases (surface, text, border, interactive).
+                    THIS is what you use when building UI.
+     3. COMPONENT   per-component tokens, all resolving to semantic tokens.
+
+   Rule of thumb: components reference layer 2 and 3 only. If you find
+   yourself writing var(--lime-500) in a component, a semantic token is
+   probably missing.
+
+   All colour values were sampled from stylescape.png, not estimated.
+   Contrast ratios in the comments are measured, not asserted.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   FONTS
+   Archivo   — variable display face. wdth 62–125, wght 100–900.
+               Used at wght 800–900 / wdth 88 for the headline voice.
+   Plus Jakarta Sans — body + UI. Geometric-humanist, legible at 11–16px.
+   -------------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+:root {
+
+  /* ======================================================================
+     LAYER 1 — PRIMITIVES
+     ====================================================================== */
+
+  /* --- Lime (primary accent) -------------------------------------------
+     Anchor #CCFF4C sampled from the stylescape CTA and progress ring.
+     Lime is a FILL colour: its relative luminance is ~0.86, so it can never
+     carry text on a light surface. Use --text-lime for that job.          */
+  --lime-50:    #F7FCE7;
+  --lime-100:   #EDF7C9;
+  --lime-200:   #E4F5A8;
+  --lime-300:   #D9FF7A;
+  --lime-400:   #D4FF63;
+  --lime-500:   #CCFF4C;  /* brand anchor */
+  --lime-600:   #BAEE33;  /* hover */
+  --lime-700:   #A4D51C;  /* active / pressed, focus ring */
+  --lime-800:   #526B0B;  /* lime-as-text — AA on every light surface */
+  --lime-900:   #3A4C07;
+
+  /* --- Forest (secondary dark) ------------------------------------------
+     The stylescape uses these as dark backgrounds. In this light theme they
+     are re-cast as text, icon and dark-accent-surface colours.            */
+  --forest-900: #0A1F16;  /* primary text */
+  --forest-800: #0D3C2A;  /* headings, dark accent surface */
+  --forest-700: #14532D;  /* dark surface pressed */
+  --forest-600: #2E6B4F;  /* secondary text */
+  --forest-500: #4C8466;  /* LARGE text (>=24px) / icons only — 4.08:1 */
+  --forest-400: #7BA890;
+  --forest-300: #A8C0B2;  /* muted text on dark surfaces */
+  --forest-200: #C9DBD1;
+  --forest-100: #DFEAE3;
+  --forest-50:  #EFF6F2;
+
+  /* --- Sage (cool neutral ramp, keyed to the green-white canvas) --------- */
+  --sage-50:    #FAFCF8;
+  --sage-100:   #F5F8F2;  /* app canvas — sampled from stylescape */
+  --sage-200:   #E8EDE4;
+  --sage-300:   #D8E0D2;  /* hairline dividers */
+  --sage-400:   #CBD5C4;
+  --sage-500:   #9AA894;
+  --sage-600:   #7E8C77;  /* strong borders — 3.32:1, meets WCAG 1.4.11 */
+  --sage-700:   #5F6B59;
+  --sage-800:   #424B3E;
+
+  /* --- Cream (warm accent surface) --------------------------------------
+     From the "5 MIN A DAY" badge. A warm counterpoint to the cool canvas.
+     Use for editorial badges and quote cards, not as a page background.   */
+  --cream-100:  #FDFAF2;
+  --cream-200:  #F3ECD9;
+  --cream-300:  #E8DEC4;
+
+  /* --- Orange (tertiary accent, used sparingly) --------------------------
+     #FF6A45 sampled from the confetti shapes and the "52g FAT" numeral.   */
+  --orange-100: #FDE7E0;
+  --orange-300: #FF9E83;
+  --orange-500: #FF6A45;  /* fill only — 2.65:1 on canvas */
+  --orange-600: #E2542F;
+  --orange-800: #A8380F;  /* orange-as-text — AA everywhere */
+
+  /* --- Macro accent hues --------------------------------------------------
+     Two strengths per nutrient, because a light card needs both.
+
+     -accent  fills the progress bar and the dot. Mid-tone, so it clears 3:1
+              against its own tinted track: protein 3.21, carbs 3.38,
+              fat 3.18. The brighter set used on the dark card (#6FBF2F and
+              friends) cannot - it tops out at 2.24 on any light track.
+     -ink     is the TEXT weight: the chip label and the percentage. Clears
+              4.5:1 on the tinted chip: protein 6.10, carbs 6.97, fat 5.91.  */
+  --macro-green:     #4E9420;  /* protein accent */
+  --macro-green-ink: #356112;
+  --macro-teal:      #0E8F79;  /* carbs accent   */
+  --macro-teal-ink:  #08574A;
+  --macro-amber:     #E2542F;  /* fat accent     */
+  --macro-amber-ink: #993716;
+
+  /* --- Semantic hues ----------------------------------------------------- */
+  --green-100:  #DCF0E4;
+  --green-600:  #17794B;
+  --red-100:    #FBE5E3;
+  --red-600:    #B3241B;
+
+  --white:      #FFFFFF;
+  --black:      #000000;
+
+
+  /* ======================================================================
+     LAYER 2 — SEMANTIC
+     ====================================================================== */
+
+  /* --- Surfaces ---------------------------------------------------------- */
+  --surface-canvas:       var(--sage-100);   /* the app background           */
+  --surface-raised:       var(--white);      /* cards, search bar, list rows */
+  --surface-sunken:       var(--sage-200);   /* wells, progress tracks       */
+  --surface-accent:       var(--cream-200);  /* warm editorial badges        */
+  --surface-inverse:      var(--forest-800); /* dark accent panels           */
+  --surface-inverse-deep: var(--forest-900);
+  --surface-brand:        var(--lime-500);   /* primary CTA fill             */
+  --surface-brand-subtle: var(--lime-100);   /* selected tags, soft fills    */
+  --surface-tint:         var(--forest-50);  /* hover wash on light rows     */
+
+  /* --- Text -------------------------------------------------------------- */
+  --text-primary:          var(--forest-900); /* 16.05:1 on canvas — AAA     */
+  --text-secondary:        var(--forest-600); /*  5.88:1 on canvas — AA      */
+  --text-tertiary:         var(--forest-500); /*  4.08:1 — >=24px or icons   */
+  --text-disabled:         var(--sage-500);   /*  2.33:1 — exempt, 1.4.3     */
+  --text-on-brand:         var(--forest-900); /* 14.73:1 on lime — AAA       */
+  --text-on-inverse:       var(--white);      /* 12.38:1 on forest-800 — AAA */
+  --text-on-inverse-muted: var(--forest-300); /*  6.39:1 on forest-800 — AA  */
+  --text-lime:             var(--lime-800);   /* the only legible lime text  */
+  --text-link:             var(--forest-700);
+
+  /* --- Borders ----------------------------------------------------------- */
+  --border-subtle:  var(--sage-300);  /* decorative dividers                 */
+  --border-default: var(--sage-400);  /* card outlines                       */
+  --border-strong:  var(--sage-600);  /* input borders — 3.32:1, 1.4.11 pass */
+  --border-brand:   var(--lime-700);
+  --border-inverse: var(--forest-800);
+
+  /* --- Interactive states ------------------------------------------------ */
+  --interactive-brand:        var(--lime-500);
+  --interactive-brand-hover:  var(--lime-600);
+  --interactive-brand-active: var(--lime-700);
+  --interactive-dark:         var(--forest-800);
+  --interactive-dark-hover:   var(--forest-700);
+  --interactive-dark-active:  var(--forest-900);
+  --interactive-disabled-bg:  var(--sage-200);
+  --interactive-disabled-fg:  var(--sage-500);
+
+  /* --- Feedback ---------------------------------------------------------- */
+  --feedback-success:         var(--green-600);  /* 5.06:1 on canvas */
+  --feedback-success-surface: var(--green-100);
+  --feedback-warning:         var(--orange-500); /* fill / indicator only */
+  --feedback-warning-text:    var(--orange-800); /* 6.05:1 on canvas */
+  --feedback-warning-surface: var(--orange-100);
+  --feedback-error:           var(--red-600);    /* 6.15:1 on canvas */
+  --feedback-error-surface:   var(--red-100);
+  --feedback-info:            var(--forest-600);
+  --feedback-info-surface:    var(--forest-100);
+
+  /* --- Macro nutrients ----------------------------------------------------
+     Fill tokens carry the brand hue; -text tokens are the legible variant.
+     Never render a macro value in the raw fill colour on a light surface.  */
+  --macro-protein:     var(--macro-green);
+  --macro-protein-ink: var(--macro-green-ink);
+  --macro-carbs:       var(--macro-teal);
+  --macro-carbs-ink:   var(--macro-teal-ink);
+  --macro-fat:         var(--macro-amber);
+  --macro-fat-ink:     var(--macro-amber-ink);
+
+  /* --- Focus -------------------------------------------------------------
+     The ring itself is forest-900, NOT lime. WCAG 2.4.11 requires a focus
+     indicator to hold 3:1 against adjacent colours, and lime-700 manages only
+     1.62:1 on the canvas and 1.48:1 on a lime button — it would effectively
+     disappear on the very control it matters most on. Forest-900 gives
+     16.05:1 on the canvas and 14.73:1 on lime, so one ring works everywhere.
+     The brand colour is kept as a decorative halo outside the ring.        */
+  --focus-ring-color:  var(--forest-900);
+  --focus-ring-width:  2.2px;
+  --focus-ring-offset: 1.5px;
+  --focus-ring-halo:   var(--lime-200);
+  --focus-ring-shadow: 0 0 0 calc(var(--focus-ring-width) + var(--focus-ring-offset) + 2.2px) var(--focus-ring-halo);
+
+
+
+
+  /* ======================================================================
+     TYPOGRAPHY — font sizes are value-named so a token can never drift
+     from the pixel value it promises. --font-size-16 is 16px. Always.
+     ====================================================================== */
+  --font-family-display: "Archivo", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-family-body:    "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-mono:    ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+
+  /* Display width axis — Archivo wdth. 88 matches the stylescape headline. */
+  --font-width-condensed: 75;
+  --font-width-display:   88;
+  --font-width-expanded:  112;
+
+  /* --- Font weights ------------------------------------------------------ */
+  --font-weight-regular:   400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+  --font-weight-extrabold: 800;
+  --font-weight-black:     900;
+
+  /* --- App UI font sizes -------------------------------------------------
+     Every size used by an in-app screen. Nine steps, no more.             */
+  --font-size-10: 7.3px;
+  --font-size-12: 8.7px;
+  --font-size-13: 9.5px;
+  --font-size-14: 10.2px;
+  --font-size-15: 10.9px;
+  --font-size-16: 11.6px;
+  --font-size-18: 13.1px;
+  --font-size-20: 14.5px;
+  --font-size-26: 18.9px;
+  --font-size-32: 23.3px;
+
+  /* --- Display font sizes ------------------------------------------------
+     Marketing surfaces and this styleguide's own page headings.
+     Not used by any in-app screen.                                        */
+  --font-size-display-sm: 16px;
+  --font-size-display-md: 20.4px;
+  --font-size-display-lg: 26.2px;
+  --font-size-display-xl: 32px;
+
+  /* --- Line heights ------------------------------------------------------ */
+  --line-height-none:    1;
+  --line-height-tight:   1.1;
+  --line-height-snug:    1.25;
+  --line-height-normal:  1.4;
+  --line-height-relaxed: 1.5;
+
+  /* --- Letter spacing ---------------------------------------------------- */
+  --tracking-display: -0.02em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:  0;
+  --tracking-ring:    0.03em;  /* ring subtext, per spec */
+  --tracking-wide:    0.04em;
+  --tracking-label:   0.08em;  /* uppercase micro-labels */
+
+
+  /* ======================================================================
+     SPACING — value-named. --spacing-16 is 16px.
+     The 8px grid holds throughout; 4, 6, 12 and 14 are documented
+     sub-steps, each tied to a specific component in layer 3.
+     ====================================================================== */
+  --spacing-0:  0;
+  --spacing-4:  2.9px;   /* icon-to-label gaps, streak dot gap */
+  --spacing-6:  4.4px;   /* filter pill vertical padding (off-grid, per spec) */
+  --spacing-8:  5.8px;
+  --spacing-12: 8.7px;
+  --spacing-14: 10.2px;  /* filter pill horizontal padding (off-grid, per spec) */
+  --spacing-16: 11.6px;
+  --spacing-24: 17.5px;
+  --spacing-32: 23.3px;
+  --spacing-40: 29.1px;
+  --spacing-48: 34.9px;
+  --spacing-64: 46.5px;
+  --spacing-80: 58.2px;
+
+
+  /* ======================================================================
+     RADIUS
+     ====================================================================== */
+  --radius-sm:   5.8px;
+  --radius-md:   8.7px;
+  --radius-lg:   11.6px;   /* macro chips */
+  --radius-xl:   14.5px;   /* cards, lists */
+  --radius-2xl:  20.4px;   /* sheets, large containers */
+  --radius-pill: 999px;  /* buttons, tags, search field */
+  --radius-full: 50%;    /* avatars, progress ring, streak dots */
+
+
+  /* ======================================================================
+     ELEVATION
+     Shadows are tinted with forest-900 rather than pure black, matching the
+     soft green-cast shadows in the stylescape.
+     ====================================================================== */
+  --shadow-none:  none;
+  --shadow-xs:    0 0.7px 1.5px rgba(10, 31, 22, 0.06);
+  --shadow-sm:    0 1.5px 5.8px rgba(10, 31, 22, 0.08);
+  --shadow-md:    0 5.8px 17.5px rgba(10, 31, 22, 0.10);
+  --shadow-lg:    0 11.6px 29.1px rgba(10, 31, 22, 0.12);
+  --shadow-brand: 0 4.4px 14.5px rgba(164, 213, 28, 0.35);  /* lime CTA glow */
+  --shadow-nav:   0 -1.5px 11.6px rgba(10, 31, 22, 0.08);   /* bottom tab bar */
+  --shadow-scan-button: 0 4.4px 11.6px rgba(10, 31, 22, 0.28); /* raised Scan FAB */
+
+
+  /* ======================================================================
+     MOTION & LAYERING
+     ====================================================================== */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --duration-press: 100ms;  /* :active feedback */
+  --duration-nav:   150ms;  /* tab colour change */
+  --duration-ring:  800ms;  /* calorie ring fill on load */
+  --duration-page:  200ms;  /* screen-to-screen fade */
+  --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Shorthand transition values (duration + easing) */
+  --transition-fast: var(--duration-press) var(--ease-standard);
+  --transition-base: var(--duration-nav) var(--ease-standard);
+  --transition-slow: var(--duration-page) var(--ease-out);
+
+  --press-scale: 0.96;  /* uniform press feedback */
+
+  --z-base:    0;
+  --z-sticky:  100;
+  --z-nav:     200;
+  --z-overlay: 300;
+
+
+  /* ======================================================================
+     LAYER 3 — COMPONENT TOKENS
+     One role token per element in the screen spec. Components read these;
+     none reads a raw pixel value. Changing a number here is the only way
+     to change a rendered size.
+     ====================================================================== */
+
+  /* --- Screen container --------------------------------------------------
+     Fixed 440 x 956 viewport. Content area is 440 - (2 x 16) = 408px wide,
+     and 956 - 56 (nav bar) = 900px tall. Every proportion below is
+     calibrated against that box.                                          */
+  --screen-width:     320px;
+  --screen-height:    695.3px;
+  --screen-padding-x: var(--spacing-16);
+
+  /* --- Recipe detail ------------------------------------------------------ */
+  --recipe-hero-height: 145.5px;
+
+  /* --- Scan viewfinder ----------------------------------------------------
+     The camera feed is a media surface, not chrome, so it stays dark even in
+     the light theme - that is what a live camera image looks like. The UI
+     around it is light. Lime corner brackets come straight from the brand.  */
+  --viewfinder-height:       261.8px;  /* must exceed guide + padding + hint */
+  --viewfinder-guide-size:   174.5px;
+  --viewfinder-corner-size:  29.1px;
+  --viewfinder-corner-width: 2.2px;
+
+  /* --- Portion adjuster ---------------------------------------------------- */
+  --portion-btn-size: var(--tap-min);
+  --portion-value-size: var(--font-size-20);
+
+  /* --- Instruction steps --------------------------------------------------- */
+  --step-marker-size: 17.5px;
+
+  /* --- Accessibility floor ----------------------------------------------- */
+  --tap-min: 32px;  /* minimum touch target on every interactive element */
+
+  /* --- Screen title ------------------------------------------------------ */
+  --screen-title-size:   var(--font-size-20);
+  --screen-title-weight: var(--font-weight-bold);
+
+  /* --- Badge / pill -------------------------------------------------------
+     One shared shape language for the streak chip and the "kcal left" chip. */
+  --badge-height:      23.3px;
+  --badge-padding-x:   var(--spacing-12);
+  --badge-radius:      var(--radius-pill);
+  --badge-gap:         var(--spacing-8);
+  --badge-bg:          var(--surface-raised);
+  --badge-border:      var(--border-subtle);
+  --badge-text-size:   var(--font-size-13);
+  --badge-dot-size:    4.4px;
+  --badge-bg-lime:     var(--lime-100);
+  --badge-shadow:      var(--shadow-xs);
+
+  /* --- Streak ------------------------------------------------------------ */
+  --streak-flame-color: var(--orange-500);
+  /* The flame's viewBox is cropped to the glyph itself ("7 2 10 14.2"), not
+     the 24-unit box the path was drawn in. That box was two thirds empty, and
+     the emptiness was not symmetric: it held the glyph high and padded both
+     sides, so the flame floated above the count and no gap value could pull
+     it in. Cropped, this is the height the flame actually paints, and
+     --streak-flame-gap is the gap you actually see. */
+  --streak-flame-size:   var(--icon-sm);
+  --streak-flame-ratio:  0.704;   /* 10 / 14.2 — the cropped viewBox aspect */
+  --streak-gap:          var(--spacing-12);  /* dots to count */
+  /* The flame reads as part of the count rather than as a third item in the
+     row, so it closes --streak-gap and sits at this instead. */
+  --streak-flame-gap:    var(--spacing-4);
+  --streak-count-size:   var(--font-size-14);
+  --streak-count-weight: var(--font-weight-medium);
+  --streak-dot-size:     5.8px;
+  --streak-dot-gap:      var(--spacing-4);
+  --streak-dot-on:       var(--forest-800);
+  --streak-dot-off:      var(--sage-400);
+
+  /* --- Modal --------------------------------------------------------------
+     A centred dialog sized to sit inside the 320px screen frame with the
+     screen gutter left showing on both sides. */
+  --modal-width:      calc(var(--screen-width) - var(--spacing-32) * 2);
+  --modal-radius:     var(--radius-2xl);
+  --modal-padding:    var(--spacing-24);
+  --modal-gap:        var(--spacing-16);
+  --modal-bg:         var(--surface-raised);
+  --modal-shadow:     var(--shadow-lg);
+  --modal-backdrop:   rgba(10, 31, 22, 0.44);
+  --modal-title-size: var(--font-size-20);
+  --modal-text-size:  var(--font-size-13);
+  /* Painted height of the flame, not a box two thirds of which is empty:
+     .modal__flame uses the same cropped viewBox as the badge one. */
+  --modal-icon-size:  var(--spacing-48);
+  --modal-close-size: var(--tap-min);
+
+  /* --- Week row -----------------------------------------------------------
+     Seven day columns inside the modal. The mark is capped rather than fixed
+     so the row still fits when the modal is narrowed on a small viewport. */
+  --week-gap:         var(--spacing-4);
+  --week-label-gap:   var(--spacing-6);
+  --week-label-size:  var(--font-size-10);
+  --week-mark-size:   var(--spacing-32);
+  --week-mark-off:    var(--surface-sunken);
+  --week-mark-done:   var(--forest-800);
+  --week-mark-today:  var(--interactive-brand);
+
+  /* --- Calorie ring ------------------------------------------------------
+     Rendered in a 200-unit viewBox at 200px, so 1 user unit = 1px and the
+     14px stroke measures exactly 14px on screen. Radius is (200-14)/2 = 93,
+     which puts the stroke's outer edge exactly on the 200px diameter.     */
+  --ring-diameter:         145.5px;
+  --ring-stroke:           14px;
+  /* Gradient stroke, dark green into lime, following the arc. Referenced as
+     a paint server; the flat brand lime is the fallback if the <defs> block
+     is missing from a page. */
+  --ring-gradient-from:    var(--forest-600);
+  --ring-gradient-to:      var(--lime-500);
+  --ring-stroke-paint:     url(#ring-gradient);
+  /* Soft lime bloom behind the ring. */
+  --ring-glow-color:       rgba(204, 255, 76, 0.55);
+  --ring-glow-spread:      var(--spacing-24);
+  --ring-glow-stop:        68%;
+  --ring-value-size:       var(--font-size-32);
+  --ring-value-weight:     var(--font-weight-bold);
+  --ring-unit-size:        var(--font-size-12);
+  --ring-unit-weight:      var(--font-weight-medium);
+  --ring-unit-tracking:    var(--tracking-ring);
+  --ring-remaining-size:   var(--font-size-13);
+  --ring-remaining-weight: var(--font-weight-regular);
+
+  /* --- Macro chips ------------------------------------------------------- */
+  --macro-chip-height:    130.9px;  /* tall enough to read as a vessel */
+  --macro-chip-height-sm: 61.1px;   /* no target / percentage row */
+  --macro-chip-padding-y: var(--spacing-12);
+  --macro-chip-padding-x: var(--spacing-12);
+  --macro-chip-gap:       var(--spacing-8);
+  --macro-chip-radius:    var(--radius-lg);
+  /* Label -> value -> target read as one stack from the top of the vessel,
+     so the rows sit on a single rhythm rather than being pushed apart. */
+  --macro-stack-gap:      var(--spacing-16);
+  --macro-stack-gap-sm:   var(--spacing-8);   /* target-less cards are shorter */
+  --macro-value-size:     var(--font-size-26);
+  --macro-value-weight:   var(--font-weight-bold);
+  --macro-unit-size:      var(--font-size-12);
+  --macro-label-size:     var(--font-size-10);
+  --macro-label-weight:   var(--font-weight-bold);
+  --macro-dot-size:       4.4px;
+
+  /* --- Macro card ---------------------------------------------------------
+     A light card carrying its nutrient's colour at three strengths: a 5%
+     wash on the card, a 16% chip behind the label, a 14% track under the
+     bar. Every ratio in this block was measured, not eyeballed - see the
+     accent-hue comment above for the numbers.                             */
+  --macro-card-wash:    5%;
+  --macro-card-edge:    30%;
+  --macro-chip-tint:    16%;
+  --macro-track-tint:   14%;
+  --macro-chip-h:       17.5px;   /* the label pill */
+  --macro-chip-pad-x:   var(--spacing-8);
+  --macro-bar-height:   5.8px;
+  --macro-target-size:  var(--font-size-13);
+  --macro-pct-size:     var(--font-size-13);
+
+  /* --- Macro liquid fill --------------------------------------------------
+     The card is a vessel: it fills bottom-up to --macro-value / its target,
+     under a wave rather than a flat line. The fill is opaque and paints over
+     the dark text, and a white copy of that text is clipped to the same
+     mask, so the two halves of a glyph always meet exactly on the surface -
+     no line of text can land in the low-contrast band around the waterline.
+
+     Measured, white text on the fill:
+                     at the crest        at the target line (88% down)
+       protein       3.76:1              4.92:1
+       carbs         4.02:1              5.53:1
+       fat           3.79:1              4.79:1
+     The value is 18.9px bold - large text, so 3:1 applies and the crest
+     passes on all three. The 9.5px target line is small text and needs
+     4.5:1; it sits in the bottom eighth of the card, where the gradient has
+     run far enough toward the ink shade to clear it. Dark text on the crest
+     measures 4.77 / 4.60 / 4.65:1, so the moment the surface crosses a
+     glyph both halves of it stay legible.                                 */
+  --macro-card-border:   1px;      /* subtracted to get the inner height */
+  --macro-wave-height:   16px;     /* crest band; amplitude is a quarter of it */
+  --macro-wave-tile:     150px;    /* one mask tile = two crests               */
+  --macro-wave-duration: 4000ms;   /* idle undulation, one loop per tile       */
+  --macro-wave-stagger:  -1333ms;  /* a third of a loop between nutrients      */
+  --macro-wave-ink-stop: 100%;     /* gradient has reached the ink shade here  */
+  --macro-on-fill:        var(--white);
+  /* Composited over the fill, so it dims to the nutrient's own hue
+     without naming it - a mix with var(--macro-ink) would be invalid
+     here, where that variable does not exist yet. */
+  --macro-on-fill-muted:  color-mix(in srgb, var(--white) 82%, transparent);
+  --macro-on-fill-chip:   color-mix(in srgb, var(--white) 92%, transparent);
+  --macro-wave-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='8' viewBox='0 0 240 8' preserveAspectRatio='none'%3E%3Cpath d='M0 4C20 1 40 1 60 4C80 7 100 7 120 4C140 1 160 1 180 4C200 7 220 7 240 4L240 8L0 8Z' fill='%23fff'/%3E%3C/svg%3E");
+
+  /* Daily targets the fill is measured against. Data rather than style, but
+     they live here so the level drawn and the target printed cannot drift
+     apart - the card computes its own progress from these.                */
+  --macro-target-protein: 120;
+  --macro-target-carbs:   245;
+  --macro-target-fat:      70;
+
+  /* --- Buttons -----------------------------------------------------------
+     48px is the spec CTA height. sm/lg are styleguide-only variants.       */
+  --btn-height:       34.9px;
+  --btn-height-sm:    26.2px;
+  --btn-height-lg:    40.7px;
+  --btn-padding-x:    var(--spacing-16);
+  --btn-radius:       var(--radius-pill);
+  --btn-label-size:   var(--font-size-16);
+  --btn-label-weight: var(--font-weight-bold);
+  --btn-gap:          var(--spacing-8);
+
+  /* --- Search field ------------------------------------------------------ */
+  --search-height:      32px;
+  --search-padding-x:   var(--spacing-12);
+  --search-radius:      var(--radius-pill);
+  --search-text-size:   var(--font-size-15);
+  --search-text-weight: var(--font-weight-regular);
+  --search-icon-size:   14.5px;
+
+  /* --- Filter pills / tags ----------------------------------------------- */
+  --pill-height:      23.3px;
+  --pill-padding-y:   var(--spacing-6);
+  --pill-padding-x:   var(--spacing-14);
+  --pill-gap:         var(--spacing-8);
+  --pill-radius:      var(--radius-pill);
+  --pill-text-size:   var(--font-size-14);
+  --pill-text-weight: var(--font-weight-medium);
+
+  /* --- Recipe list ------------------------------------------------------- */
+  --list-item-padding-y: var(--spacing-12);
+  --list-item-padding-x: var(--spacing-16);
+  --list-avatar-size:    29.1px;
+  --list-title-size:     var(--font-size-16);
+  --list-title-weight:   var(--font-weight-semibold);
+  --list-meta-size:      var(--font-size-12);
+  --list-meta-weight:    var(--font-weight-regular);
+  --list-radius:         var(--radius-xl);
+
+  /* --- Greeting header ----------------------------------------------------
+     The greeting is the screen's headline, not a caption: display face, set
+     in caps, with one word on a lime marker. "TODAY" drops to an eyebrow.
+     Swap the name in one place; every screen picks it up.                 */
+  --user-name:               "John";
+  --greeting-eyebrow-size:   var(--font-size-12);
+  --today-date:              "Oct 24";
+  --eyebrow-dot-size:        4.4px;
+  --eyebrow-dot-color:       var(--lime-500);
+  --eyebrow-sep-color:       var(--sage-400);
+  --eyebrow-gap:             var(--spacing-8);
+  --greeting-headline-size:  var(--font-size-26);
+  --greeting-gap:            var(--spacing-4);
+
+  /* Highlighted word inside a display headline - the "BIG" treatment from
+     the stylescape: true brand lime fill with a dark outline drawn around
+     the glyphs. The outline is what carries legibility; lime on its own
+     would be 1.09:1 on the canvas. Never use the fill colour without it.  */
+  --highlight-color:            var(--lime-500);
+  /* The dark outline is what makes the lime legible - lime on the canvas is
+     1.09:1 on its own. Never drop the stroke to "clean up" the look. */
+  --highlight-stroke-width:     1.5px;
+  --highlight-stroke-color:     var(--forest-900);
+  --highlight-underline-color:  var(--lime-500);
+  --highlight-underline-weight: 1.5px;
+  --highlight-underline-offset: 2.9px;
+
+  /* --- Segmented control --------------------------------------------------
+     Same pill language as the filter tags: active segment takes the lime
+     fill, idle segments sit plain on a sunken track. Measured: active label
+     14.73:1 on lime, idle label 5.30:1 on the track.                       */
+  --segmented-pad:       var(--spacing-4);
+  --segmented-height:    var(--tap-min);
+  --segmented-pad-x:     var(--spacing-12);
+  --segmented-track:     var(--surface-sunken);
+  --segmented-radius:    var(--radius-pill);
+  --segmented-text-size: var(--font-size-13);
+
+  /* --- Weekly chart -------------------------------------------------------
+     Bars are an indicator, so they clear 3:1 against their track: forest-600
+     manages 5.30. Lime cannot - it sits at 1.02 - so today's bar gets the
+     lime fill with a dark outline instead, the same trick the headline uses
+     to make lime legible.                                                  */
+  --chart-height:      87.3px;
+  /* Bars are a fixed width with a fixed gap and the group is centred, rather
+     than flexing to fill the card. That keeps a day column reading as a
+     column at any container width, and stops 7 bars turning into a solid
+     block of colour. */
+  --chart-bar-width:   24.7px;
+  --chart-bar-width-wide: 48px;  /* month view: fewer, wider bars */
+  --chart-bar-gap:     var(--spacing-14);
+  --chart-track:       var(--surface-sunken);
+  --chart-bar:         var(--forest-600);
+  --chart-bar-over:    var(--orange-600);
+  --chart-bar-today:   var(--lime-500);
+  --chart-today-edge:  var(--forest-900);
+  --chart-radius:      var(--radius-pill);
+  --chart-day-size:    var(--font-size-10);
+
+  /* --- Avatar -------------------------------------------------------------- */
+  --avatar-size:       46.5px;
+  --avatar-size-sm:    var(--spacing-40);
+  --avatar-text-size:  var(--font-size-26);
+
+  /* --- Bottom navigation ------------------------------------------------- */
+  --navbar-height:     40.7px;
+  /* Raised Scan action. The circle breaks the bar's top edge by
+     (nav-fab-lift - item padding-top) = 24 - 8 = 16px.                     */
+  --nav-fab-size:      40.7px;
+  --nav-fab-icon:      17.5px;
+  --nav-fab-lift:      17.5px;
+  --nav-icon-size:     14.5px;
+  --nav-label-size:    var(--font-size-10);
+  --nav-label-weight:  var(--font-weight-medium);
+  --nav-bg:            var(--surface-raised);
+  --nav-item-active:   var(--forest-900);
+  --nav-item-inactive: var(--forest-500);
+  /* Active Scan circle. The glyph sits ON the lime rather than beside it, so
+     it cannot stay white: that is 1.17:1. Lime is a fill in this system and
+     --text-on-brand is the forest it is built to carry, at 14.73:1. */
+  --nav-fab-active-bg: var(--surface-brand);
+  --nav-fab-active-fg: var(--text-on-brand);
+
+  /* --- Named vertical rhythm, straight from the screen spec --------------- */
+  --gap-title-ring:   var(--spacing-32);  /* widened with the 200px ring */
+  --gap-ring-macros:  var(--spacing-32);
+  --gap-macros-cta:   var(--spacing-16);
+  --gap-search-pills: var(--spacing-12);
+  --gap-pills-list:   var(--spacing-16);
+  --gap-list-cta:     var(--spacing-16);
+
+  /* --- Cards -------------------------------------------------------------- */
+  --card-radius:       var(--radius-xl);
+  --card-padding:      var(--spacing-16);
+  --card-bg:           var(--surface-raised);
+  --card-shadow:       var(--shadow-sm);
+  --card-shadow-hover: var(--shadow-md);
+  /* Recipe card. The card is width:100% capped at this, so it fills a sized
+     parent (a grid track, a screen column) and never exceeds one card's worth
+     of width. A content-sized parent gives it nothing to fill, so anywhere it
+     is staged on its own the parent takes this width too. */
+  --recipe-card-width: 189.1px;
+
+  /* --- Text inputs -------------------------------------------------------- */
+  --field-height:       34.9px;
+  --field-padding-x:    var(--spacing-16);
+  --field-radius:       var(--radius-pill);
+  --field-bg:           var(--surface-raised);
+  --field-border:       var(--border-strong);
+  --field-border-width: 1.5px;
+  --field-border-focus: var(--forest-900);  /* focus must not LOWER contrast */
+  --field-border-error: var(--feedback-error);
+
+  /* --- In-field action button (search clear) ------------------------------
+     An icon button that lives INSIDE a field's padding box. It carries no
+     border of its own: a stroked circle inside a stroked field reads as two
+     colliding borders. Offset is measured from the field's inner edge, so
+     --field-border-width is added when positioning against the border box. */
+  --field-action-size:   23.3px;
+  --field-action-icon:   14.5px;
+  --field-action-offset: var(--spacing-12);
+  --field-action-gap:    var(--spacing-8);  /* clearance between text and button */
+
+  /* --- Icon sizes --------------------------------------------------------- */
+  --icon-sm: 11.6px;
+  --icon-md: 14.5px;
+  --icon-lg: 17.5px;
+}
+
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast:  1ms;
+    --duration-base:  1ms;
+    --duration-slow:  1ms;
+    --duration-press: 1ms;
+    --duration-nav:   1ms;
+    --duration-ring:  1ms;
+    --duration-page:  1ms;
+    --press-scale: 1;  /* no scale jump for motion-sensitive users */
+  }
+}

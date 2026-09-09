@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprout &middot; Stats</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<link rel="stylesheet" href="../prototype.css">
+</head>
+<body class="proto">
+
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ring-gradient" x1="0" y1="1" x2="1" y2="0">
+      <stop class="ring-grad__from" offset="0"/>
+      <stop class="ring-grad__to" offset="1"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<nav class="proto__bar" aria-label="Prototype navigation">
+  <a class="proto__back" href="../index.html">&larr; All flows</a>
+  <span class="proto__crumb">Stats tab</span>
+</nav>
+
+<div class="screen">
+  <div class="screen__body">
+      <div id="stats-view" data-view="week">
+
+        <div class="screen__header">
+          <p class="screen__eyebrow">
+            <span class="screen__eyebrow-dot" aria-hidden="true"></span>Stats
+            <span class="screen__eyebrow-sep" aria-hidden="true"></span>
+            <span data-period="week">This week</span>
+            <span data-period="month">This month</span>
+          </p>
+          <button type="button" class="badge streak" data-modal-open="streak-modal"
+                  aria-haspopup="dialog" aria-label="12 day streak. Open your week">
+            <span class="streak__dots" aria-hidden="true"><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--today"></span></span>
+            <span class="streak__label">12</span>
+            <svg class="badge__flame" viewBox="7 2 10 14.2" fill="currentColor" aria-hidden="true"><path d="M12 2c2.8 4.2 5 6 5 9.2a5 5 0 0 1-10 0c0-1.3.4-2.3 1.1-3.3.3 1 .9 1.7 1.7 2 .2-3 1.4-5.6 2.2-7.9z"/></svg>
+          </button>
+        </div>
+
+        <h1 class="screen__headline">You&rsquo;re <span class="highlight">on track</span><br>this <span data-period="week">week</span><span data-period="month">month</span></h1>
+
+        <div class="segmented screen__cta" role="tablist" aria-label="Period">
+          <button type="button" class="segmented__option is-active" role="tab" id="tab-week" aria-selected="true" aria-controls="stats-view">Week</button>
+          <button type="button" class="segmented__option" role="tab" id="tab-month" aria-selected="false" aria-controls="stats-view" tabindex="-1">Month</button>
+        </div>
+
+        <div class="card screen__ring">
+          <div style="width: 100%">
+            <div class="stat">
+              <span class="stat__value" data-period="week">1 807</span>
+              <span class="stat__value" data-period="month">1 771</span>
+              <span class="stat__unit" data-period="week">kcal daily average</span>
+              <span class="stat__unit" data-period="month">kcal weekly average</span>
+            </div>
+            <div class="screen__cta">
+            <div class="chart" data-period="week" role="img" aria-label="Mon 1680, Tue 1920, Wed 1540, Thu 2010, Fri 1830, Sat 2140, Sun 1530. Goal 2 050 kcal.">
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar" style="--bar: 0.82"></span></div>
+                <span class="chart__day">M</span>
+              </div>
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar" style="--bar: 0.94"></span></div>
+                <span class="chart__day">T</span>
+              </div>
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar" style="--bar: 0.75"></span></div>
+                <span class="chart__day">W</span>
+              </div>
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar" style="--bar: 0.98"></span></div>
+                <span class="chart__day">T</span>
+              </div>
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar" style="--bar: 0.89"></span></div>
+                <span class="chart__day">F</span>
+              </div>
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar chart__bar--over" style="--bar: 1.00"></span></div>
+                <span class="chart__day">S</span>
+              </div>
+              <div class="chart__col chart__col--today">
+                <div class="chart__track"><span class="chart__bar chart__bar--today" style="--bar: 0.75"></span></div>
+                <span class="chart__day">S</span>
+              </div>
+            </div>
+            <div class="chart chart--wide" data-period="month" role="img" aria-label="W1 1740, W2 1890, W3 1650, W4 1807. Goal 2 050 kcal.">
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar" style="--bar: 0.85"></span></div>
+                <span class="chart__day">W1</span>
+              </div>
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar" style="--bar: 0.92"></span></div>
+                <span class="chart__day">W2</span>
+              </div>
+              <div class="chart__col">
+                <div class="chart__track"><span class="chart__bar" style="--bar: 0.80"></span></div>
+                <span class="chart__day">W3</span>
+              </div>
+              <div class="chart__col chart__col--today">
+                <div class="chart__track"><span class="chart__bar chart__bar--today" style="--bar: 0.88"></span></div>
+                <span class="chart__day">W4</span>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen__ingredients">
+          <h2 class="screen__section-title">Daily averages</h2>
+        <div class="macros macros--plain">
+          <div class="macro macro--protein">
+            <div class="macro__body">
+              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Protein</p>
+              <p class="macro__value">98<span class="macro__unit">g</span></p>
+            </div>
+          </div>
+          <div class="macro macro--carbs">
+            <div class="macro__body">
+              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Carbs</p>
+              <p class="macro__value">171<span class="macro__unit">g</span></p>
+            </div>
+          </div>
+          <div class="macro macro--fat">
+            <div class="macro__body">
+              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Fat</p>
+              <p class="macro__value">58<span class="macro__unit">g</span></p>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="screen__meals">
+          <h2 class="screen__section-title">Consistency</h2>
+          <article class="card meal-card">
+            <span class="meal-card__check" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+            <div class="meal-card__body">
+              <h3 class="meal-card__title">Days logged</h3>
+              <p class="meal-card__meta">6 of 7 this week</p>
+            </div>
+            <span class="meal-card__kcal">86%<span class="sr-only"> kilocalories</span></span>
+          </article>
+          <article class="card meal-card">
+            <span class="meal-card__check" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+            <div class="meal-card__body">
+              <h3 class="meal-card__title">Under goal</h3>
+              <p class="meal-card__meta">5 of 7 days</p>
+            </div>
+            <span class="meal-card__kcal">71%<span class="sr-only"> kilocalories</span></span>
+          </article>
+          <article class="card meal-card">
+            <span class="meal-card__check" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+            <div class="meal-card__body">
+              <h3 class="meal-card__title">Longest streak</h3>
+              <p class="meal-card__meta">12 days and counting</p>
+            </div>
+            <span class="meal-card__kcal">12<span class="sr-only"> kilocalories</span></span>
+          </article>
+        </div>
+
+      </div>
+  </div>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <a class="bottom-nav__item" href="home.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span><span class="bottom-nav__label">Home</span></a>
+        <a class="bottom-nav__item" href="find-recipe.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span><span class="bottom-nav__label">Meals</span></a>
+        <a class="bottom-nav__item bottom-nav__item--scan" href="scan.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span><span class="bottom-nav__label">Scan</span></a>
+        <a class="bottom-nav__item" href="stats.html" aria-current="page"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span><span class="bottom-nav__label">Stats</span></a>
+        <a class="bottom-nav__item" href="you.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="bottom-nav__label">You</span></a>
+      </nav>
+</div>
+
+<script>
+/* Period toggle.
+   One attribute drives everything: #stats-view[data-view] decides which
+   [data-period] elements are on screen (see components.css). The click
+   handler flips that attribute and the active class on the segments. */
+(function () {
+  var view = document.getElementById('stats-view');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+
+  function select(period) {
+    view.setAttribute('data-view', period);
+    tabs.forEach(function (t) {
+      var on = t.id === 'tab-' + period;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () {
+      select(t.id.replace('tab-', ''));
+    });
+    t.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      n.focus();
+      select(n.id.replace('tab-', ''));
+    });
+  });
+})();
+</script>
+
+<!-- Streak modal. Opened by the streak badge in the screen header; see
+     components.js for the one line of script a native <dialog> needs. -->
+<dialog class="modal" id="streak-modal" aria-labelledby="streak-modal-title">
+  <div class="modal__panel">
+    <form method="dialog">
+      <button type="submit" class="modal__close" aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </form>
+    <svg class="modal__flame" viewBox="7 2 10 14.2" fill="currentColor" aria-hidden="true"><path d="M12 2c2.8 4.2 5 6 5 9.2a5 5 0 0 1-10 0c0-1.3.4-2.3 1.1-3.3.3 1 .9 1.7 1.7 2 .2-3 1.4-5.6 2.2-7.9z"/></svg>
+    <h2 class="modal__title" id="streak-modal-title">Good work!</h2>
+    <p class="modal__text">You&rsquo;ve looked after your eating <span class="count">12 days</span> in a row. Keep the run going.</p>
+    <ul class="week" aria-label="This week">
+      <li class="week__day week__day--done"><span class="week__label">Mon</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+      <li class="week__day week__day--done"><span class="week__label">Tue</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+      <li class="week__day week__day--done"><span class="week__label">Wed</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+      <li class="week__day week__day--done"><span class="week__label">Thu</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+      <li class="week__day week__day--today" aria-current="date"><span class="week__label">Fri</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">today, tracked</span></li>
+      <li class="week__day"><span class="week__label">Sat</span><span class="week__mark"></span><span class="sr-only">still to come</span></li>
+      <li class="week__day"><span class="week__label">Sun</span><span class="week__mark"></span><span class="sr-only">still to come</span></li>
+    </ul>
+    <form method="dialog">
+      <button type="submit" class="btn btn--primary btn--block">Keep it up</button>
+    </form>
+  </div>
+</dialog>
+
+<script src="../components.js"></script>
+</body>
+</html>

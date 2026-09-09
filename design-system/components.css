@@ -1,0 +1,1740 @@
+/* ==========================================================================
+   SPROUT DESIGN SYSTEM - components.css
+   "Fuel the Good"  ยท  Light theme only
+   --------------------------------------------------------------------------
+   The shared component layer. Extracted from components.html so the
+   styleguide and the clickable prototype in /screens render from exactly the
+   same rules - there is no second copy to drift out of sync.
+
+   Requires tokens.css to be loaded first. Every value here resolves from a
+   token; no literal colours, sizes or spacing.
+
+   Load order:
+     <link rel="stylesheet" href="tokens.css">
+     <link rel="stylesheet" href="components.css">
+
+   Contents:
+     Buttons ยท Tags/badges ยท Fields & search ยท Cards ยท Calorie ring
+     Macro chips ยท Streak ยท List items ยท Bottom nav ยท Screen composition
+     Recipe detail ยท Utilities (.icon, .sr-only)
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* --- Utilities ------------------------------------------------------------ */
+/* Any author `display` beats the UA stylesheet's [hidden] rule, so state it
+   explicitly. Without this, hiding a .card (display:flex) silently fails. */
+[hidden] { display: none !important; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   COMPONENTS
+   Forced-state classes (.is-hover / .is-active / .is-focus) mirror the real
+   pseudo-classes so every state is visible at once in this guide.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-gap);
+  min-height: var(--btn-height);
+  min-width: var(--tap-min);
+  padding: 0 var(--btn-padding-x);
+  border: 2px solid transparent;
+  border-radius: var(--btn-radius);
+  font-family: var(--font-family-body);
+  font-size: var(--btn-label-size);
+  font-weight: var(--btn-label-weight);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+.btn:focus-visible, .btn.is-focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: var(--focus-ring-shadow);
+}
+.btn:disabled, .btn.is-disabled {
+  cursor: not-allowed;
+  background: var(--interactive-disabled-bg);
+  color: var(--interactive-disabled-fg);
+  border-color: transparent;
+  box-shadow: var(--shadow-none);
+  transform: none;
+}
+
+/* Primary — the lime CTA from the tracker screen */
+.btn--primary {
+  background: var(--interactive-brand);
+  color: var(--text-on-brand);
+  box-shadow: var(--shadow-brand);
+}
+.btn--primary:hover:not(:disabled), .btn--primary.is-hover {
+  background: var(--interactive-brand-hover);
+}
+.btn--primary:active:not(:disabled), .btn--primary.is-active {
+  background: var(--interactive-brand-active);
+  box-shadow: var(--shadow-xs);
+  transform: scale(var(--press-scale));
+}
+/* Secondary — the dark "Scan a meal instead" button */
+.btn--secondary {
+  background: var(--interactive-dark);
+  color: var(--text-on-inverse);
+  box-shadow: var(--shadow-xs);
+}
+.btn--secondary:hover:not(:disabled), .btn--secondary.is-hover { background: var(--interactive-dark-hover); }
+.btn--secondary:active:not(:disabled), .btn--secondary.is-active {
+  background: var(--interactive-dark-active);
+  transform: scale(var(--press-scale));
+}
+
+/* Tertiary — quiet outline button */
+.btn--tertiary {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+.btn--tertiary:hover:not(:disabled), .btn--tertiary.is-hover {
+  background: var(--surface-tint);
+  border-color: var(--interactive-dark);
+}
+.btn--tertiary:active:not(:disabled), .btn--tertiary.is-active {
+  background: var(--forest-100);
+  transform: scale(var(--press-scale));
+}
+.btn--tertiary:disabled, .btn--tertiary.is-disabled {
+  background: transparent;
+  border-color: var(--border-default);
+}
+
+.btn--block { display: flex; width: 100%; }
+.btn--lg { min-height: var(--btn-height-lg); font-size: var(--font-size-18); }
+.btn--sm { min-height: var(--btn-height-sm); padding: 0 var(--spacing-16); font-size: var(--font-size-14); }
+/* A visually small button still needs a 44px touch target. */
+.btn--sm { position: relative; }
+.btn--sm::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--tap-min);
+}
+
+/* Icon-only */
+.btn--icon {
+  width: var(--tap-min);
+  height: var(--tap-min);
+  min-width: var(--tap-min);
+  padding: 0;
+  border-radius: var(--radius-full);
+}
+.btn--icon svg { width: var(--icon-md); height: var(--icon-md); }
+
+.icon { width: var(--icon-md); height: var(--icon-md); flex: none; }
+.icon--sm { width: var(--icon-sm); height: var(--icon-sm); }
+.icon--lg { width: var(--icon-lg); height: var(--icon-lg); }
+
+/* --------------------------------------------------------------------------
+   Tags / badges
+   -------------------------------------------------------------------------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  height: var(--pill-height);
+  padding: var(--pill-padding-y) var(--pill-padding-x);
+  border-radius: var(--pill-radius);
+  border: 1px solid transparent;
+  font-size: var(--pill-text-size);
+  font-weight: var(--pill-text-weight);
+  line-height: 1;
+  white-space: nowrap;
+}
+.tag--brand   { background: var(--surface-brand); color: var(--text-on-brand); }
+.tag--subtle  { background: var(--surface-brand-subtle); color: var(--text-primary); }
+.tag--outline { background: transparent; color: var(--text-primary); border-color: var(--border-strong); }
+.tag--dark    { background: var(--surface-inverse); color: var(--text-on-inverse); }
+.tag--cream   { background: var(--surface-accent); color: var(--text-primary); }
+.tag--success { background: var(--feedback-success-surface); color: var(--feedback-success); }
+.tag--warning { background: var(--feedback-warning-surface); color: var(--feedback-warning-text); }
+.tag--error   { background: var(--feedback-error-surface); color: var(--feedback-error); }
+.tag--info    { background: var(--feedback-info-surface); color: var(--feedback-info); }
+
+/* Interactive filter chips. The visual pill stays 32px; a transparent
+   pseudo-element stretches the hit area to the 44px minimum. */
+button.tag {
+  position: relative;
+  cursor: pointer;
+  font-family: var(--font-family-body);
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast);
+}
+button.tag:active, button.tag.is-active { transform: scale(var(--press-scale)); }
+button.tag::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--tap-min);
+}
+button.tag--outline:hover, button.tag--outline.is-hover {
+  background: var(--surface-tint);
+  border-color: var(--interactive-dark);
+}
+button.tag--outline:active, button.tag--outline.is-active { background: var(--forest-100); }
+button.tag:focus-visible, button.tag.is-focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: var(--focus-ring-shadow);
+}
+button.tag:disabled, button.tag.is-disabled {
+  background: var(--interactive-disabled-bg);
+  color: var(--interactive-disabled-fg);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   Fields
+   -------------------------------------------------------------------------- */
+.field { display: flex; flex-direction: column; gap: var(--spacing-8); width: 100%; max-width: 305.5px; }
+.field__label { font-size: var(--font-size-14); font-weight: var(--font-weight-semibold); color: var(--text-primary); }
+.field__hint  { font-size: var(--font-size-12); color: var(--text-secondary); }
+.field__error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-semibold);
+  color: var(--feedback-error);
+}
+
+.input {
+  width: 100%;
+  height: var(--field-height);
+  padding: 0 var(--field-padding-x);
+  background: var(--field-bg);
+  border: var(--field-border-width) solid var(--field-border);
+  border-radius: var(--field-radius);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-16);
+  color: var(--text-primary);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard);
+}
+.input::placeholder { color: var(--text-secondary); }
+.input:hover:not(:disabled), .input.is-hover { border-color: var(--forest-500); }
+.input:focus, .input.is-focus {
+  outline: none;
+  border-color: var(--field-border-focus);
+  box-shadow: 0 0 0 3px var(--focus-ring-halo);
+}
+.input:disabled, .input.is-disabled {
+  background: var(--interactive-disabled-bg);
+  border-color: var(--border-default);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+.input.is-error, .input[aria-invalid="true"] { border-color: var(--field-border-error); }
+.input.is-error:focus, .input.is-error.is-focus,
+.input[aria-invalid="true"]:focus {
+  border-color: var(--feedback-error);
+  box-shadow: 0 0 0 3px var(--feedback-error-surface);
+}
+
+/* Search — the rounded search bar from the recipe screen */
+.search { position: relative; width: 100%; max-width: 305.5px; }
+.search__icon {
+  position: absolute;
+  left: calc(var(--field-border-width) + var(--search-padding-x));
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+.search .input {
+  height: var(--search-height);
+  padding-right: var(--search-padding-x);
+  padding-left: calc(var(--search-padding-x) + var(--search-icon-size) + var(--spacing-8));
+  border-radius: var(--search-radius);
+  font-size: var(--search-text-size);
+  font-weight: var(--search-text-weight);
+  box-shadow: var(--shadow-xs);
+}
+/* .search .input is declared after .input:focus, so it would otherwise
+   clobber the focus halo with the resting shadow. Restore it here. */
+.search .input:focus,
+.search .input.is-focus {
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-halo);
+}
+.search__icon .icon, .search__icon { width: var(--search-icon-size); height: var(--search-icon-size); }
+/* Suppress the native WebKit clear affordance — this component supplies its own. */
+.input[type="search"]::-webkit-search-cancel-button,
+.input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Reserve room on the right so typed text never runs under the button.
+   Applied only when a clear button is actually present. */
+.search--clearable .input {
+  padding-right: calc(
+    var(--field-action-offset) + var(--field-action-size) + var(--field-action-gap)
+  );
+}
+
+/* In-field action button.
+   No border, ever: a stroked circle inside a stroked field reads as two
+   colliding outlines. Feedback comes from a background tint instead.
+   Positioned from the field's INNER edge, so the border width is added. */
+.field-action {
+  position: absolute;
+  right: calc(var(--field-border-width) + var(--field-action-offset));
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: var(--field-action-size);
+  height: var(--field-action-size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard);
+}
+.field-action svg {
+  width: var(--field-action-icon);
+  height: var(--field-action-icon);
+}
+/* The visual circle stays 32px; this stretches the touch target to the full
+   field height without changing what is drawn. */
+.field-action::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--tap-min);
+}
+.field-action:hover, .field-action.is-hover {
+  background: var(--surface-tint);
+  color: var(--text-primary);
+}
+.field-action:active, .field-action.is-active {
+  background: var(--forest-100);
+  color: var(--text-primary);
+}
+/* Keyboard focus still needs an indicator (WCAG 2.4.7). offset 0 keeps the
+   ring inside the field's 40px inner height so it cannot cross the border. */
+.field-action:focus-visible, .field-action.is-focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Cards
+   -------------------------------------------------------------------------- */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  box-shadow: var(--card-shadow);
+}
+.card--flush { padding: 0; overflow: hidden; }
+.card--dark {
+  background: var(--surface-inverse);
+  border-color: var(--border-inverse);
+  color: var(--text-on-inverse);
+}
+
+/* Recipe card */
+.recipe-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  width: 100%;
+  max-width: var(--recipe-card-width);
+  text-align: left;
+  font-family: var(--font-family-body);
+  cursor: pointer;
+  transition: box-shadow var(--duration-base) var(--ease-standard),
+              transform var(--duration-base) var(--ease-standard);
+}
+.recipe-card:hover, .recipe-card.is-hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-2px);
+}
+.recipe-card:active, .recipe-card.is-active { transform: translateY(0); box-shadow: var(--shadow-xs); }
+.recipe-card:focus-visible, .recipe-card.is-focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: var(--focus-ring-shadow);
+}
+.recipe-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  --media-gradient: linear-gradient(135deg, var(--lime-300), var(--forest-500));
+  background-image: var(--dish, none), var(--media-gradient);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+.recipe-card__badge { position: absolute; top: var(--spacing-8); left: var(--spacing-8); }
+.recipe-card__title {
+  font-size: var(--font-size-18);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+.recipe-card__meta {
+  font-size: var(--font-size-12);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  margin: 0;
+}
+.recipe-card__tags { display: flex; flex-wrap: wrap; gap: var(--spacing-8); }
+
+/* Meal log card */
+.meal-card { display: flex; align-items: center; gap: var(--spacing-16); max-width: 305.5px; }
+.meal-card__check {
+  display: grid;
+  place-items: center;
+  width: var(--spacing-32);
+  height: var(--spacing-32);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+}
+.meal-card__body { flex: 1; min-width: 0; }
+.meal-card__title { font-size: var(--font-size-16); font-weight: var(--font-weight-bold); margin: 0; }
+.meal-card__meta {
+  font-size: var(--font-size-12);
+  color: var(--text-secondary);
+  margin: var(--spacing-4) 0 0;
+}
+.meal-card__kcal {
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-extrabold);
+  font-size: var(--font-size-20);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  color: var(--text-primary);
+}
+.meal-card--pending .meal-card__check { background: var(--surface-sunken); color: var(--text-secondary); }
+
+/* --------------------------------------------------------------------------
+   Calorie progress ring
+   The lime ring from the tracker screen, on a light track.
+   -------------------------------------------------------------------------- */
+.ring {
+  position: relative;
+  width: var(--ring-diameter);
+  height: var(--ring-diameter);
+  flex: none;
+  /* r = 93 in a 200 viewBox, stroke 14 -> outer edge lands exactly on the
+     200px diameter. circumference = 2 * pi * 93 */
+  --ring-circumference: 584.34;
+  --ring-progress: 0;
+}
+/* Soft lime bloom behind the ring. The svg is positioned so it paints above
+   the glow, which is an absolutely positioned pseudo-element. */
+.ring::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--ring-glow-spread) * -1);
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle,
+              var(--ring-glow-color) 0%,
+              transparent var(--ring-glow-stop));
+}
+.ring__svg { position: relative; width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-grad__from { stop-color: var(--ring-gradient-from); }
+.ring-grad__to   { stop-color: var(--ring-gradient-to); }
+/* Off-screen holder for the gradient definition. */
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ring__track { fill: none; stroke: var(--surface-sunken); stroke-width: var(--ring-stroke); }
+.ring__fill {
+  fill: none;
+  /* Paint server first, flat brand lime as the fallback if a page is missing
+     the <defs> block. */
+  stroke: var(--ring-stroke-paint) var(--interactive-brand);
+  stroke-width: var(--ring-stroke);
+  stroke-linecap: round;
+  /* Driven by dashoffset rather than dasharray so the arc can be animated
+     from empty to its value on load with a single keyframe. */
+  stroke-dasharray: var(--ring-circumference);
+  stroke-dashoffset: calc(var(--ring-circumference) * (1 - var(--ring-progress)));
+  transition: stroke-dashoffset var(--duration-slow) var(--ease-out);
+  animation: ring-fill var(--duration-ring) var(--ease-out) both;
+}
+@keyframes ring-fill {
+  from { stroke-dashoffset: var(--ring-circumference); }
+}
+.ring--over .ring__fill { stroke: var(--feedback-warning); }
+.ring--complete .ring__fill { stroke: var(--feedback-success); }
+.ring--over::before { background: none; }
+.ring--complete::before { background: none; }
+
+.ring__center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: var(--spacing-4);
+}
+.ring__value {
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--ring-value-weight);
+  font-size: var(--ring-value-size);
+  line-height: var(--line-height-none);
+  letter-spacing: var(--tracking-display);
+  color: var(--text-primary);
+}
+.ring__unit {
+  font-size: var(--ring-unit-size);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--ring-unit-tracking);
+  text-transform: uppercase;
+  font-weight: var(--ring-unit-weight);
+  color: var(--text-secondary);
+}
+.ring__remaining {
+  font-size: var(--ring-remaining-size);
+  font-weight: var(--ring-remaining-weight);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Macro stat cards - liquid fill
+   The card is a vessel. --macro-value against the nutrient's daily target
+   sets the level; the surface is a drifting wave, not a flat line.
+
+   Three elements, one geometry:
+     .macro__body    the real text, dark, painted on the light card
+     .macro__liquid  carries the rise; masked to the wet region
+     .macro__wave    the opaque fill AND a white copy of the same text
+
+   Because the fill is opaque and sits above the dark text, whatever it
+   covers is simply gone - no half-lit glyph, no fringe - and the white copy
+   painted inside the same mask takes its place pixel for pixel. Rise and
+   drift live on different elements so they never contend for one property.
+   -------------------------------------------------------------------------- */
+.macros { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--macro-chip-gap); max-width: var(--screen-width); }
+.macro {
+  /* Everything below is a length, deliberately: a percentage in
+     mask-position resolves against the area minus the image, which would
+     put the crest a good 9px below the level the fill reaches. */
+  --macro-progress:  calc(var(--macro-value, 0) / var(--macro-target, 1));
+  --macro-vessel:    calc(var(--macro-chip-height) - 2 * var(--macro-card-border));
+  --macro-waterline: calc(var(--macro-progress) * var(--macro-vessel));
+  --macro-crest:     calc(var(--macro-waterline) - var(--macro-wave-height) / 2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: var(--macro-chip-height);
+  border-radius: var(--macro-chip-radius);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--macro-accent) var(--macro-card-wash), var(--surface-raised));
+  border: var(--macro-card-border) solid color-mix(in srgb, var(--macro-accent) var(--macro-card-edge), var(--surface-raised));
+}
+
+/* Both copies of the text are the same absolutely-placed box, so they line
+   up by construction rather than by matching two sets of numbers. */
+.macro__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: var(--macro-chip-padding-y) var(--macro-chip-padding-x);
+}
+/* The copy inside the fill is the only one taken out of flow. The card has no
+   padding of its own, so this box and the in-flow one are the same box. */
+.macro__body--ink {
+  position: absolute;
+  inset: 0;
+}
+
+.macro__liquid {
+  position: absolute;
+  inset: 0;
+  animation: macro-rise var(--duration-ring) var(--ease-out) both;
+}
+@keyframes macro-rise {
+  from { transform: translateY(var(--macro-waterline)); }
+  to   { transform: translateY(0); }
+}
+/* The white copy rides against the rise, so only the surface moves. Same
+   duration and easing as the rise, so the cancellation is exact. */
+.macro__liquid .macro__body {
+  animation: macro-sink var(--duration-ring) var(--ease-out) both;
+}
+@keyframes macro-sink {
+  from { transform: translateY(calc(-1 * var(--macro-waterline))); }
+  to   { transform: translateY(0); }
+}
+
+/* Mask: a repeating crest tile sitting on a solid block, both measured up
+   from the bottom. The tile's own midline is the waterline, so the block
+   stops half a band short and the two meet without a seam. Sliding the
+   crest by exactly one tile loops seamlessly. */
+.macro__wave {
+  position: absolute;
+  inset: 0;
+  mask-image: var(--macro-wave-shape), linear-gradient(#000, #000);
+  mask-size: var(--macro-wave-tile) var(--macro-wave-height),
+             100% var(--macro-crest);
+  mask-position: left 0 bottom var(--macro-crest), left 0 bottom 0;
+  mask-repeat: repeat-x, no-repeat;
+  animation: macro-drift var(--macro-wave-duration) linear infinite;
+}
+@keyframes macro-drift {
+  from { mask-position: left 0 bottom var(--macro-crest), left 0 bottom 0; }
+  to   { mask-position: left calc(-1 * var(--macro-wave-tile)) bottom var(--macro-crest),
+                        left 0 bottom 0; }
+}
+
+/* Target met. The level is at the brim, so there is no surface left to
+   ripple - and the crest band would otherwise straddle the top edge and bite
+   scallops out of it. Flat fill, no drift. */
+.macro--full .macro__wave {
+  mask-image: linear-gradient(#000, #000);
+  mask-size: 100% 100%;
+  mask-position: left 0 bottom 0;
+  animation: none;
+}
+
+/* Label chip: dot + name on a tint of the nutrient's own colour. */
+.macro__label {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--spacing-4);
+  height: var(--macro-chip-h);
+  margin: 0 0 var(--macro-stack-gap);
+  padding: 0 var(--macro-chip-pad-x);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--macro-accent) var(--macro-chip-tint), var(--surface-raised));
+  font-size: var(--macro-label-size);
+  font-weight: var(--macro-label-weight);
+  line-height: 1;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--macro-ink, var(--text-secondary));
+}
+.macro__dot {
+  width: var(--macro-dot-size);
+  height: var(--macro-dot-size);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--macro-accent, var(--text-secondary));
+}
+
+.macro__value {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--macro-value-weight);
+  font-size: var(--macro-value-size);
+  line-height: var(--line-height-none);
+  letter-spacing: var(--tracking-display);
+  /* The dry half of the numeral is the same colour as the liquid beneath it,
+     one nutrient reading as one hue across the waterline. The ink shade, not
+     the accent: on the 5% wash the accent is only ~3.6:1, the ink 6.8-8.0:1. */
+  color: var(--macro-ink, var(--text-primary));
+}
+.macro__unit {
+  font-size: var(--macro-unit-size);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+.macro__target {
+  margin: var(--macro-stack-gap) 0 0;
+  font-size: var(--macro-target-size);
+  line-height: var(--line-height-snug);
+  color: var(--text-secondary);
+}
+
+/* The copy that sits inside the fill. It also carries the fill itself: this
+   is the layer that rides against the rise, so the gradient stays anchored to
+   the card while the surface moves over it. Only colours change here - every
+   measure is inherited from .macro__body, so the two copies stay registered.
+   The fill is opaque, so whatever it covers of the dark copy underneath is
+   simply gone: no half-lit glyph, no fringe at the waterline. */
+.macro__body--ink {
+  background: linear-gradient(180deg,
+              var(--macro-accent) 0%,
+              var(--macro-ink) var(--macro-wave-ink-stop));
+}
+.macro__body--ink .macro__value  { color: var(--macro-on-fill); }
+.macro__body--ink .macro__unit,
+.macro__body--ink .macro__target { color: var(--macro-on-fill-muted); }
+.macro__body--ink .macro__label  { background: var(--macro-on-fill-chip); }
+.macro__body--ink .macro__dot    { background: var(--macro-ink); }
+
+/* Cards describing a single dish have no daily target, so a fill level
+   would mean nothing: they drop the target line and shrink to match. The
+   stack tightens with the card so the two rows still clear the brim. */
+.macros--plain .macro { height: var(--macro-chip-height-sm); }
+.macros--plain .macro__label { margin-bottom: var(--macro-stack-gap-sm); }
+
+.macro--protein { --macro-accent: var(--macro-protein); --macro-ink: var(--macro-protein-ink); --macro-target: var(--macro-target-protein); }
+.macro--carbs   { --macro-accent: var(--macro-carbs);   --macro-ink: var(--macro-carbs-ink);   --macro-target: var(--macro-target-carbs); }
+.macro--fat     { --macro-accent: var(--macro-fat);     --macro-ink: var(--macro-fat-ink);     --macro-target: var(--macro-target-fat); }
+
+/* Started a third of a loop apart, so the three surfaces read as separate
+   vessels rather than one sheet of liquid seen through three windows. The
+   delay is negative: they begin mid-cycle instead of waiting to begin. */
+.macro--carbs .macro__wave { animation-delay: var(--macro-wave-stagger); }
+.macro--fat   .macro__wave { animation-delay: calc(2 * var(--macro-wave-stagger)); }
+
+/* Motion-sensitive users keep the level, lose the movement: --duration-ring
+   is already 1ms there, but an endless loop has to be stopped outright. */
+@media (prefers-reduced-motion: reduce) {
+  .macro__wave { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Badge pill
+   One shape shared by the streak chip and the "kcal left" chip.
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--badge-gap);
+  height: var(--badge-height);
+  padding: 0 var(--badge-padding-x);
+  border: 1px solid var(--badge-border);
+  border-radius: var(--badge-radius);
+  background: var(--badge-bg);
+  box-shadow: var(--badge-shadow);
+  font-size: var(--badge-text-size);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.badge--lime {
+  background: var(--badge-bg-lime);
+  border-color: transparent;
+  box-shadow: var(--shadow-none);
+}
+.badge__dot {
+  width: var(--badge-dot-size);
+  height: var(--badge-dot-size);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--interactive-brand-active);
+}
+/* Width follows the cropped viewBox's aspect so the glyph fills the box
+   exactly - no letterboxing, and the box's centre is the flame's centre, which
+   is what lines it up with the count. */
+.badge__flame {
+  width: calc(var(--streak-flame-size) * var(--streak-flame-ratio));
+  height: var(--streak-flame-size);
+  flex: none;
+  color: var(--streak-flame-color);
+}
+/* The flame belongs to the count it follows, so it pulls back out of the row's
+   shared gap and sits at --streak-flame-gap instead. The gap subtracted here
+   is --streak-gap, not --badge-gap: .streak sets its own and, coming later in
+   this file, it is the one that wins on a chip carrying both classes. */
+.streak .streak__label + .badge__flame {
+  margin-left: calc(var(--streak-flame-gap) - var(--streak-gap));
+}
+
+/* The streak badge is also a button (it opens the streak modal). Everything
+   above still describes the shape; this only undoes the UA button styling and
+   adds the interactive states. */
+button.badge {
+  -webkit-appearance: none;
+  appearance: none;
+  font-family: var(--font-family-body);
+  cursor: pointer;
+  transition:
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+button.badge:hover, button.badge.is-hover { box-shadow: var(--shadow-sm); }
+button.badge:active, button.badge.is-active { transform: scale(0.97); }
+button.badge:focus-visible, button.badge.is-focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* --------------------------------------------------------------------------
+   Streak indicator
+   -------------------------------------------------------------------------- */
+.streak { display: flex; align-items: center; gap: var(--streak-gap); }
+/* Inside a badge the dots sit tighter against the count. */
+.badge .streak__dots { gap: var(--streak-dot-gap); }
+.streak__dots { display: flex; gap: var(--streak-dot-gap); }
+.streak__dot {
+  width: var(--streak-dot-size);
+  height: var(--streak-dot-size);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--streak-dot-off);
+}
+.streak__dot--on { background: var(--streak-dot-on); }
+.streak__dot--today { background: var(--interactive-brand); box-shadow: 0 0 0 2px var(--forest-800); }
+.streak__label {
+  font-size: var(--streak-count-size);
+  font-weight: var(--streak-count-weight);
+  color: var(--text-primary);
+}
+.streak__label .count { color: var(--text-lime); }
+
+/* --------------------------------------------------------------------------
+   Modal
+   Native <dialog>, opened with showModal(): the browser supplies the top
+   layer, the focus trap, Esc-to-close and the inert page behind it. The
+   dialog box itself is transparent and unpadded so it measures exactly the
+   panel - that way a click landing on the backdrop is reported on the
+   <dialog> element and the close handler can tell the two apart.
+   -------------------------------------------------------------------------- */
+.modal {
+  width: var(--modal-width);
+  max-width: calc(100vw - var(--spacing-32));
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  overflow: visible;
+}
+.modal::backdrop { background: var(--modal-backdrop); }
+.modal[open] { animation: modal-in var(--duration-base) var(--ease-out) both; }
+.modal[open]::backdrop { animation: modal-fade var(--duration-base) var(--ease-out) both; }
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(var(--spacing-12)) scale(0.96); }
+}
+@keyframes modal-fade {
+  from { opacity: 0; }
+}
+
+.modal__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--modal-gap);
+  padding: var(--modal-padding);
+  border-radius: var(--modal-radius);
+  background: var(--modal-bg);
+  box-shadow: var(--modal-shadow);
+  text-align: center;
+}
+/* The close affordance sits over the panel's own padding, so it never takes
+   width from the content column. */
+.modal__close {
+  position: absolute;
+  top: var(--spacing-8);
+  right: var(--spacing-8);
+  display: grid;
+  place-items: center;
+  width: var(--modal-close-size);
+  height: var(--modal-close-size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.modal__close:hover, .modal__close.is-hover {
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+}
+.modal__close:focus-visible, .modal__close.is-focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.modal__close .icon { width: var(--icon-md); height: var(--icon-md); }
+
+.modal__flame {
+  width: calc(var(--modal-icon-size) * var(--streak-flame-ratio));
+  height: var(--modal-icon-size);
+  flex: none;
+  color: var(--streak-flame-color);
+}
+.modal__title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-black);
+  font-size: var(--modal-title-size);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+}
+.modal__text {
+  margin: 0;
+  font-size: var(--modal-text-size);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-secondary);
+}
+.modal__text .count { font-weight: var(--font-weight-bold); color: var(--text-primary); }
+/* <form method="dialog"> is a closing mechanism, not a layout box: it hands
+   its children straight to the panel'''s flex column so the wrapper does not
+   eat a gap of its own. */
+.modal__panel > form { display: contents; }
+
+/* --------------------------------------------------------------------------
+   Week row
+   Seven day columns. A finished day is a filled check, today is the lime
+   chip with a forest outline - the same shape-plus-colour pairing the streak
+   dots use - and a day still to come stays an empty well.
+   -------------------------------------------------------------------------- */
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--week-gap);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.week__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--week-label-gap);
+}
+.week__label {
+  font-size: var(--week-label-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.week__mark {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: var(--week-mark-size);
+  aspect-ratio: 1;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  background: var(--week-mark-off);
+  color: transparent;
+}
+.week__mark .icon { width: 58%; height: 58%; }
+.week__day--done .week__mark {
+  border-color: transparent;
+  background: var(--week-mark-done);
+  color: var(--text-on-inverse);
+}
+.week__day--today .week__mark {
+  border-color: var(--forest-800);
+  background: var(--week-mark-today);
+  color: var(--text-on-brand);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal[open], .modal[open]::backdrop { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   List items
+   -------------------------------------------------------------------------- */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: var(--screen-width);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.list__item { border-bottom: 1px solid var(--border-subtle); }
+.list__item:last-child { border-bottom: 0; }
+.list__link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--list-item-padding-y) var(--list-item-padding-x);
+  background: transparent;
+  border: 0;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-16);
+  color: var(--text-primary);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+.list__link:hover, .list__link.is-hover { background: var(--surface-tint); }
+.list__link:active, .list__link.is-active { background: var(--forest-100); }
+.list__link:focus-visible, .list__link.is-focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+.list__link[aria-disabled="true"] { color: var(--text-disabled); cursor: not-allowed; }
+.list__link[aria-disabled="true"] .list__thumb { opacity: 0.5; }
+.list__thumb {
+  width: var(--list-avatar-size);
+  height: var(--list-avatar-size);
+  flex: none;
+  border-radius: var(--radius-full);
+  /* The photo sits on top; the gradient stays underneath as the fallback for
+     any dish that has no image yet. Set --dish inline to add a photo. */
+  --thumb-gradient: linear-gradient(135deg, var(--lime-300), var(--forest-500));
+  background-image: var(--dish, none), var(--thumb-gradient);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.list__thumb--deep { --thumb-gradient: linear-gradient(135deg, var(--forest-500), var(--forest-800)); }
+.list__thumb--bright { --thumb-gradient: linear-gradient(135deg, var(--lime-400), var(--lime-700)); }
+.list__body { flex: 1; min-width: 0; }
+.list__title { display: block; font-weight: var(--list-title-weight); font-size: var(--list-title-size); }
+.list__meta {
+  display: block;
+  font-size: var(--list-meta-size);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  font-weight: var(--list-meta-weight);
+  color: var(--text-secondary);
+  margin-top: var(--spacing-4);
+}
+.list__chevron { color: var(--text-tertiary); flex: none; }
+
+/* --------------------------------------------------------------------------
+   Bottom navigation
+   -------------------------------------------------------------------------- */
+.bottom-nav {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: var(--navbar-height);
+  background: var(--nav-bg);
+  border-top: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-nav);
+  max-width: var(--screen-width);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  /* No overflow:hidden - it would clip the raised Scan button. */
+}
+.bottom-nav__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  min-height: var(--tap-min);
+  padding: var(--spacing-8) var(--spacing-4);
+  background: transparent;
+  border: 0;
+  font-family: var(--font-family-body);
+  color: var(--nav-item-inactive);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-base),
+              transform var(--transition-fast);
+}
+.bottom-nav__label {
+  font-size: var(--nav-label-size);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--tracking-wide);
+  font-weight: var(--nav-label-weight);
+}
+.bottom-nav__item:hover, .bottom-nav__item.is-hover { color: var(--text-secondary); }
+.bottom-nav__item:active, .bottom-nav__item.is-active { transform: scale(var(--press-scale)); }
+
+/* --- Raised Scan action --------------------------------------------------
+   Scan is the app's core gesture, so it leaves the row of equal tabs and
+   becomes a circular button breaking the bar's top edge. Lifted with
+   margin (not transform) so the transform channel stays free for the
+   press animation. */
+.bottom-nav__item--scan { justify-content: flex-start; }
+.bottom-nav__item--scan .bottom-nav__icon-wrap {
+  width: var(--nav-fab-size);
+  height: var(--nav-fab-size);
+  margin-top: calc(var(--nav-fab-lift) * -1);
+  border-radius: var(--radius-full);
+  background: var(--interactive-dark);
+  color: var(--text-on-inverse);
+  box-shadow: var(--shadow-scan-button);
+  transition: background-color var(--transition-base),
+              transform var(--transition-fast);
+}
+/* Specificity must beat .bottom-nav__icon-wrap .icon, which sets 20px. */
+.bottom-nav__item--scan .bottom-nav__icon-wrap .icon {
+  width: var(--nav-fab-icon);
+  height: var(--nav-fab-icon);
+}
+.bottom-nav__item--scan:hover .bottom-nav__icon-wrap {
+  background: var(--interactive-dark-hover);
+}
+/* The whole item must not shrink, or the circle would jump; only the circle
+   reacts, with a pop rather than a shrink. */
+.bottom-nav__item--scan:active { transform: none; }
+.bottom-nav__item--scan:active .bottom-nav__icon-wrap {
+  animation: fab-pop var(--duration-base) var(--ease-out);
+}
+@keyframes fab-pop {
+  0%   { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+/* Default: no label, the shape carries the meaning. */
+.bottom-nav__item--scan .bottom-nav__label { display: none; }
+/* Opt-in variant: small label in the same dark green. */
+.bottom-nav--scan-labelled .bottom-nav__item--scan .bottom-nav__label {
+  /* The lifted circle already leaves room below it, so the label needs no
+     offset of its own - it simply flows after it in the column. */
+  display: block;
+  color: var(--interactive-dark);
+  font-weight: var(--font-weight-bold);
+}
+.bottom-nav__item:focus-visible, .bottom-nav__item.is-focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+.bottom-nav__item[aria-current="page"] { color: var(--nav-item-active); }
+.bottom-nav__item[aria-current="page"] .bottom-nav__icon-wrap {
+  background: var(--surface-brand);
+}
+/* The active Scan circle takes the same lime as every other active tab, but it
+   is the one case where the glyph sits ON that lime instead of beside it, so
+   it swaps the white it wears over the dark circle for the forest lime is
+   built to carry. This rule has to follow the one above rather than sit with
+   the other --scan rules: the two selectors weigh the same, so source order
+   is what settles the background. */
+.bottom-nav__item--scan[aria-current="page"] .bottom-nav__icon-wrap {
+  background: var(--nav-fab-active-bg);
+  color: var(--nav-fab-active-fg);
+}
+.bottom-nav__icon-wrap {
+  display: grid;
+  place-items: center;
+  width: var(--spacing-40);
+  height: var(--spacing-24);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-base);
+}
+.bottom-nav__icon-wrap .icon {
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+}
+
+/* --------------------------------------------------------------------------
+   Screen composition
+   A fixed-width container (--screen-width, 360px), not a device frame.
+   Vertical rhythm comes from the named --gap-* tokens, one per the spec,
+   rather than a single flex gap — the spec calls for different gaps
+   between different blocks.
+   -------------------------------------------------------------------------- */
+/* The screens row is wider than the documentation column. It breaks out
+   symmetrically, capped to the viewport so it can never cause page-level
+   horizontal scroll, and wraps when three no longer fit. */
+.section--screens {
+  --screens-w: min(1432px, calc(100vw - var(--spacing-48)));
+  width: var(--screens-w);
+  margin-left: calc(50% - var(--screens-w) / 2);
+}
+.section--screens > h2,
+.section--screens > p { max-width: 70ch; }
+.screens { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: var(--spacing-32); }
+
+.screen {
+  width: var(--screen-width);
+  height: var(--screen-height);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-canvas);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+/* The body takes the remaining height above the pinned nav bar and scrolls
+   if a screen's content runs longer, exactly as a real viewport would. */
+.screen__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--spacing-16) var(--screen-padding-x) var(--spacing-24);
+  /* Scrolling stays; the scrollbar does not. A desktop scrollbar track inside
+     a phone frame breaks the illusion and eats content width - a real device
+     shows a transient overlay indicator, not a permanent gutter. */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* legacy Edge */
+}
+.screen__body::-webkit-scrollbar {   /* Chrome, Safari, Edge */
+  width: 0;
+  height: 0;
+  display: none;
+}
+.screen__section-title {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  /* The gap lives on the heading so it applies to whatever follows -
+     a .list, a .steps list, or a stack of cards - rather than being
+     re-declared per content type and silently missing one. */
+  margin: 0 0 var(--spacing-12);
+}
+.screen__meals { margin-top: var(--gap-ring-macros); }
+.screen__meals > * + * { margin-top: var(--spacing-8); }
+.screen__quote { margin-top: var(--gap-macros-cta); }
+.screen .meal-card { max-width: none; }
+.screen .card--dark { max-width: none; }
+
+/* --- Recipe detail ------------------------------------------------------- */
+.recipe-hero {
+  position: relative;
+  height: var(--recipe-hero-height);
+  border-radius: var(--radius-xl);
+  --hero-gradient: linear-gradient(135deg, var(--lime-300), var(--forest-500));
+  background-image: var(--dish, none), var(--hero-gradient);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+.recipe-hero__badge { position: absolute; top: var(--spacing-12); left: var(--spacing-12); }
+.screen__hero    { margin-top: var(--gap-macros-cta); }
+.screen__heading { margin-top: var(--gap-macros-cta); }
+.screen__tags    { margin-top: var(--gap-search-pills); display: flex; flex-wrap: wrap; gap: var(--pill-gap); }
+.screen__ingredients { margin-top: var(--gap-pills-list); }
+.recipe-title {
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  margin: 0;
+}
+.recipe-meta {
+  font-size: var(--list-meta-size);
+  font-weight: var(--list-meta-weight);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: var(--spacing-4) 0 0;
+}
+.screen__title {
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--screen-title-weight);
+  font-size: var(--screen-title-size);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  color: var(--surface-inverse);
+  margin: 0;
+}
+.screen__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-12);
+}
+
+/* Greeting header.
+   .screen__header is the eyebrow ROW: the "TODAY" label sits on the left and
+   the streak on the right, centred against each other on one line. The
+   headline then runs full width beneath it, so it is never squeezed by the
+   streak and can use the whole content column. */
+.screen__header > .streak { flex: none; }
+
+.screen__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--eyebrow-gap);
+  margin: 0;
+  font-size: var(--greeting-eyebrow-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.screen__eyebrow-dot {
+  width: var(--eyebrow-dot-size);
+  height: var(--eyebrow-dot-size);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--eyebrow-dot-color);
+}
+.screen__eyebrow-sep {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--eyebrow-sep-color);
+}
+/* Date comes from --today-date so it swaps in one place, like --user-name. */
+.screen__date::after { content: var(--today-date); }
+.screen__headline {
+  margin: var(--greeting-gap) 0 0;
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-black);
+  font-size: var(--greeting-headline-size);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+/* The name is a token so it swaps in one place across every screen. */
+.screen__greeting-name::after { content: var(--user-name); }
+
+/* --------------------------------------------------------------------------
+   Highlighted word
+   The "BIG" treatment from the stylescape: brand lime fill with a dark
+   outline around the glyphs. The outline does the legibility work - lime
+   alone is 1.09:1 on the canvas and would be unreadable.
+
+   paint-order puts the stroke behind the fill so the letterform keeps its
+   full weight. Where it is unsupported the stroke centres on the glyph edge
+   instead, which is thinner but still reads as an outline.
+   -------------------------------------------------------------------------- */
+.highlight {
+  color: var(--highlight-color);
+  /* Dark outline around the glyphs - the "BIG" treatment from the stylescape.
+     This is what carries legibility; the lime fill alone is 1.09:1 on the
+     canvas. paint-order puts the stroke behind the fill so the letterform
+     keeps its full weight. */
+  -webkit-text-stroke: var(--highlight-stroke-width) var(--highlight-stroke-color);
+  paint-order: stroke fill;
+  /* The stroke grows the glyphs outward and eats the word space either side,
+     so give back exactly the stroke width. */
+  margin-inline: var(--highlight-stroke-width);
+  /* Hand-drawn feel without an image: a wavy text-decoration, so the squiggle
+     inherits the text's own baseline and stays token-driven (a data-URI SVG
+     would have to hardcode the colour). */
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: var(--highlight-underline-color);
+  text-decoration-thickness: var(--highlight-underline-weight);
+  text-underline-offset: var(--highlight-underline-offset);
+  text-decoration-skip-ink: none;
+}
+
+/* Named vertical rhythm, straight from the spec */
+.screen__ring   { margin-top: var(--gap-title-ring); }
+/* Any block that follows the tall greeting header takes the same 32px as
+   the ring, so the rhythm under the headline is consistent. */
+.screen__notice { margin-top: var(--gap-title-ring); }
+.screen__macros { margin-top: var(--gap-ring-macros); }
+.screen__cta    { margin-top: var(--gap-macros-cta); }
+.screen__search { margin-top: var(--gap-macros-cta); }
+.screen__pills  { margin-top: var(--gap-search-pills); }
+.screen__list   { margin-top: var(--gap-pills-list); }
+.screen__scan   { margin-top: var(--gap-list-cta); }
+
+.screen__ring { display: flex; justify-content: center; }
+.screen__pills { display: flex; flex-wrap: wrap; gap: var(--pill-gap); }
+.screen .list { max-width: none; }
+.screen .macros { max-width: none; }
+.screen .search { max-width: none; }
+.screen .bottom-nav { max-width: none; border-radius: 0; }
+
+.ring-block { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-16); }
+
+
+/* --------------------------------------------------------------------------
+   Header spacer
+   Balances a header that has a back button but no trailing action, so the
+   title stays optically centred between the two edges.
+   -------------------------------------------------------------------------- */
+.screen__header-spacer { width: var(--tap-min); flex: none; }
+
+/* --------------------------------------------------------------------------
+   Scan viewfinder
+   The camera feed region. Dark on purpose: it stands in for a live camera
+   image, which is a media surface rather than UI chrome. Everything around
+   it stays in the light theme.
+   -------------------------------------------------------------------------- */
+.viewfinder {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: var(--viewfinder-height);
+  border-radius: var(--radius-2xl);
+  background: var(--surface-inverse-deep);
+  overflow: hidden;
+}
+.viewfinder__guide {
+  position: relative;
+  width: var(--viewfinder-guide-size);
+  height: var(--viewfinder-guide-size);
+}
+.viewfinder__corner {
+  position: absolute;
+  width: var(--viewfinder-corner-size);
+  height: var(--viewfinder-corner-size);
+  border: var(--viewfinder-corner-width) solid var(--interactive-brand);
+}
+.viewfinder__corner--tl {
+  top: 0; left: 0; border-right: 0; border-bottom: 0;
+  border-top-left-radius: var(--radius-lg);
+}
+.viewfinder__corner--tr {
+  top: 0; right: 0; border-left: 0; border-bottom: 0;
+  border-top-right-radius: var(--radius-lg);
+}
+.viewfinder__corner--bl {
+  bottom: 0; left: 0; border-right: 0; border-top: 0;
+  border-bottom-left-radius: var(--radius-lg);
+}
+.viewfinder__corner--br {
+  bottom: 0; right: 0; border-left: 0; border-top: 0;
+  border-bottom-right-radius: var(--radius-lg);
+}
+.viewfinder__subject {
+  position: absolute;
+  inset: var(--spacing-24);
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--lime-300), var(--forest-500));
+  opacity: 0.55;
+}
+.viewfinder__hint {
+  position: absolute;
+  left: var(--spacing-16);
+  right: var(--spacing-16);
+  bottom: var(--spacing-24);
+  text-align: center;
+  font-size: var(--font-size-13);
+  line-height: var(--line-height-normal);
+  color: var(--text-on-inverse-muted);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Portion adjuster
+   -------------------------------------------------------------------------- */
+.portion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+  padding: var(--spacing-8) var(--spacing-12);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+}
+.portion__btn {
+  display: grid;
+  place-items: center;
+  width: var(--portion-btn-size);
+  height: var(--portion-btn-size);
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+.portion__btn:hover, .portion__btn.is-hover { background: var(--surface-brand-subtle); }
+.portion__btn:active, .portion__btn.is-active { background: var(--interactive-brand); }
+.portion__btn:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.portion__btn svg { width: var(--icon-md); height: var(--icon-md); }
+.portion__value { text-align: center; line-height: var(--line-height-tight); }
+.portion__amount {
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--portion-value-size);
+  letter-spacing: var(--tracking-display);
+  color: var(--text-primary);
+}
+.portion__label {
+  display: block;
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Instruction steps
+   -------------------------------------------------------------------------- */
+.steps { list-style: none; margin: 0; padding: 0; }
+.steps__item { display: flex; gap: var(--spacing-12); }
+.steps__item + .steps__item { margin-top: var(--spacing-12); }
+.steps__num {
+  display: grid;
+  place-items: center;
+  width: var(--step-marker-size);
+  height: var(--step-marker-size);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+}
+.steps__text {
+  margin: 0;
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Result / confirmation card
+   -------------------------------------------------------------------------- */
+.card--success {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  background: var(--feedback-success-surface);
+  border-color: var(--feedback-success-surface);
+  box-shadow: var(--shadow-none);
+}
+.card--success .card__icon {
+  display: grid;
+  place-items: center;
+  width: var(--spacing-32);
+  height: var(--spacing-32);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--feedback-success);
+  color: var(--white);
+}
+.card--success .card__icon svg { width: var(--icon-sm); height: var(--icon-sm); }
+.card__title {
+  margin: 0;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+.card__meta {
+  margin: var(--spacing-4) 0 0;
+  font-size: var(--font-size-12);
+  color: var(--feedback-success);
+}
+
+/* --------------------------------------------------------------------------
+   Big stat readout (kcal on a detail screen)
+   -------------------------------------------------------------------------- */
+.stat {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-8);
+}
+.stat__value {
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-32);
+  line-height: var(--line-height-none);
+  letter-spacing: var(--tracking-display);
+  color: var(--text-primary);
+}
+.stat__unit {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-ring);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+
+/* --------------------------------------------------------------------------
+   Weekly chart
+   The bars are decorative; the figures live in the chart's aria-label and in
+   the summary beside it, so nothing is conveyed by the drawing alone.
+   -------------------------------------------------------------------------- */
+.chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--chart-bar-gap);
+  height: var(--chart-height);
+}
+.chart__col {
+  flex: none;
+  width: var(--chart-bar-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  height: 100%;
+  justify-content: flex-end;
+}
+.chart__track {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  border-radius: var(--chart-radius);
+  background: var(--chart-track);
+  overflow: hidden;
+}
+.chart__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--bar, 0) * 100%);
+  border-radius: var(--chart-radius);
+  background: var(--chart-bar);
+  animation: chart-grow var(--duration-ring) var(--ease-out) both;
+}
+@keyframes chart-grow {
+  from { height: 0; }
+}
+.chart__bar--over { background: var(--chart-bar-over); }
+.chart__bar--today {
+  background: var(--chart-bar-today);
+  box-shadow: inset 0 0 0 2px var(--chart-today-edge);
+}
+.chart__day {
+  font-size: var(--chart-day-size);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.chart__col--today .chart__day { color: var(--text-primary); }
+
+/* --------------------------------------------------------------------------
+   Avatar
+   -------------------------------------------------------------------------- */
+.avatar {
+  display: grid;
+  place-items: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  flex: none;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--lime-300), var(--forest-600));
+  color: var(--text-on-inverse);
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-black);
+  font-size: var(--avatar-text-size);
+  letter-spacing: var(--tracking-display);
+}
+
+/* Value shown at the end of a list row, before the chevron. */
+.list__trailing {
+  flex: none;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+/* Profile summary card */
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-16);
+}
+.profile__name {
+  margin: 0;
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+}
+.profile__meta {
+  margin: var(--spacing-4) 0 0;
+  font-size: var(--font-size-13);
+  color: var(--text-secondary);
+}
+
+
+/* --------------------------------------------------------------------------
+   Segmented control
+   Two or more mutually exclusive views. Built as a tablist so the browser
+   and assistive tech both understand it switches panels, not filters.
+   -------------------------------------------------------------------------- */
+.segmented {
+  display: inline-flex;
+  gap: var(--segmented-pad);
+  padding: var(--segmented-pad);
+  border-radius: var(--segmented-radius);
+  background: var(--segmented-track);
+}
+.segmented__option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--segmented-height);
+  padding: 0 var(--segmented-pad-x);
+  border: 0;
+  border-radius: var(--segmented-radius);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-family-body);
+  font-size: var(--segmented-text-size);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition-base),
+              color var(--transition-base),
+              transform var(--transition-fast);
+}
+.segmented__option:hover { color: var(--text-primary); }
+.segmented__option:active { transform: scale(var(--press-scale)); }
+.segmented__option:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.segmented__option[aria-selected="true"] {
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+}
+
+/* Month view: fewer bars, so each one gets more room. */
+.chart--wide .chart__col { width: var(--chart-bar-width-wide); }
+
+/* --------------------------------------------------------------------------
+   Period views
+   One rule owns what is visible. Anything tagged data-period belongs to a
+   single view; the wrapper's data-view picks the winner. Using display here
+   rather than the [hidden] attribute means a component's own display value
+   (a .card is flex) can never override it.
+   -------------------------------------------------------------------------- */
+[data-view="week"]  [data-period="month"],
+[data-view="month"] [data-period="week"] { display: none; }

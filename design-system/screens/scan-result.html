@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprout &middot; Scan result</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<link rel="stylesheet" href="../prototype.css">
+</head>
+<body class="proto">
+
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ring-gradient" x1="0" y1="1" x2="1" y2="0">
+      <stop class="ring-grad__from" offset="0"/>
+      <stop class="ring-grad__to" offset="1"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<nav class="proto__bar" aria-label="Prototype navigation">
+  <a class="proto__back" href="../index.html">&larr; All flows</a>
+  <span class="proto__crumb">Flow 1 &middot; Path A &middot; Step 2 of 3</span>
+</nav>
+
+<div class="screen">
+  <div class="screen__body">
+        <div class="screen__header">
+          <a class="btn btn--tertiary btn--icon" href="scan.html" aria-label="Back"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+          <h1 class="screen__title">Result</h1>
+          <span class="screen__header-spacer"></span>
+        </div>
+
+        <div class="card card--success screen__hero">
+          <span class="card__icon" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+          <div>
+            <h2 class="card__title">Food recognised</h2>
+            <p class="card__meta">High confidence match</p>
+          </div>
+        </div>
+
+        <div class="recipe-hero screen__hero" role="img" aria-label="Avocado toast on sourdough with seeds">
+          <span class="tag tag--cream recipe-hero__badge">Detected</span>
+        </div>
+
+        <div class="screen__heading">
+          <h2 class="recipe-title">Avocado toast</h2>
+          <p class="recipe-meta">Per 150 g serving</p>
+        </div>
+
+        <div class="stat screen__tags">
+          <span class="stat__value">320</span>
+          <span class="stat__unit">kcal</span>
+        </div>
+
+        <div class="macros screen__macros macros--plain">
+          <div class="macro macro--protein">
+            <div class="macro__body">
+              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Protein</p>
+              <p class="macro__value">14<span class="macro__unit">g</span></p>
+            </div>
+          </div>
+          <div class="macro macro--carbs">
+            <div class="macro__body">
+              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Carbs</p>
+              <p class="macro__value">22<span class="macro__unit">g</span></p>
+            </div>
+          </div>
+          <div class="macro macro--fat">
+            <div class="macro__body">
+              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Fat</p>
+              <p class="macro__value">18<span class="macro__unit">g</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="portion screen__cta">
+          <button type="button" class="portion__btn" aria-label="Decrease portion"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+          <div class="portion__value">
+            <span class="portion__amount">150</span>
+            <span class="portion__label">grams</span>
+          </div>
+          <button type="button" class="portion__btn" aria-label="Increase portion"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+
+        <a class="btn btn--primary btn--block screen__cta" href="home.html">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Add to log
+        </a>
+
+        <a class="btn btn--tertiary btn--block screen__scan" href="add-meal.html">
+          
+          Not right? Search manually
+        </a>
+  </div>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <a class="bottom-nav__item" href="home.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span><span class="bottom-nav__label">Home</span></a>
+        <a class="bottom-nav__item" href="find-recipe.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span><span class="bottom-nav__label">Meals</span></a>
+        <a class="bottom-nav__item bottom-nav__item--scan" href="scan.html" aria-current="page"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span><span class="bottom-nav__label">Scan</span></a>
+        <a class="bottom-nav__item" href="stats.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span><span class="bottom-nav__label">Stats</span></a>
+        <a class="bottom-nav__item" href="you.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="bottom-nav__label">You</span></a>
+      </nav>
+</div>
+
+</body>
+</html>

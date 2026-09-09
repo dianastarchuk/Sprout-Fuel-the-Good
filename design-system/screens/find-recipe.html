@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprout &middot; Find a recipe</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<link rel="stylesheet" href="../prototype.css">
+</head>
+<body class="proto">
+
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ring-gradient" x1="0" y1="1" x2="1" y2="0">
+      <stop class="ring-grad__from" offset="0"/>
+      <stop class="ring-grad__to" offset="1"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<nav class="proto__bar" aria-label="Prototype navigation">
+  <a class="proto__back" href="../index.html">&larr; All flows</a>
+  <span class="proto__crumb">Flow 2 &middot; Step 1 of 3</span>
+</nav>
+
+<div class="screen">
+  <div class="screen__body">
+        <div class="screen__header">
+          <a class="btn btn--tertiary btn--icon" href="home.html" aria-label="Back"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+          <h1 class="screen__title">Find a recipe</h1>
+          <span class="screen__header-spacer"></span>
+        </div>
+
+        <div class="search screen__search">
+          <svg class="search__icon icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <label class="sr-only" for="qr">Search recipes</label>
+          <input class="input" id="qr" type="search" placeholder="Search 5,000+ healthy meals">
+        </div>
+
+        <div class="screen__pills">
+          <button type="button" class="tag tag--brand" aria-pressed="true">All</button>
+          <button type="button" class="tag tag--outline" aria-pressed="false">Vegan</button>
+          <button type="button" class="tag tag--outline" aria-pressed="false">Under 400</button>
+          <button type="button" class="tag tag--outline" aria-pressed="false">High protein</button>
+        </div>
+
+        <ul class="list screen__list">
+            <li class="list__item"><a class="list__link" href="recipe-detail.html">
+              <span class="list__thumb" role="img" aria-label="Avocado power bowl" style="--dish: url('assets/dishes/avocado-power-bowl.jpg')"></span>
+              <span class="list__body"><span class="list__title">Avocado power bowl</span><span class="list__meta">420 kcal &middot; 15 min</span></span>
+              <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </a></li>
+            <li class="list__item"><a class="list__link" href="recipe-detail.html">
+              <span class="list__thumb list__thumb--deep" role="img" aria-label="Berry protein oats" style="--dish: url('assets/dishes/berry-protein-oats.jpg')"></span>
+              <span class="list__body"><span class="list__title">Berry protein oats</span><span class="list__meta">310 kcal &middot; 8 min</span></span>
+              <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </a></li>
+            <li class="list__item"><a class="list__link" href="recipe-detail.html">
+              <span class="list__thumb list__thumb--bright" role="img" aria-label="Green crunch salad" style="--dish: url('assets/dishes/green-crunch-salad.jpg')"></span>
+              <span class="list__body"><span class="list__title">Green crunch salad</span><span class="list__meta">260 kcal &middot; 12 min</span></span>
+              <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </a></li>
+            <li class="list__item"><a class="list__link" href="recipe-detail.html">
+              <span class="list__thumb list__thumb--deep" role="img" aria-label="Miso ginger noodles" style="--dish: url('assets/dishes/miso-ginger-noodles.jpg')"></span>
+              <span class="list__body"><span class="list__title">Miso ginger noodles</span><span class="list__meta">480 kcal &middot; 20 min</span></span>
+              <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </a></li>
+            <li class="list__item"><a class="list__link" href="recipe-detail.html">
+              <span class="list__thumb" role="img" aria-label="Sweet potato hash" style="--dish: url('assets/dishes/sweet-potato-hash.jpg')"></span>
+              <span class="list__body"><span class="list__title">Sweet potato hash</span><span class="list__meta">390 kcal &middot; 18 min</span></span>
+              <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </a></li>
+            <li class="list__item"><a class="list__link" href="recipe-detail.html">
+              <span class="list__thumb list__thumb--bright" role="img" aria-label="Lemon herb quinoa" style="--dish: url('assets/dishes/lemon-herb-quinoa.jpg')"></span>
+              <span class="list__body"><span class="list__title">Lemon herb quinoa</span><span class="list__meta">340 kcal &middot; 14 min</span></span>
+              <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </a></li>
+        </ul>
+
+        <a class="btn btn--secondary btn--block screen__scan" href="scan.html">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8a2 2 0 0 1 2-2h2l1.2-2h5.6L16 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.5"/></svg>
+          Scan a meal instead
+        </a>
+  </div>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <a class="bottom-nav__item" href="home.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span><span class="bottom-nav__label">Home</span></a>
+        <a class="bottom-nav__item" href="find-recipe.html" aria-current="page"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span><span class="bottom-nav__label">Meals</span></a>
+        <a class="bottom-nav__item bottom-nav__item--scan" href="scan.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span><span class="bottom-nav__label">Scan</span></a>
+        <a class="bottom-nav__item" href="stats.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span><span class="bottom-nav__label">Stats</span></a>
+        <a class="bottom-nav__item" href="you.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="bottom-nav__label">You</span></a>
+      </nav>
+</div>
+
+</body>
+</html>

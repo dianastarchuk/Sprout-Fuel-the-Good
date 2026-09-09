@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprout &middot; Key Flows Prototype</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="prototype.css">
+</head>
+<body class="proto proto-index">
+
+<main class="index">
+
+  <header>
+    <p class="index__eyebrow">Sprout &middot; Fuel the Good</p>
+    <h1 class="index__title">Key flows<br>prototype</h1>
+    <p class="index__lede">
+      Ten linked screens: the two core journeys plus the Stats and You tabs. Click any step to enter
+      the flow, then use the in-screen back arrow and bottom navigation to move
+      around exactly as you would in the app. Every screen renders from
+      <code>tokens.css</code> and <code>components.css</code> &mdash; the same files that
+      drive the styleguide.
+    </p>
+  </header>
+
+  <!-- FLOW 1 -->
+  <section class="index__flow" aria-labelledby="f1">
+    <h2 class="index__flow-title" id="f1">Flow 1 &mdash; Calculate calories in a dish</h2>
+    <p class="index__flow-note">
+      Two alternative paths from the same entry point. Both end on the updated Today screen.
+    </p>
+
+    <div class="index__path">
+      <p class="index__path-label">Path A &mdash; Scan</p>
+      <ol class="index__steps">
+        <li class="index__step">
+          <a href="screens/home.html"><span class="index__num">1</span> Today
+            <span class="index__file">home.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/scan.html"><span class="index__num">2</span> Scan
+            <span class="index__file">scan.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/scan-result.html"><span class="index__num">3</span> Recognition result
+            <span class="index__file">scan-result.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/home.html"><span class="index__num">4</span> Back to Today
+            <span class="index__file">home.html</span></a>
+        </li>
+      </ol>
+    </div>
+
+    <div class="index__path">
+      <p class="index__path-label">Path B &mdash; Manual search</p>
+      <ol class="index__steps">
+        <li class="index__step">
+          <a href="screens/home.html"><span class="index__num">1</span> Today
+            <span class="index__file">home.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/add-meal.html"><span class="index__num">2</span> Add meal
+            <span class="index__file">add-meal.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/product-detail.html"><span class="index__num">3</span> Product detail
+            <span class="index__file">product-detail.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/home.html"><span class="index__num">4</span> Back to Today
+            <span class="index__file">home.html</span></a>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FLOW 2 -->
+  <section class="index__flow" aria-labelledby="f2">
+    <h2 class="index__flow-title" id="f2">Flow 2 &mdash; Find a suitable recipe</h2>
+    <p class="index__flow-note">
+      Browse, open a recipe, log it &mdash; ending on the same Today screen as Flow 1.
+    </p>
+
+    <div class="index__path">
+      <ol class="index__steps">
+        <li class="index__step">
+          <a href="screens/home.html"><span class="index__num">1</span> Today
+            <span class="index__file">home.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/find-recipe.html"><span class="index__num">2</span> Find a recipe
+            <span class="index__file">find-recipe.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/recipe-detail.html"><span class="index__num">3</span> Recipe detail
+            <span class="index__file">recipe-detail.html</span></a>
+        </li>
+        <li class="index__step" aria-hidden="true"><span class="index__arrow">&rarr;</span></li>
+        <li class="index__step">
+          <a href="screens/home.html"><span class="index__num">4</span> Back to Today
+            <span class="index__file">home.html</span></a>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Standing tabs -->
+  <section class="index__flow" aria-labelledby="f3">
+    <h2 class="index__flow-title" id="f3">Standing tabs</h2>
+    <p class="index__flow-note">
+      Reachable from the bottom navigation on every screen, not part of either flow.
+    </p>
+
+    <div class="index__path">
+      <ol class="index__steps">
+        <li class="index__step">
+          <a href="screens/stats.html"><span class="index__num">&bull;</span> Stats
+            <span class="index__file">stats.html</span></a>
+        </li>
+        <li class="index__step">
+          <a href="screens/you.html"><span class="index__num">&bull;</span> You
+            <span class="index__file">you.html</span></a>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <p class="index__end">
+    <strong>All three paths converge on <code>home.html</code></strong> &mdash; the point of the
+    prototype is that logging by camera, by search, or from a recipe all return the user to
+    the same Today screen they started from.
+    <br><br>
+    <strong>Also here:</strong>
+    <a href="components.html">components.html</a> &mdash; the full component styleguide and
+    accessibility audit that these screens are built from.
+  </p>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprout Design System — Component Styleguide</title>
+<meta name="description" content="Live styleguide for the Sprout calorie tracker and recipe finder. Light theme only.">
+
+<!-- Google Fonts are imported by tokens.css so the token file is self-sufficient.
+     These hints just open the connections earlier. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Every value below resolves from this file. Nothing is hardcoded. -->
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+
+<style>
+/* ==========================================================================
+   STYLEGUIDE CHROME
+   The page furniture. Also token-driven, so the guide proves the tokens
+   twice over: once in the components, once in the page around them.
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-16);
+  line-height: var(--line-height-relaxed);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--spacing-48) var(--spacing-24) var(--spacing-80);
+}
+
+/* --- Display type helper ------------------------------------------------- */
+.display {
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-black);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.page-title {
+  font-size: var(--font-size-display-xl);
+  line-height: var(--line-height-none);
+  color: var(--text-primary);
+}
+.page-title .accent { color: var(--text-lime); }
+
+.page-lede {
+  max-width: 60ch;
+  margin: var(--spacing-16) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-18);
+  line-height: var(--line-height-normal);
+}
+
+.eyebrow {
+  font-size: var(--font-size-10);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-8);
+}
+
+.section { margin-top: var(--spacing-64); }
+
+.section > h2 {
+  font-family: var(--font-family-display);
+  font-variation-settings: "wdth" var(--font-width-display);
+  font-weight: var(--font-weight-black);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  font-size: var(--font-size-display-md);
+  line-height: var(--line-height-tight);
+  margin: 0 0 var(--spacing-8);
+  padding-bottom: var(--spacing-12);
+  border-bottom: 2px solid var(--border-subtle);
+}
+
+.section > h3 {
+  font-size: var(--font-size-18);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-bold);
+  margin: var(--spacing-40) 0 var(--spacing-4);
+}
+
+.section p { color: var(--text-secondary); margin: 0 0 var(--spacing-16); max-width: 70ch; }
+
+.note {
+  border-left: 3px solid var(--border-brand);
+  background: var(--lime-50);
+  padding: var(--spacing-12) var(--spacing-16);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+  margin: var(--spacing-16) 0;
+  max-width: 80ch;
+}
+.note strong { color: var(--text-primary); }
+
+.note--warn {
+  border-left-color: var(--feedback-warning);
+  background: var(--feedback-warning-surface);
+}
+
+/* Specimen tray: the neutral stage every component sits on */
+.tray {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-16);
+  padding: var(--spacing-24);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--spacing-16);
+}
+.tray--stack { flex-direction: column; align-items: stretch; }
+.tray--canvas { background: var(--surface-canvas); }
+.tray--dark { background: var(--surface-inverse); border-color: var(--border-inverse); }
+
+.specimen { display: flex; flex-direction: column; gap: var(--spacing-8); align-items: flex-start; }
+.specimen__label {
+  font-size: var(--font-size-10);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+}
+.tray--dark .specimen__label { color: var(--text-on-inverse-muted); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-16);
+}
+
+/* --- Swatches ------------------------------------------------------------ */
+.swatch {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-raised);
+}
+.swatch__chip { height: var(--spacing-64); }
+.swatch__meta { padding: var(--spacing-12); }
+.swatch__name { font-size: var(--font-size-14); font-weight: var(--font-weight-bold); }
+.swatch__hex {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-12);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+.swatch__role { font-size: var(--font-size-12); color: var(--text-secondary); margin-top: var(--spacing-4); }
+
+/* --- Tables -------------------------------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-14);
+  background: var(--surface-raised);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+caption {
+  text-align: left;
+  font-size: var(--font-size-14);
+  color: var(--text-secondary);
+  padding-bottom: var(--spacing-8);
+}
+th, td { text-align: left; padding: var(--spacing-12) var(--spacing-16); border-bottom: 1px solid var(--border-subtle); }
+th { font-weight: var(--font-weight-bold); background: var(--surface-canvas); }
+tbody tr:last-child td { border-bottom: 0; }
+td code, th code, p code {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-12);
+  background: var(--surface-sunken);
+  padding: 2px var(--spacing-4);
+  border-radius: var(--radius-sm);
+}
+.ratio { font-family: var(--font-family-mono); font-weight: var(--font-weight-bold); }
+.pass { color: var(--feedback-success); font-weight: var(--font-weight-bold); }
+.fail { color: var(--feedback-error); font-weight: var(--font-weight-bold); }
+.cond { color: var(--feedback-warning-text); font-weight: var(--font-weight-bold); }
+
+/* --------------------------------------------------------------------------
+   Spacing / radius / elevation specimens
+   -------------------------------------------------------------------------- */
+.space-row { display: flex; align-items: center; gap: var(--spacing-16); margin-bottom: var(--spacing-8); }
+.space-bar { height: var(--spacing-16); background: var(--interactive-brand); border-radius: var(--radius-sm); }
+.space-name { font-family: var(--font-family-mono); font-size: var(--font-size-12); width: var(--spacing-80); flex: none; color: var(--text-secondary); }
+
+.radius-demo {
+  width: var(--spacing-80);
+  height: var(--spacing-80);
+  background: var(--surface-inverse);
+  display: grid;
+  place-items: center;
+  color: var(--text-on-inverse);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-12);
+}
+.elev-demo {
+  width: var(--spacing-80);
+  height: var(--spacing-80);
+  background: var(--surface-raised);
+  border-radius: var(--radius-lg);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-12);
+  color: var(--text-secondary);
+}
+
+.type-specimen { border-bottom: 1px solid var(--border-subtle); padding: var(--spacing-16) 0; }
+.type-specimen:last-child { border-bottom: 0; }
+.type-specimen__meta {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-12);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-8);
+}
+
+
+.skip-link {
+  position: absolute;
+  left: var(--spacing-16);
+  top: calc(var(--spacing-16) * -4);
+  z-index: var(--z-overlay);
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+  padding: var(--spacing-12) var(--spacing-16);
+  border-radius: var(--radius-pill);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  transition: top var(--duration-fast) var(--ease-standard);
+}
+.skip-link:focus { top: var(--spacing-16); }
+
+footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-top: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: var(--font-size-14); }
+</style>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ring-gradient" x1="0" y1="1" x2="1" y2="0">
+      <stop class="ring-grad__from" offset="0%"/>
+      <stop class="ring-grad__to" offset="100%"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+
+<div class="page">
+
+<header>
+  <p class="eyebrow">Sprout · Fuel the Good</p>
+  <h1 class="display page-title">Design<br>System<span class="accent">.</span></h1>
+  <p class="page-lede">
+    A light-theme component library for the Sprout calorie tracker and recipe finder.
+    Every value on this page resolves from <code>tokens.css</code> — no hardcoded colours,
+    sizes, or spacing. If a token changes, this page changes with it.
+  </p>
+</header>
+
+<main id="main">
+
+<!-- ======================================================================
+     FOUNDATIONS — COLOR
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-color">
+  <h2 id="h-color">Color</h2>
+  <p>
+    Sampled directly from the brand stylescape. The dark forest greens, which the
+    stylescape uses as backgrounds, are re-cast here as text, icon and dark-accent-surface
+    colours — the light canvas stays constant.
+  </p>
+
+  <h3>Lime — primary accent</h3>
+  <p>Lime is a <strong>fill</strong> colour. It is too light to carry text on any light surface; see the accessibility section.</p>
+  <div class="grid">
+    <div class="swatch"><div class="swatch__chip" style="background: var(--lime-100)"></div><div class="swatch__meta"><div class="swatch__name">lime-100</div><div class="swatch__hex">#EDF7C9</div><div class="swatch__role">Soft fill, selected tag</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--lime-300)"></div><div class="swatch__meta"><div class="swatch__name">lime-300</div><div class="swatch__hex">#D9FF7A</div><div class="swatch__role">Gradient, illustration</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--lime-500)"></div><div class="swatch__meta"><div class="swatch__name">lime-500</div><div class="swatch__hex">#CCFF4C</div><div class="swatch__role">Brand anchor · CTA · ring</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--lime-600)"></div><div class="swatch__meta"><div class="swatch__name">lime-600</div><div class="swatch__hex">#BAEE33</div><div class="swatch__role">CTA hover</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--lime-700)"></div><div class="swatch__meta"><div class="swatch__name">lime-700</div><div class="swatch__hex">#A4D51C</div><div class="swatch__role">CTA active · focus ring</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--lime-800)"></div><div class="swatch__meta"><div class="swatch__name">lime-800</div><div class="swatch__hex">#526B0B</div><div class="swatch__role">Lime as text (AA)</div></div></div>
+  </div>
+
+  <h3>Forest — secondary dark</h3>
+  <div class="grid">
+    <div class="swatch"><div class="swatch__chip" style="background: var(--forest-900)"></div><div class="swatch__meta"><div class="swatch__name">forest-900</div><div class="swatch__hex">#0A1F16</div><div class="swatch__role">Primary text</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--forest-800)"></div><div class="swatch__meta"><div class="swatch__name">forest-800</div><div class="swatch__hex">#0D3C2A</div><div class="swatch__role">Headings · dark surface</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--forest-600)"></div><div class="swatch__meta"><div class="swatch__name">forest-600</div><div class="swatch__hex">#2E6B4F</div><div class="swatch__role">Secondary text</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--forest-500)"></div><div class="swatch__meta"><div class="swatch__name">forest-500</div><div class="swatch__hex">#4C8466</div><div class="swatch__role">Large text / icons only</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--forest-300)"></div><div class="swatch__meta"><div class="swatch__name">forest-300</div><div class="swatch__hex">#A8C0B2</div><div class="swatch__role">Muted text on dark</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--forest-100)"></div><div class="swatch__meta"><div class="swatch__name">forest-100</div><div class="swatch__hex">#DFEAE3</div><div class="swatch__role">Pressed row wash</div></div></div>
+  </div>
+
+  <h3>Neutrals — sage canvas and cream accent</h3>
+  <div class="grid">
+    <div class="swatch"><div class="swatch__chip" style="background: var(--white); border-bottom: 1px solid var(--border-subtle)"></div><div class="swatch__meta"><div class="swatch__name">white</div><div class="swatch__hex">#FFFFFF</div><div class="swatch__role">Raised surface · cards</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--sage-100)"></div><div class="swatch__meta"><div class="swatch__name">sage-100</div><div class="swatch__hex">#F5F8F2</div><div class="swatch__role">App canvas</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--sage-300)"></div><div class="swatch__meta"><div class="swatch__name">sage-300</div><div class="swatch__hex">#D8E0D2</div><div class="swatch__role">Dividers</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--sage-600)"></div><div class="swatch__meta"><div class="swatch__name">sage-600</div><div class="swatch__hex">#7E8C77</div><div class="swatch__role">Input borders (3:1)</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--cream-200)"></div><div class="swatch__meta"><div class="swatch__name">cream-200</div><div class="swatch__hex">#F3ECD9</div><div class="swatch__role">Warm editorial badge</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--orange-500)"></div><div class="swatch__meta"><div class="swatch__name">orange-500</div><div class="swatch__hex">#FF6A45</div><div class="swatch__role">Accent fill · fat macro</div></div></div>
+  </div>
+
+  <h3>Semantic</h3>
+  <div class="grid">
+    <div class="swatch"><div class="swatch__chip" style="background: var(--feedback-success)"></div><div class="swatch__meta"><div class="swatch__name">success</div><div class="swatch__hex">#17794B</div><div class="swatch__role">Goal met, saved</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--feedback-warning)"></div><div class="swatch__meta"><div class="swatch__name">warning</div><div class="swatch__hex">#FF6A45</div><div class="swatch__role">Fill only — over budget</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--feedback-warning-text)"></div><div class="swatch__meta"><div class="swatch__name">warning-text</div><div class="swatch__hex">#A8380F</div><div class="swatch__role">Warning as text (AA)</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background: var(--feedback-error)"></div><div class="swatch__meta"><div class="swatch__name">error</div><div class="swatch__hex">#B3241B</div><div class="swatch__role">Validation failure</div></div></div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     ACCESSIBILITY
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-a11y">
+  <h2 id="h-a11y">Accessibility</h2>
+  <p>
+    Every ratio below was computed from the sampled hex values, not estimated.
+    Four combinations failed WCAG AA and have been adjusted rather than shipped.
+  </p>
+
+  <table>
+    <caption>Text contrast against the app canvas <code>#F5F8F2</code> and the raised card surface <code>#FFFFFF</code>.</caption>
+    <thead>
+      <tr><th scope="col">Foreground</th><th scope="col">On canvas</th><th scope="col">On white</th><th scope="col">Verdict</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>--text-primary</code> #0A1F16</td><td class="ratio">16.05</td><td class="ratio">17.21</td><td class="pass">AAA</td></tr>
+      <tr><td><code>--forest-800</code> #0D3C2A</td><td class="ratio">11.55</td><td class="ratio">12.38</td><td class="pass">AAA</td></tr>
+      <tr><td><code>--text-secondary</code> #2E6B4F</td><td class="ratio">5.88</td><td class="ratio">6.30</td><td class="pass">AA</td></tr>
+      <tr><td><code>--text-lime</code> #526B0B</td><td class="ratio">5.65</td><td class="ratio">6.06</td><td class="pass">AA</td></tr>
+      <tr><td><code>--feedback-warning-text</code> #A8380F</td><td class="ratio">6.05</td><td class="ratio">6.49</td><td class="pass">AA</td></tr>
+      <tr><td><code>--feedback-error</code> #B3241B</td><td class="ratio">6.15</td><td class="ratio">6.59</td><td class="pass">AA</td></tr>
+      <tr><td><code>--feedback-success</code> #17794B</td><td class="ratio">5.06</td><td class="ratio">5.42</td><td class="pass">AA</td></tr>
+      <tr><td><code>--text-tertiary</code> #4C8466</td><td class="ratio">4.08</td><td class="ratio">4.38</td><td class="cond">AA Large only — restricted to ≥24px text and icons</td></tr>
+      <tr><td><code>--border-strong</code> #7E8C77</td><td class="ratio">3.32</td><td class="ratio">3.56</td><td class="pass">AA non-text (1.4.11)</td></tr>
+      <tr><td><code>--focus-ring-color</code> #0A1F16</td><td class="ratio">16.05</td><td class="ratio">17.21</td><td class="pass">AA focus indicator (2.4.11) — also 14.73 on lime</td></tr>
+      <tr><td><code>--text-disabled</code> #9AA894</td><td class="ratio">2.33</td><td class="ratio">2.50</td><td class="cond">Exempt — disabled controls, WCAG 1.4.3</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Text on the lime fill</h3>
+  <table>
+    <caption>Lime <code>#CCFF4C</code> is bright enough that only dark text belongs on it.</caption>
+    <thead><tr><th scope="col">Foreground on lime</th><th scope="col">Ratio</th><th scope="col">Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><code>--text-on-brand</code> #0A1F16</td><td class="ratio">14.73</td><td class="pass">AAA — the default</td></tr>
+      <tr><td>forest-800 #0D3C2A</td><td class="ratio">10.59</td><td class="pass">AAA</td></tr>
+      <tr><td>white #FFFFFF</td><td class="ratio">1.17</td><td class="fail">FAILS — never use white on lime</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Failures found, and what was done</h3>
+  <div class="note note--warn">
+    <p style="margin-bottom: var(--spacing-8)"><strong>1. Lime on cream — 1.09:1.</strong>
+    The brand lime is unusable as text or as an icon on any light surface. It is defined as a
+    fill-only token; anywhere a "lime" text colour was needed, <code>--text-lime</code>
+    (<code>#526B0B</code>, 5.65:1) is substituted. The streak count uses it.</p>
+
+    <p style="margin-bottom: var(--spacing-8)"><strong>2. Orange on cream — 2.65:1.</strong>
+    The stylescape renders the "52g FAT" numeral in raw <code>#FF6A45</code> on a dark
+    background, where it reads fine. Moved to light, it fails. Raw orange is retained for
+    shapes, dots and the over-budget ring; text uses <code>--feedback-warning-text</code>
+    (<code>#A8380F</code>, 6.05:1).</p>
+
+    <p style="margin-bottom: var(--spacing-8)"><strong>3. The lime focus ring — 1.62:1.</strong>
+    The obvious choice for a focus indicator was the brand lime, but WCAG 2.4.11 requires
+    the indicator to hold 3:1 against adjacent colours. Lime-700 manages 1.62:1 on the
+    canvas and 1.48:1 on a lime button — it would have vanished on the primary CTA, the one
+    control where focus matters most. The ring is now <code>--forest-900</code>
+    (16.05:1 on canvas, 14.73:1 on lime: one ring that works on every surface), with lime
+    kept as a decorative halo outside it. For the same reason the focused input border
+    darkens to forest-900 rather than switching to lime, which would have <em>lowered</em>
+    contrast against the resting <code>--border-strong</code>.</p>
+
+    <p style="margin-bottom: 0"><strong>4. forest-500 on cream — 4.08:1.</strong>
+    Just short of the 4.5:1 body-text threshold. Rather than darken it and lose a useful
+    mid-tone, it is scoped: <code>--text-tertiary</code> is documented for ≥24px text and
+    icons only, where the 3:1 large-text threshold applies. Body copy uses
+    <code>--text-secondary</code>.</p>
+  </div>
+
+  <div class="note">
+    <strong>Tap targets.</strong> <code>--tap-min: 44px</code> is applied to every interactive
+    element. Where a control is visually smaller than 44px — the 32px filter tags, the small
+    button size — a transparent <code>::after</code> pseudo-element stretches the hit area
+    vertically to 44px without changing the visual size.
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     TYPOGRAPHY
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-type">
+  <h2 id="h-type">Typography</h2>
+  <p>
+    <strong>Archivo</strong> for display — a variable grotesque whose width axis
+    (62–125) supplies the condensed-to-expanded range the brand needs from a single family.
+    Set in caps at weight 900, width 88, with −0.02em tracking, it reproduces the stylescape
+    headline. <strong>Plus Jakarta Sans</strong> carries body and UI text: geometric enough
+    to feel related, neutral enough to disappear at 12px.
+  </p>
+
+  <div class="tray tray--stack">
+    <div class="type-specimen">
+      <div class="type-specimen__meta">display-xl · 44px / 1.0 · Archivo 900 · wdth 88</div>
+      <div class="display" style="font-size: var(--font-size-display-xl); line-height: var(--line-height-none)">Small bites, big change.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-specimen__meta">display-lg · 36px / 1.05</div>
+      <div class="display" style="font-size: var(--font-size-display-lg); line-height: var(--line-height-tight)">Find a recipe</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-specimen__meta">display-md · 28px / 1.1</div>
+      <div class="display" style="font-size: var(--font-size-display-md); line-height: var(--line-height-tight)">Today's intake</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-specimen__meta">display-sm · 22px / 1.15</div>
+      <div class="display" style="font-size: var(--font-size-display-sm); line-height: var(--line-height-snug)">Streak · 12 days</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-specimen__meta">width axis · condensed 75 / display 88 / expanded 112, all at 36px 900</div>
+      <div class="display" style="font-size: var(--font-size-display-lg); line-height: var(--line-height-tight); font-variation-settings: 'wdth' var(--font-width-condensed)">Fuel the good</div>
+      <div class="display" style="font-size: var(--font-size-display-lg); line-height: var(--line-height-tight); font-variation-settings: 'wdth' var(--font-width-display)">Fuel the good</div>
+      <div class="display" style="font-size: var(--font-size-display-lg); line-height: var(--line-height-tight); font-variation-settings: 'wdth' var(--font-width-expanded)">Fuel the good</div>
+      <p style="font-size: var(--font-size-14); color: var(--text-secondary); margin: var(--spacing-8) 0 0">
+        One family, three voices. Condensed for dense stat headers, display for standard
+        headlines, expanded for hero moments. <a href="#h-type" style="color: var(--text-link); font-weight: var(--font-weight-semibold)">Set via <code>font-variation-settings</code></a>,
+        so no extra font files are downloaded.
+      </p>
+    </div>
+    <div class="type-specimen">
+      <div class="type-specimen__meta">body-xl · 20px / 1.4 · Plus Jakarta Sans 500</div>
+      <div style="font-size: var(--font-size-20); line-height: var(--line-height-normal); font-weight: var(--font-weight-medium)">Track it, crush it, feel it.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-specimen__meta">body-md · 16px / 1.5 · base reading size</div>
+      <div style="font-size: var(--font-size-16); line-height: var(--line-height-relaxed)">Healthy living with momentum — built for real, busy people who do not have time to weigh every ingredient.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-specimen__meta">body-sm · 14px / 1.45</div>
+      <div style="font-size: var(--font-size-14); line-height: var(--line-height-normal); color: var(--text-secondary)">Supporting copy, field hints, and secondary metadata.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-specimen__meta">label · 11px / 1.35 · uppercase · +0.08em</div>
+      <div style="font-size: var(--font-size-10); line-height: var(--line-height-snug); letter-spacing: var(--tracking-label); text-transform: uppercase; font-weight: var(--font-weight-bold); color: var(--text-secondary)">420 kcal · 15 min</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     SPACING / RADIUS / ELEVATION
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-space">
+  <h2 id="h-space">Spacing, radius &amp; elevation</h2>
+  <p>
+    An 8px base scale with one deliberate exception: <code>--spacing-4</code> (4px), reserved
+    for the gap between an icon and its label, where 8px reads as a disconnect.
+  </p>
+
+  <div class="tray tray--stack">
+    <div class="space-row"><span class="space-name">space-1 · 4</span><span class="space-bar" style="width: var(--spacing-4)"></span></div>
+    <div class="space-row"><span class="space-name">space-2 · 8</span><span class="space-bar" style="width: var(--spacing-8)"></span></div>
+    <div class="space-row"><span class="space-name">space-3 · 12</span><span class="space-bar" style="width: var(--spacing-12)"></span></div>
+    <div class="space-row"><span class="space-name">space-4 · 16</span><span class="space-bar" style="width: var(--spacing-16)"></span></div>
+    <div class="space-row"><span class="space-name">space-6 · 24</span><span class="space-bar" style="width: var(--spacing-24)"></span></div>
+    <div class="space-row"><span class="space-name">space-8 · 32</span><span class="space-bar" style="width: var(--spacing-32)"></span></div>
+    <div class="space-row"><span class="space-name">space-10 · 40</span><span class="space-bar" style="width: var(--spacing-40)"></span></div>
+    <div class="space-row"><span class="space-name">space-12 · 48</span><span class="space-bar" style="width: var(--spacing-48)"></span></div>
+    <div class="space-row"><span class="space-name">space-16 · 64</span><span class="space-bar" style="width: var(--spacing-64)"></span></div>
+    <div class="space-row"><span class="space-name">space-20 · 80</span><span class="space-bar" style="width: var(--spacing-80)"></span></div>
+  </div>
+
+  <h3>Radius</h3>
+  <div class="tray">
+    <div class="specimen"><span class="specimen__label">sm · 8</span><div class="radius-demo" style="border-radius: var(--radius-sm)">8</div></div>
+    <div class="specimen"><span class="specimen__label">md · 12</span><div class="radius-demo" style="border-radius: var(--radius-md)">12</div></div>
+    <div class="specimen"><span class="specimen__label">lg · 16 · chips</span><div class="radius-demo" style="border-radius: var(--radius-lg)">16</div></div>
+    <div class="specimen"><span class="specimen__label">xl · 20 · cards</span><div class="radius-demo" style="border-radius: var(--radius-xl)">20</div></div>
+    <div class="specimen"><span class="specimen__label">2xl · 28 · sheets</span><div class="radius-demo" style="border-radius: var(--radius-2xl)">28</div></div>
+    <div class="specimen"><span class="specimen__label">pill · buttons</span><div class="radius-demo" style="border-radius: var(--radius-pill)">pill</div></div>
+  </div>
+
+  <h3>Elevation</h3>
+  <p>Shadows are tinted with forest-900 rather than pure black, matching the soft green cast in the stylescape.</p>
+  <div class="tray tray--canvas">
+    <div class="specimen"><span class="specimen__label">xs</span><div class="elev-demo" style="box-shadow: var(--shadow-xs)">xs</div></div>
+    <div class="specimen"><span class="specimen__label">sm · cards</span><div class="elev-demo" style="box-shadow: var(--shadow-sm)">sm</div></div>
+    <div class="specimen"><span class="specimen__label">md · hover</span><div class="elev-demo" style="box-shadow: var(--shadow-md)">md</div></div>
+    <div class="specimen"><span class="specimen__label">lg · modal</span><div class="elev-demo" style="box-shadow: var(--shadow-lg)">lg</div></div>
+    <div class="specimen"><span class="specimen__label">brand · CTA</span><div class="elev-demo" style="box-shadow: var(--shadow-brand)">brand</div></div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     BUTTONS
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-buttons">
+  <h2 id="h-buttons">Buttons</h2>
+  <p>
+    Pill-shaped throughout, per the stylescape. Primary is the lime CTA ("Log a meal");
+    secondary is the dark forest fill ("Scan a meal instead"). All sizes meet the 44px
+    minimum target.
+  </p>
+
+  <h3>Primary</h3>
+  <div class="tray">
+    <div class="specimen"><span class="specimen__label">Default</span>
+      <button type="button" class="btn btn--primary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Log a meal
+      </button></div>
+    <div class="specimen"><span class="specimen__label">Hover</span>
+      <button type="button" class="btn btn--primary is-hover">Log a meal</button></div>
+    <div class="specimen"><span class="specimen__label">Active</span>
+      <button type="button" class="btn btn--primary is-active">Log a meal</button></div>
+    <div class="specimen"><span class="specimen__label">Focus</span>
+      <button type="button" class="btn btn--primary is-focus">Log a meal</button></div>
+    <div class="specimen"><span class="specimen__label">Disabled</span>
+      <button type="button" class="btn btn--primary" disabled>Log a meal</button></div>
+  </div>
+
+  <h3>Secondary</h3>
+  <div class="tray">
+    <div class="specimen"><span class="specimen__label">Default</span>
+      <button type="button" class="btn btn--secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg>
+        Scan a meal
+      </button></div>
+    <div class="specimen"><span class="specimen__label">Hover</span>
+      <button type="button" class="btn btn--secondary is-hover">Scan a meal</button></div>
+    <div class="specimen"><span class="specimen__label">Active</span>
+      <button type="button" class="btn btn--secondary is-active">Scan a meal</button></div>
+    <div class="specimen"><span class="specimen__label">Focus</span>
+      <button type="button" class="btn btn--secondary is-focus">Scan a meal</button></div>
+    <div class="specimen"><span class="specimen__label">Disabled</span>
+      <button type="button" class="btn btn--secondary" disabled>Scan a meal</button></div>
+  </div>
+
+  <h3>Tertiary</h3>
+  <div class="tray">
+    <div class="specimen"><span class="specimen__label">Default</span><button type="button" class="btn btn--tertiary">Skip for now</button></div>
+    <div class="specimen"><span class="specimen__label">Hover</span><button type="button" class="btn btn--tertiary is-hover">Skip for now</button></div>
+    <div class="specimen"><span class="specimen__label">Active</span><button type="button" class="btn btn--tertiary is-active">Skip for now</button></div>
+    <div class="specimen"><span class="specimen__label">Focus</span><button type="button" class="btn btn--tertiary is-focus">Skip for now</button></div>
+    <div class="specimen"><span class="specimen__label">Disabled</span><button type="button" class="btn btn--tertiary" disabled>Skip for now</button></div>
+  </div>
+
+  <h3>Icon-only</h3>
+  <p>Icon-only buttons always carry an accessible name via <code>aria-label</code>.</p>
+  <div class="tray">
+    <div class="specimen"><span class="specimen__label">Primary</span>
+      <button type="button" class="btn btn--primary btn--icon" aria-label="Add a meal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </button></div>
+    <div class="specimen"><span class="specimen__label">Secondary</span>
+      <button type="button" class="btn btn--secondary btn--icon" aria-label="Open filters">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      </button></div>
+    <div class="specimen"><span class="specimen__label">Tertiary</span>
+      <button type="button" class="btn btn--tertiary btn--icon" aria-label="Add to favourites">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5c0 5-7 9.5-7 9.5z"/></svg>
+      </button></div>
+    <div class="specimen"><span class="specimen__label">Focus</span>
+      <button type="button" class="btn btn--tertiary btn--icon is-focus" aria-label="Share recipe">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+      </button></div>
+    <div class="specimen"><span class="specimen__label">Disabled</span>
+      <button type="button" class="btn btn--tertiary btn--icon" disabled aria-label="Delete entry">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14M10 11v6M14 11v6M6 7l1 12h10l1-12M9 7V5h6v2"/></svg>
+      </button></div>
+  </div>
+
+  <h3>As a link</h3>
+  <p>
+    Every button in the prototype that navigates is an <code>&lt;a&gt;</code>, not a
+    <code>&lt;button&gt;</code>: the back control, the screen CTAs and the "scan instead" action all
+    move to another screen, so they must be links to keep middle-click, right-click and the browser's
+    own history working. <code>.btn</code> styles both tags identically &mdash; pick the tag by what the
+    control does, not by how it looks. A <code>&lt;button&gt;</code> is right only when the control acts
+    on the current screen, as the favourite toggle and the "Sign out" action do.
+  </p>
+  <div class="tray">
+    <div class="specimen"><span class="specimen__label">Back &middot; link</span>
+      <a class="btn btn--tertiary btn--icon" href="#h-buttons" aria-label="Back"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a></div>
+    <div class="specimen"><span class="specimen__label">Screen CTA &middot; link</span>
+      <a class="btn btn--primary" href="#h-buttons">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Log a meal
+      </a></div>
+    <div class="specimen"><span class="specimen__label">Secondary &middot; link</span>
+      <a class="btn btn--secondary" href="#h-buttons"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg> Scan a meal instead</a></div>
+    <div class="specimen"><span class="specimen__label">Favourite &middot; button</span>
+      <button type="button" class="btn btn--tertiary btn--icon" aria-label="Save to favourites"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5c0 5-7 9.5-7 9.5z"/></svg></button></div>
+  </div>
+
+  <h3>Sizes &amp; full width</h3>
+  <div class="tray tray--stack" style="max-width: 420px">
+    <button type="button" class="btn btn--primary btn--lg btn--block">Large · 56px</button>
+    <button type="button" class="btn btn--primary btn--block">Medium · 48px (default)</button>
+    <button type="button" class="btn btn--tertiary btn--sm" style="align-self: flex-start">Small · 36px visual, 44px target</button>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     TAGS
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-tags">
+  <h2 id="h-tags">Pill tags &amp; badges</h2>
+  <p>Static badges use <code>&lt;span&gt;</code>; interactive filters use <code>&lt;button&gt;</code> with <code>aria-pressed</code>.</p>
+
+  <h3>Static badges</h3>
+  <div class="tray">
+    <span class="tag tag--brand">Vegan</span>
+    <span class="tag tag--subtle">High protein</span>
+    <span class="tag tag--dark">15 min</span>
+    <span class="tag tag--cream">5 min a day</span>
+    <span class="tag tag--outline">Gluten free</span>
+    <span class="tag tag--success">Goal met</span>
+    <span class="tag tag--warning">Over budget</span>
+    <span class="tag tag--error">Sync failed</span>
+    <span class="tag tag--info">Synced 2 min ago</span>
+  </div>
+
+  <h3>Interactive filter chips</h3>
+  <div class="tray">
+    <div class="specimen"><span class="specimen__label">Unselected</span>
+      <button type="button" class="tag tag--outline" aria-pressed="false">Breakfast</button></div>
+    <div class="specimen"><span class="specimen__label">Hover</span>
+      <button type="button" class="tag tag--outline is-hover" aria-pressed="false">Breakfast</button></div>
+    <div class="specimen"><span class="specimen__label">Active</span>
+      <button type="button" class="tag tag--outline is-active" aria-pressed="false">Breakfast</button></div>
+    <div class="specimen"><span class="specimen__label">Focus</span>
+      <button type="button" class="tag tag--outline is-focus" aria-pressed="false">Breakfast</button></div>
+    <div class="specimen"><span class="specimen__label">Selected</span>
+      <button type="button" class="tag tag--brand" aria-pressed="true">
+        <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg>
+        Breakfast
+      </button></div>
+    <div class="specimen"><span class="specimen__label">Disabled</span>
+      <button type="button" class="tag tag--outline" disabled aria-pressed="false">Breakfast</button></div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     SEGMENTED CONTROL
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-segmented">
+  <h2 id="h-segmented">Segmented control</h2>
+  <p>
+    The period switch on the Stats screen. It is a real
+    <code>role="tablist"</code> with two <code>role="tab"</code> buttons, so the selected
+    period is announced rather than merely coloured.
+  </p>
+  <p>
+    Selection is driven by <code>aria-selected="true"</code> &mdash; the lime pill comes from
+    <code>.segmented__option[aria-selected="true"]</code>, not from a state class. Set the attribute and
+    the styling follows; there is no separate class to keep in sync. The unselected tab also takes
+    <code>tabindex="-1"</code> so the arrow keys, not Tab, move between tabs.
+  </p>
+
+  <div class="tray tray--canvas">
+    <div class="segmented" role="tablist" aria-label="Period">
+      <button type="button" class="segmented__option" role="tab" id="demo-tab-week" aria-selected="true">Week</button>
+      <button type="button" class="segmented__option" role="tab" id="demo-tab-month" aria-selected="false" tabindex="-1">Month</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     FIELDS
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-fields">
+  <h2 id="h-fields">Inputs &amp; search</h2>
+  <p>
+    Fields are pill-shaped to echo the buttons. Borders use <code>--border-strong</code>
+    (3.32:1), which clears the WCAG 1.4.11 non-text contrast requirement — a 1px hairline
+    border would not.
+  </p>
+
+  <div class="tray tray--stack">
+    <div class="field">
+      <label class="field__label" for="f-default">Daily calorie goal</label>
+      <input class="input" id="f-default" type="text" inputmode="numeric" value="2050">
+      <span class="field__hint">Based on your height, weight and activity level.</span>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="f-placeholder">Meal name</label>
+      <input class="input" id="f-placeholder" type="text" placeholder="e.g. Avocado power bowl">
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="f-hover">Hover</label>
+      <input class="input is-hover" id="f-hover" type="text" value="Berry protein oats">
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="f-focus">Focus</label>
+      <input class="input is-focus" id="f-focus" type="text" value="Green crunch salad">
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="f-error">Portion size</label>
+      <input class="input is-error" id="f-error" type="text" value="-200" aria-invalid="true" aria-describedby="f-error-msg">
+      <span class="field__error" id="f-error-msg">
+        <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.01"/></svg>
+        Portion size must be greater than zero.
+      </span>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="f-disabled">Synced from Health app</label>
+      <input class="input" id="f-disabled" type="text" value="1 530 kcal" disabled>
+      <span class="field__hint">Disconnect the Health app to edit this manually.</span>
+    </div>
+  </div>
+
+  <h3>Search field</h3>
+  <div class="tray tray--stack">
+    <div class="search">
+      <svg class="search__icon icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <label class="sr-only" for="s-default">Search recipes</label>
+      <input class="input" id="s-default" type="search" placeholder="Search 5,000+ healthy meals">
+    </div>
+
+    <div class="search search--clearable">
+      <svg class="search__icon icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <label class="sr-only" for="s-focus">Search recipes</label>
+      <input class="input is-focus" id="s-focus" type="search" value="avocado">
+      <button type="button" class="field-action" aria-label="Clear search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     PORTION ADJUSTER
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-portion">
+  <h2 id="h-portion">Portion adjuster</h2>
+  <p>
+    A stepper for the serving size on the product and scan-result screens. The two round
+    buttons carry an <code>aria-label</code> each, because a minus glyph alone says nothing;
+    the amount between them is real text, not a value baked into an image.
+  </p>
+  <p>
+    The unit sits under the number as a separate <code>.portion__label</code> rather than inside it,
+    so the display face applies to the figure only and the uppercase micro-label keeps its own tracking.
+  </p>
+
+  <div class="tray tray--canvas">
+    <div class="portion" style="width: var(--screen-width); max-width: 100%">
+      <button type="button" class="portion__btn" aria-label="Decrease portion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+      <div class="portion__value">
+        <span class="portion__amount">150</span>
+        <span class="portion__label">grams</span>
+      </div>
+      <button type="button" class="portion__btn" aria-label="Increase portion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+    </div>
+  </div>
+
+  <div class="tray tray--canvas">
+    <div class="specimen"><span class="specimen__label">Hover</span>
+      <button type="button" class="portion__btn is-hover" aria-label="Increase portion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+    <div class="specimen"><span class="specimen__label">Active</span>
+      <button type="button" class="portion__btn is-active" aria-label="Increase portion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     CARDS
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-cards">
+  <h2 id="h-cards">Cards</h2>
+
+  <h3>Recipe card</h3>
+  <p>
+    The media area is a gradient placeholder standing in for a photograph. In production it
+    is an <code>&lt;img&gt;</code> whose <code>alt</code> describes the dish, e.g.
+    <code>alt="Avocado power bowl topped with seeds and lime"</code>.
+  </p>
+  <p>
+    The card is <code>width: 100%</code> capped at <code>--recipe-card-width</code>, so it fills a
+    sized parent &mdash; a grid track or a screen column &mdash; and stops at one card's width.
+    A parent sized by its own content gives that <code>100%</code> nothing to resolve against, and
+    the card silently shrinks to whatever its longest tag happens to need. That is why the three
+    specimens below are given the same width explicitly: without it these cards would come out at
+    three different sizes, and the difference would be the tag text, not the component.
+  </p>
+  <div class="tray tray--canvas" style="align-items: flex-start">
+    <div class="specimen" style="width: var(--recipe-card-width)"><span class="specimen__label">Default</span>
+      <article class="card recipe-card" tabindex="0">
+        <!-- Production: <img class="recipe-card__media" src="..." alt="Avocado power bowl topped with seeds and lime"> -->
+        <div class="recipe-card__media" role="img" aria-label="Avocado power bowl topped with seeds and lime" style="--dish: url('assets/dishes/avocado-power-bowl.jpg')">
+          <span class="tag tag--cream recipe-card__badge">15 min</span>
+        </div>
+        <h4 class="recipe-card__title">Avocado power bowl</h4>
+        <p class="recipe-card__meta">420 kcal · 28g protein</p>
+        <div class="recipe-card__tags">
+          <span class="tag tag--subtle">Vegan</span>
+          <span class="tag tag--subtle">High fibre</span>
+        </div>
+      </article></div>
+
+    <div class="specimen" style="width: var(--recipe-card-width)"><span class="specimen__label">Hover</span>
+      <article class="card recipe-card is-hover" tabindex="0">
+        <div class="recipe-card__media" role="img" aria-label="Berry protein oats in a glass jar" style="--dish: url('assets/dishes/berry-protein-oats.jpg')">
+          <span class="tag tag--cream recipe-card__badge">8 min</span>
+        </div>
+        <h4 class="recipe-card__title">Berry protein oats</h4>
+        <p class="recipe-card__meta">310 kcal · 22g protein</p>
+        <div class="recipe-card__tags"><span class="tag tag--subtle">Breakfast</span></div>
+      </article></div>
+
+    <div class="specimen" style="width: var(--recipe-card-width)"><span class="specimen__label">Focus</span>
+      <article class="card recipe-card is-focus" tabindex="0">
+        <div class="recipe-card__media" role="img" aria-label="Green crunch salad with cucumber and edamame" style="--dish: url('assets/dishes/green-crunch-salad.jpg')">
+          <span class="tag tag--brand recipe-card__badge">New</span>
+        </div>
+        <h4 class="recipe-card__title">Green crunch salad</h4>
+        <p class="recipe-card__meta">260 kcal · 12g protein</p>
+        <div class="recipe-card__tags"><span class="tag tag--subtle">Low carb</span></div>
+      </article></div>
+  </div>
+
+  <h3>Meal log card</h3>
+  <div class="tray tray--stack tray--canvas">
+    <article class="card meal-card">
+      <span class="meal-card__check" aria-hidden="true">
+        <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg>
+      </span>
+      <div class="meal-card__body">
+        <h4 class="meal-card__title">Avocado toast</h4>
+        <p class="meal-card__meta">Logged 09:14 · 14g protein · 22g carbs · 18g fat</p>
+      </div>
+      <span class="meal-card__kcal">320<span class="sr-only"> kilocalories</span></span>
+    </article>
+
+    <article class="card meal-card meal-card--pending">
+      <span class="meal-card__check" aria-hidden="true">
+        <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+      </span>
+      <div class="meal-card__body">
+        <h4 class="meal-card__title">Dinner</h4>
+        <p class="meal-card__meta">Not logged yet · 520 kcal remaining today</p>
+      </div>
+      <span class="meal-card__kcal" style="color: var(--text-disabled)">—</span>
+    </article>
+
+    <article class="card meal-card">
+      <span class="meal-card__check" style="background: var(--feedback-warning-surface); color: var(--feedback-warning-text)" aria-hidden="true">
+        <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8v5M12 16.5v.01"/><path d="M10.3 4.3L2.6 18a1.8 1.8 0 0 0 1.6 2.7h15.6A1.8 1.8 0 0 0 21.4 18L13.7 4.3a1.9 1.9 0 0 0-3.4 0z"/></svg>
+      </span>
+      <div class="meal-card__body">
+        <h4 class="meal-card__title">Late-night snack</h4>
+        <p class="meal-card__meta" style="color: var(--feedback-warning-text)">Puts you 180 kcal over today's goal</p>
+      </div>
+      <span class="meal-card__kcal">700<span class="sr-only"> kilocalories</span></span>
+    </article>
+  </div>
+
+  <h3>Result card</h3>
+  <p>
+    The confirmation banner at the top of the scan result. <code>.card--success</code> drops the
+    card's border and shadow and takes the success surface, so it reads as feedback rather than
+    as another content card. The tick is decorative &mdash; the outcome is carried by
+    <code>.card__title</code>, which is real text.
+  </p>
+  <div class="tray tray--canvas">
+    <div class="card card--success" style="width: var(--screen-width); max-width: 100%">
+      <span class="card__icon" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+      <div>
+        <h4 class="card__title">Food recognised</h4>
+        <p class="card__meta">High confidence match</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Profile card</h3>
+  <p>
+    The identity row on the You screen. <code>.avatar</code> holds the initial as text on the
+    lime-to-forest gradient and is marked <code>aria-hidden</code>, because the name sits right
+    beside it and would otherwise be announced twice.
+  </p>
+  <p>
+    <code>.profile</code> sets <code>justify-content: flex-start</code> explicitly. It has to: the card
+    also carries <code>.screen__ring</code> for its vertical rhythm, and that class centres its
+    contents &mdash; without the override the avatar and name would float in from the card's left edge.
+  </p>
+  <div class="tray tray--canvas">
+    <div class="card profile" style="width: var(--screen-width); max-width: 100%">
+      <span class="avatar" aria-hidden="true">J</span>
+      <div>
+        <h4 class="profile__name">John Bennett</h4>
+        <p class="profile__meta">2 050 kcal daily goal &middot; 12-day streak</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Dark accent card</h3>
+  <p>The forest surface from the stylescape's quote card, retained as a punctuation element inside the light theme.</p>
+  <div class="tray tray--canvas">
+    <article class="card card--dark" style="max-width: 420px">
+      <p style="font-size: var(--font-size-18); line-height: var(--line-height-normal); font-weight: var(--font-weight-semibold); margin: 0 0 var(--spacing-12)">
+        "Progress isn't loud. It's the small bite you choose today, and again tomorrow."
+      </p>
+      <p style="font-size: var(--font-size-10); letter-spacing: var(--tracking-label); text-transform: uppercase; font-weight: var(--font-weight-bold); color: var(--text-on-inverse-muted); margin: 0">
+        — The Sprout mindset
+      </p>
+    </article>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     CALORIE RING
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-ring">
+  <h2 id="h-ring">Calorie progress ring</h2>
+  <p>
+    Translated from the dark tracker screen: the lime stroke is unchanged, but the track
+    becomes <code>--surface-sunken</code> instead of a dark fill. Progress is driven by a
+    single custom property, <code>--ring-progress</code> (0–1), so no JavaScript maths is
+    needed to set it. The ring is a <code>role="img"</code> with a text label, and the
+    numbers below it repeat the same information for screen readers.
+  </p>
+
+  <div class="tray tray--canvas">
+    <div class="specimen"><span class="specimen__label">In progress · 75%</span>
+      <div class="ring" style="--ring-progress: 0.746" role="img" aria-label="1530 of 2050 kilocalories consumed, 520 remaining">
+        <svg class="ring__svg" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring__track" cx="100" cy="100" r="93"/>
+          <circle class="ring__fill" cx="100" cy="100" r="93"/>
+        </svg>
+        <div class="ring__center" aria-hidden="true">
+          <span class="ring__value">1 530</span>
+          <span class="ring__unit">of 2 050 kcal</span>
+          <span class="ring__remaining"><span class="badge badge--lime"><span class="badge__dot" aria-hidden="true"></span>520 kcal left</span></span>
+        </div>
+      </div></div>
+
+    <div class="specimen"><span class="specimen__label">Just started · 18%</span>
+      <div class="ring" style="--ring-progress: 0.18" role="img" aria-label="370 of 2050 kilocalories consumed, 1680 remaining">
+        <svg class="ring__svg" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring__track" cx="100" cy="100" r="93"/>
+          <circle class="ring__fill" cx="100" cy="100" r="93"/>
+        </svg>
+        <div class="ring__center" aria-hidden="true">
+          <span class="ring__value">370</span>
+          <span class="ring__unit">of 2 050 kcal</span>
+          <span class="ring__remaining"><span class="badge badge--lime"><span class="badge__dot" aria-hidden="true"></span>1 680 kcal left</span></span>
+        </div>
+      </div></div>
+
+    <div class="specimen"><span class="specimen__label">Goal met · 100%</span>
+      <div class="ring ring--complete" style="--ring-progress: 1" role="img" aria-label="2050 of 2050 kilocalories consumed. Daily goal met.">
+        <svg class="ring__svg" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring__track" cx="100" cy="100" r="93"/>
+          <circle class="ring__fill" cx="100" cy="100" r="93"/>
+        </svg>
+        <div class="ring__center" aria-hidden="true">
+          <span class="ring__value">2 050</span>
+          <span class="ring__unit">of 2 050 kcal</span>
+          <span class="ring__remaining" style="color: var(--feedback-success); font-weight: var(--font-weight-bold)">Goal met</span>
+        </div>
+      </div></div>
+
+    <div class="specimen"><span class="specimen__label">Over budget</span>
+      <div class="ring ring--over" style="--ring-progress: 1" role="img" aria-label="2320 of 2050 kilocalories consumed. 270 over your daily goal.">
+        <svg class="ring__svg" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring__track" cx="100" cy="100" r="93"/>
+          <circle class="ring__fill" cx="100" cy="100" r="93"/>
+        </svg>
+        <div class="ring__center" aria-hidden="true">
+          <span class="ring__value">2 320</span>
+          <span class="ring__unit">of 2 050 kcal</span>
+          <span class="ring__remaining" style="color: var(--feedback-warning-text); font-weight: var(--font-weight-bold)">270 over</span>
+        </div>
+      </div></div>
+  </div>
+
+  <div class="note">
+    <strong>Why colour is never the only signal.</strong> The over-budget ring switches to
+    orange, but it also changes the label to "270 over". Users who cannot distinguish the
+    lime and orange strokes still get the state from the text (WCAG 1.4.1).
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     MACRO CHIPS
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-macros">
+  <h2 id="h-macros">Macro stat cards</h2>
+  <p>
+    Each card is a vessel: <code>--macro-value</code> read against the nutrient's daily
+    target (both in <code>tokens.css</code>) sets how full it is, and the surface is a
+    drifting wave rather than a flat line. The fill rises from empty on load, in step with
+    the calorie ring, then keeps a slow undulation at rest.
+  </p>
+  <p>
+    The text is painted twice at the same coordinates — dark on the light card, white
+    inside the fill — and the fill is opaque and sits between them. Whatever it covers of
+    the dark copy is gone rather than dimmed, and the white copy takes its place pixel for
+    pixel, so a glyph the surface happens to cross stays legible on both sides of the
+    waterline. Measured on the fill: the value clears 5.8:1 and the target line 4.9:1 at
+    worst, against 3:1 and 4.5:1 required.
+  </p>
+  <p>
+    A card at or past its target has no surface left to ripple, so
+    <code>.macro--full</code> flattens the fill to the brim — otherwise the crest would
+    straddle the top edge and bite scallops out of it. Cards describing a single dish carry
+    no target, where a level would mean nothing, so they drop both the target line and the
+    fill.
+  </p>
+
+  <div class="tray tray--canvas">
+                    <div class="macros">
+                      <div class="macro macro--protein" style="--macro-value: 92">
+                        <div class="macro__body">
+                          <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Protein</p>
+                          <p class="macro__value">92<span class="macro__unit">g</span></p>
+                          <p class="macro__target">/ 120g target<span class="sr-only">, 77% reached</span></p>
+                        </div>
+                        <div class="macro__liquid" aria-hidden="true">
+                          <div class="macro__wave">
+                            <div class="macro__body macro__body--ink">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Protein</p>
+                              <p class="macro__value">92<span class="macro__unit">g</span></p>
+                              <p class="macro__target">/ 120g target</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="macro macro--carbs" style="--macro-value: 160">
+                        <div class="macro__body">
+                          <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Carbs</p>
+                          <p class="macro__value">160<span class="macro__unit">g</span></p>
+                          <p class="macro__target">/ 245g target<span class="sr-only">, 65% reached</span></p>
+                        </div>
+                        <div class="macro__liquid" aria-hidden="true">
+                          <div class="macro__wave">
+                            <div class="macro__body macro__body--ink">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Carbs</p>
+                              <p class="macro__value">160<span class="macro__unit">g</span></p>
+                              <p class="macro__target">/ 245g target</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="macro macro--fat" style="--macro-value: 52">
+                        <div class="macro__body">
+                          <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Fat</p>
+                          <p class="macro__value">52<span class="macro__unit">g</span></p>
+                          <p class="macro__target">/ 70g target<span class="sr-only">, 74% reached</span></p>
+                        </div>
+                        <div class="macro__liquid" aria-hidden="true">
+                          <div class="macro__wave">
+                            <div class="macro__body macro__body--ink">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Fat</p>
+                              <p class="macro__value">52<span class="macro__unit">g</span></p>
+                              <p class="macro__target">/ 70g target</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  </div>
+
+  <table>
+    <caption>
+      Macro numerals on the card wash. The dry half of the value carries the
+      nutrient's ink shade &mdash; the dark end of the same gradient the liquid
+      is painted with &mdash; so one nutrient reads as one hue across the
+      waterline. Measured against the 5% wash each card actually sits on.
+    </caption>
+    <thead><tr><th scope="col">Macro</th><th scope="col">Accent</th><th scope="col">Numeral (ink)</th><th scope="col">Card wash</th><th scope="col">Ratio</th><th scope="col">Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>Protein</td><td><code>#4E9420</code></td><td><code>#356112</code></td><td><code>#F6FAF4</code></td><td class="ratio">6.93</td><td class="pass">AA</td></tr>
+      <tr><td>Carbs</td><td><code>#0E8F79</code></td><td><code>#08574A</code></td><td><code>#F3F9F8</code></td><td class="ratio">7.97</td><td class="pass">AAA</td></tr>
+      <tr><td>Fat</td><td><code>#E2542F</code></td><td><code>#993716</code></td><td><code>#FEF6F5</code></td><td class="ratio">6.77</td><td class="pass">AA</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ======================================================================
+     STAT READOUT & CHART
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-stat">
+  <h2 id="h-stat">Stat readout</h2>
+  <p>
+    The big figure on the detail and stats screens. The row aligns on
+    <code>baseline</code>, not centre, so the uppercase unit sits on the numeral's baseline
+    however large the figure grows.
+  </p>
+  <div class="tray tray--canvas">
+    <div class="stat">
+      <span class="stat__value">320</span>
+      <span class="stat__unit">kcal</span>
+    </div>
+  </div>
+  <div class="tray tray--canvas">
+    <div class="stat">
+      <span class="stat__value">1 807</span>
+      <span class="stat__unit">kcal daily average</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     CHART
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-chart">
+  <h2 id="h-chart">Weekly chart</h2>
+  <p>
+    Bar heights come from a single custom property per bar, <code>--bar</code>, as a 0&ndash;1
+    fraction of the goal. Nothing about the drawing is load-bearing: the whole chart is one
+    <code>role="img"</code> with an <code>aria-label</code> that spells out every figure, so a
+    screen reader gets the numbers rather than seven unlabelled boxes.
+  </p>
+  <p>
+    A bar over the goal takes <code>.chart__bar--over</code> and today's takes
+    <code>.chart__bar--today</code>, which adds an inset edge &mdash; today is marked by outline as well
+    as by fill, and <code>.chart__col--today</code> darkens its day letter to match.
+    <code>.chart--wide</code> is the month view: fewer bars, so each gets more width.
+  </p>
+
+  <div class="tray tray--canvas">
+    <div class="chart" role="img" aria-label="Mon 1680, Tue 1920, Wed 1540, Thu 2010, Fri 1830, Sat 2140, Sun 1530. Goal 2 050 kcal.">
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar" style="--bar: 0.82"></span></div><span class="chart__day">M</span></div>
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar" style="--bar: 0.94"></span></div><span class="chart__day">T</span></div>
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar" style="--bar: 0.75"></span></div><span class="chart__day">W</span></div>
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar" style="--bar: 0.98"></span></div><span class="chart__day">T</span></div>
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar" style="--bar: 0.89"></span></div><span class="chart__day">F</span></div>
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar chart__bar--over" style="--bar: 1.00"></span></div><span class="chart__day">S</span></div>
+      <div class="chart__col chart__col--today"><div class="chart__track"><span class="chart__bar chart__bar--today" style="--bar: 0.75"></span></div><span class="chart__day">S</span></div>
+    </div>
+  </div>
+
+  <h3>Month view</h3>
+  <div class="tray tray--canvas">
+    <div class="chart chart--wide" role="img" aria-label="W1 1740, W2 1890, W3 1650, W4 1807. Goal 2 050 kcal.">
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar" style="--bar: 0.85"></span></div><span class="chart__day">W1</span></div>
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar" style="--bar: 0.92"></span></div><span class="chart__day">W2</span></div>
+      <div class="chart__col"><div class="chart__track"><span class="chart__bar" style="--bar: 0.80"></span></div><span class="chart__day">W3</span></div>
+      <div class="chart__col chart__col--today"><div class="chart__track"><span class="chart__bar chart__bar--today" style="--bar: 0.88"></span></div><span class="chart__day">W4</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     STREAK
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-streak">
+  <h2 id="h-streak">Streak indicator</h2>
+  <p>
+    A seven-dot row for the trailing week. Today's dot is lime with a forest outline, so it
+    is distinguishable by shape as well as colour. The dot row is decorative; the count
+    beside it is the accessible text.
+  </p>
+
+  <div class="tray tray--stack">
+    <div class="streak">
+      <span class="streak__dots" aria-hidden="true">
+        <span class="streak__dot streak__dot--on"></span>
+        <span class="streak__dot streak__dot--on"></span>
+        <span class="streak__dot streak__dot--on"></span>
+        <span class="streak__dot streak__dot--on"></span>
+        <span class="streak__dot streak__dot--on"></span>
+        <span class="streak__dot streak__dot--today"></span>
+        <span class="streak__dot"></span>
+      </span>
+      <span class="streak__label">Streak · <span class="count">12</span> days</span>
+    </div>
+
+    <div class="streak">
+      <span class="streak__dots" aria-hidden="true">
+        <span class="streak__dot streak__dot--on"></span>
+        <span class="streak__dot streak__dot--on"></span>
+        <span class="streak__dot"></span>
+        <span class="streak__dot"></span>
+        <span class="streak__dot"></span>
+        <span class="streak__dot"></span>
+        <span class="streak__dot"></span>
+      </span>
+      <span class="streak__label">Streak · <span class="count">2</span> days</span>
+    </div>
+
+    <div class="streak">
+      <span class="streak__dots" aria-hidden="true">
+        <span class="streak__dot"></span><span class="streak__dot"></span><span class="streak__dot"></span>
+        <span class="streak__dot"></span><span class="streak__dot"></span><span class="streak__dot"></span>
+        <span class="streak__dot"></span>
+      </span>
+      <span class="streak__label" style="color: var(--text-secondary)">No streak yet — log a meal to start one</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     STREAK MODAL
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-streak-modal">
+  <h2 id="h-streak-modal">Streak modal</h2>
+  <p>
+    The streak badge in a screen header is a <code>&lt;button&gt;</code>, not a label: pressing it
+    opens the week behind the number. The badge keeps every visual it has as a static chip &mdash;
+    <code>button.badge</code> only removes the UA button styling and adds hover, active and focus states.
+  </p>
+  <p>
+    The panel is a native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>, so the
+    browser supplies the top layer, the focus trap, Esc-to-close and the inert page behind it. Both
+    close controls sit in a <code>&lt;form method="dialog"&gt;</code> and need no script; the one
+    handler in <code>components.js</code> exists only to open the dialog and to close it when the
+    click lands on the backdrop.
+  </p>
+  <p>
+    Inside, <code>.week</code> marks each day by shape as well as colour: a finished day is a filled
+    check, today is the lime chip with a forest outline, and a day still to come is an empty well.
+    Each column carries an <code>.sr-only</code> word so the row reads as "Mon, tracked" rather than
+    as seven unlabelled circles.
+  </p>
+
+  <div class="tray tray--canvas">
+    <button type="button" class="badge streak" data-modal-open="streak-modal"
+            aria-haspopup="dialog" aria-label="12 day streak. Open your week">
+      <span class="streak__dots" aria-hidden="true"><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--today"></span></span>
+      <span class="streak__label">12</span>
+      <svg class="badge__flame" viewBox="7 2 10 14.2" fill="currentColor" aria-hidden="true"><path d="M12 2c2.8 4.2 5 6 5 9.2a5 5 0 0 1-10 0c0-1.3.4-2.3 1.1-3.3.3 1 .9 1.7 1.7 2 .2-3 1.4-5.6 2.2-7.9z"/></svg>
+    </button>
+  </div>
+
+  <h3>The panel, laid open</h3>
+  <p>The same markup with the dialog chrome removed, so the panel can be inspected in place.</p>
+  <div class="tray tray--canvas">
+    <div class="modal__panel" style="width: var(--modal-width)">
+      <svg class="modal__flame" viewBox="7 2 10 14.2" fill="currentColor" aria-hidden="true"><path d="M12 2c2.8 4.2 5 6 5 9.2a5 5 0 0 1-10 0c0-1.3.4-2.3 1.1-3.3.3 1 .9 1.7 1.7 2 .2-3 1.4-5.6 2.2-7.9z"/></svg>
+      <h4 class="modal__title">Good work!</h4>
+      <p class="modal__text">You&rsquo;ve looked after your eating <span class="count">12 days</span> in a row. Keep the run going.</p>
+      <ul class="week" aria-label="This week">
+        <li class="week__day week__day--done"><span class="week__label">Mon</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+        <li class="week__day week__day--done"><span class="week__label">Tue</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+        <li class="week__day week__day--done"><span class="week__label">Wed</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+        <li class="week__day week__day--done"><span class="week__label">Thu</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+        <li class="week__day week__day--today" aria-current="date"><span class="week__label">Fri</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">today, tracked</span></li>
+        <li class="week__day"><span class="week__label">Sat</span><span class="week__mark"></span><span class="sr-only">still to come</span></li>
+        <li class="week__day"><span class="week__label">Sun</span><span class="week__mark"></span><span class="sr-only">still to come</span></li>
+      </ul>
+      <button type="button" class="btn btn--primary btn--block">Keep it up</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     LIST ITEMS
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-list">
+  <h2 id="h-list">List items</h2>
+  <p>The recipe result rows from the "Find a Recipe" screen. Each row is a link with a 44px minimum height.</p>
+
+  <div class="tray tray--canvas">
+    <ul class="list">
+      <li class="list__item">
+        <a class="list__link" href="#h-list">
+          <span class="list__thumb" role="img" aria-label="Avocado power bowl" style="--dish: url('assets/dishes/avocado-power-bowl.jpg')"></span>
+          <span class="list__body">
+            <span class="list__title">Avocado power bowl</span>
+            <span class="list__meta">420 kcal · 15 min</span>
+          </span>
+          <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </a>
+      </li>
+      <li class="list__item">
+        <a class="list__link is-hover" href="#h-list">
+          <span class="list__thumb list__thumb--deep" role="img" aria-label="Berry protein oats" style="--dish: url('assets/dishes/berry-protein-oats.jpg')"></span>
+          <span class="list__body">
+            <span class="list__title">Berry protein oats</span>
+            <span class="list__meta">310 kcal · 8 min · hover</span>
+          </span>
+          <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </a>
+      </li>
+      <li class="list__item">
+        <a class="list__link is-focus" href="#h-list">
+          <span class="list__thumb list__thumb--bright" role="img" aria-label="Green crunch salad" style="--dish: url('assets/dishes/green-crunch-salad.jpg')"></span>
+          <span class="list__body">
+            <span class="list__title">Green crunch salad</span>
+            <span class="list__meta">260 kcal · 12 min · focus</span>
+          </span>
+          <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </a>
+      </li>
+      <li class="list__item">
+        <span class="list__link" aria-disabled="true">
+          <span class="list__thumb" role="img" aria-label="Miso ramen bowl"></span>
+          <span class="list__body">
+            <span class="list__title">Miso ramen bowl</span>
+            <span class="list__meta">Unavailable · contains an allergen you flagged</span>
+          </span>
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <h3>Value rows</h3>
+  <p>
+    The settings rows on the You screen. These open a picker on the same screen rather than
+    navigating, so the row is a <code>&lt;button&gt;</code>, not an <code>&lt;a&gt;</code> &mdash;
+    <code>.list__link</code> styles all three tags alike, and the tag is chosen by what the row does.
+    <code>.list__trailing</code> holds the current value between the label and the chevron.
+  </p>
+  <div class="tray tray--canvas">
+    <ul class="list">
+      <li class="list__item"><button type="button" class="list__link">
+        <span class="list__body"><span class="list__title">Daily calories</span></span>
+        <span class="list__trailing">2 050 kcal</span>
+        <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button></li>
+      <li class="list__item"><button type="button" class="list__link is-hover">
+        <span class="list__body"><span class="list__title">Units</span></span>
+        <span class="list__trailing">Metric</span>
+        <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button></li>
+      <li class="list__item"><button type="button" class="list__link is-focus">
+        <span class="list__body"><span class="list__title">Notifications</span></span>
+        <span class="list__trailing">On</span>
+        <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button></li>
+    </ul>
+  </div>
+
+  <h3>Static rows</h3>
+  <p>
+    An ingredient list is not interactive, so the row drops to a <code>&lt;span&gt;</code> with no
+    chevron: nothing focusable, nothing that promises a destination. Compare the disabled row above,
+    which stays a <code>&lt;span&gt;</code> but adds <code>aria-disabled="true"</code> because it names
+    something that <em>would</em> be actionable if it were available.
+  </p>
+  <div class="tray tray--canvas">
+    <ul class="list">
+      <li class="list__item"><span class="list__link">
+        <span class="list__body"><span class="list__title">Quinoa</span><span class="list__meta">80 g, cooked</span></span>
+      </span></li>
+      <li class="list__item"><span class="list__link">
+        <span class="list__body"><span class="list__title">Avocado</span><span class="list__meta">1 medium</span></span>
+      </span></li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     INSTRUCTION STEPS
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-steps">
+  <h2 id="h-steps">Instruction steps</h2>
+  <p>
+    The method on a recipe screen. It is an <code>&lt;ol&gt;</code>, so the order survives with the
+    CSS off and the numbering is real rather than drawn &mdash; <code>.steps__num</code> repeats it
+    visually inside a lime disc.
+  </p>
+  <div class="tray tray--canvas">
+    <ol class="steps">
+      <li class="steps__item"><span class="steps__num">1</span><p class="steps__text">Cook the quinoa and let it cool for a few minutes.</p></li>
+      <li class="steps__item"><span class="steps__num">2</span><p class="steps__text">Halve the avocado, scoop it out and slice it lengthways.</p></li>
+      <li class="steps__item"><span class="steps__num">3</span><p class="steps__text">Quarter the tomatoes and fold them through the quinoa.</p></li>
+      <li class="steps__item"><span class="steps__num">4</span><p class="steps__text">Top with avocado and pumpkin seeds, then season to taste.</p></li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     SCAN VIEWFINDER
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-viewfinder">
+  <h2 id="h-viewfinder">Scan viewfinder</h2>
+  <p>
+    The camera region on the Scan screen, and the one dark surface in a light theme. It is dark
+    on purpose: it stands in for a live camera image, which is a media surface rather than UI
+    chrome, so the theme's rules stop at its edge. Everything around it stays light.
+  </p>
+  <p>
+    The four corner brackets are one class plus a position modifier each &mdash; each corner drops
+    the two borders it does not need and rounds the one outer angle it keeps.
+    <code>.viewfinder__subject</code> is the stand-in for whatever the camera sees; the hint text
+    below it uses <code>--text-on-inverse-muted</code>, the only muted grey that still passes AA on
+    the deep forest surface.
+  </p>
+
+  <div class="tray tray--canvas">
+    <div class="viewfinder" style="width: var(--screen-width); max-width: 100%">
+      <div class="viewfinder__guide">
+        <span class="viewfinder__subject" aria-hidden="true"></span>
+        <span class="viewfinder__corner viewfinder__corner--tl"></span>
+        <span class="viewfinder__corner viewfinder__corner--tr"></span>
+        <span class="viewfinder__corner viewfinder__corner--bl"></span>
+        <span class="viewfinder__corner viewfinder__corner--br"></span>
+      </div>
+      <p class="viewfinder__hint">Point the camera at your food</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     BOTTOM NAV
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-nav">
+  <h2 id="h-nav">Bottom navigation</h2>
+  <p>
+    Five destinations. The current tab is marked with <code>aria-current="page"</code> and
+    gains a lime pill behind its icon — so the active state is conveyed by shape and by
+    assistive-technology semantics, not colour alone.
+  </p>
+  <p>
+    The raised Scan circle is the one tab whose glyph sits <em>on</em> that lime rather than
+    beside it, so it cannot keep the white it wears over its dark resting circle — white on
+    lime is 1.17:1. Active, it swaps to <code>--nav-fab-active-fg</code>, the forest that lime
+    is built to carry, at 14.73:1.
+  </p>
+
+  <h3>Default &mdash; raised Scan, no label</h3>
+  <div class="tray tray--canvas" style="padding-bottom: 0">
+    <nav class="bottom-nav" aria-label="Main">
+      <a class="bottom-nav__item" href="#h-nav" aria-current="page">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span>
+        <span class="bottom-nav__label">Home</span>
+      </a>
+      <a class="bottom-nav__item" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span>
+        <span class="bottom-nav__label">Meals</span>
+      </a>
+      <a class="bottom-nav__item bottom-nav__item--scan is-hover" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <span class="bottom-nav__label">Scan</span>
+      </a>
+      <a class="bottom-nav__item is-focus" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span>
+        <span class="bottom-nav__label">Stats</span>
+      </a>
+      <a class="bottom-nav__item" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+        <span class="bottom-nav__label">You</span>
+      </a>
+    </nav>
+  </div>
+
+  <h3>Scan as the current page</h3>
+  <div class="tray tray--canvas" style="padding-bottom: 0">
+    <nav class="bottom-nav" aria-label="Main">
+      <a class="bottom-nav__item" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span>
+        <span class="bottom-nav__label">Home</span>
+      </a>
+      <a class="bottom-nav__item" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span>
+        <span class="bottom-nav__label">Meals</span>
+      </a>
+      <a class="bottom-nav__item bottom-nav__item--scan" aria-current="page" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <span class="bottom-nav__label">Scan</span>
+      </a>
+      <a class="bottom-nav__item is-focus" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span>
+        <span class="bottom-nav__label">Stats</span>
+      </a>
+      <a class="bottom-nav__item" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+        <span class="bottom-nav__label">You</span>
+      </a>
+    </nav>
+  </div>
+
+  <h3>Variant &mdash; raised Scan with a label</h3>
+  <p>Same button, keeping a small label in the same dark green. Use this if usability testing shows the icon alone is not clear enough.</p>
+  <div class="tray tray--canvas" style="padding-bottom: 0">
+    <nav class="bottom-nav bottom-nav--scan-labelled" aria-label="Main, labelled Scan variant">
+      <a class="bottom-nav__item" href="#h-nav" aria-current="page">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span>
+        <span class="bottom-nav__label">Home</span>
+      </a>
+      <a class="bottom-nav__item" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span>
+        <span class="bottom-nav__label">Meals</span>
+      </a>
+      <a class="bottom-nav__item bottom-nav__item--scan is-hover" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <span class="bottom-nav__label">Scan</span>
+      </a>
+      <a class="bottom-nav__item is-focus" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span>
+        <span class="bottom-nav__label">Stats</span>
+      </a>
+      <a class="bottom-nav__item" href="#h-nav">
+        <span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+        <span class="bottom-nav__label">You</span>
+      </a>
+    </nav>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     SCREEN HEADER
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-screen-header">
+  <h2 id="h-screen-header">Screen header</h2>
+  <p>
+    Two headers share one class. On a detail screen <code>.screen__header</code> is the title
+    row: back control, <code>.screen__title</code>, trailing action. On the tab screens it is the
+    eyebrow row instead &mdash; the "TODAY" label on the left and the streak badge on the right &mdash;
+    with the big greeting headline living below it, outside the header.
+  </p>
+  <p>
+    When a detail screen has a back control but no trailing action, the slot is filled by an empty
+    <code>.screen__header-spacer</code> rather than left out. The header is
+    <code>justify-content: space-between</code>, so without it the title would slide right and sit
+    off-centre between the two edges. The spacer is exactly <code>--tap-min</code> wide, matching the
+    icon button it stands in for.
+  </p>
+
+  <h3>Title row, with a trailing action</h3>
+  <div class="tray tray--canvas">
+    <div class="screen__header" style="width: var(--screen-width); max-width: 100%">
+      <a class="btn btn--tertiary btn--icon" href="#h-screen-header" aria-label="Back"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+      <h4 class="screen__title">Product</h4>
+      <button type="button" class="btn btn--tertiary btn--icon" aria-label="Save to favourites"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5c0 5-7 9.5-7 9.5z"/></svg></button>
+    </div>
+  </div>
+
+  <h3>Title row, balanced by a spacer</h3>
+  <div class="tray tray--canvas">
+    <div class="screen__header" style="width: var(--screen-width); max-width: 100%">
+      <a class="btn btn--tertiary btn--icon" href="#h-screen-header" aria-label="Back"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+      <h4 class="screen__title">Add meal</h4>
+      <span class="screen__header-spacer"></span>
+    </div>
+  </div>
+
+  <h3>Eyebrow row</h3>
+  <div class="tray tray--canvas">
+    <div class="screen__header" style="width: var(--screen-width); max-width: 100%">
+      <p class="screen__eyebrow">
+        <span class="screen__eyebrow-dot" aria-hidden="true"></span>Today
+        <span class="screen__eyebrow-sep" aria-hidden="true"></span>
+        <span class="screen__date"></span>
+      </p>
+      <button type="button" class="badge streak" data-modal-open="streak-modal"
+              aria-haspopup="dialog" aria-label="12 day streak. Open your week">
+        <span class="streak__dots" aria-hidden="true"><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--today"></span></span>
+        <span class="streak__label">12</span>
+        <svg class="badge__flame" viewBox="7 2 10 14.2" fill="currentColor" aria-hidden="true"><path d="M12 2c2.8 4.2 5 6 5 9.2a5 5 0 0 1-10 0c0-1.3.4-2.3 1.1-3.3.3 1 .9 1.7 1.7 2 .2-3 1.4-5.6 2.2-7.9z"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ======================================================================
+     SCREENS IN COMPOSITION
+     ====================================================================== -->
+<section class="section section--screens" aria-labelledby="h-screens">
+  <h2 id="h-screens">Screens in composition</h2>
+  <p>
+    Three screens, each in a fixed <strong>440 &times; 956</strong> container
+    (<code>--screen-width</code> &times; <code>--screen-height</code>). The body fills the
+    height above the pinned nav bar and scrolls when content runs longer, exactly as a real
+    viewport does. Every size resolves from a token &mdash; there are no literal pixel
+    values in this markup.
+  </p>
+
+  <div class="screens">
+
+    <!-- 1. Tracker -->
+    <div class="screen">
+      <div class="screen__body">
+        <div class="screen__header">
+          <p class="screen__eyebrow">
+            <span class="screen__eyebrow-dot" aria-hidden="true"></span>Today
+            <span class="screen__eyebrow-sep" aria-hidden="true"></span>
+            <span class="screen__date"></span>
+          </p>
+          <button type="button" class="badge streak" data-modal-open="streak-modal"
+                  aria-haspopup="dialog" aria-label="12 day streak. Open your week">
+            <span class="streak__dots" aria-hidden="true"><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--on"></span><span class="streak__dot streak__dot--today"></span></span>
+            <span class="streak__label">12</span>
+            <svg class="badge__flame" viewBox="7 2 10 14.2" fill="currentColor" aria-hidden="true"><path d="M12 2c2.8 4.2 5 6 5 9.2a5 5 0 0 1-10 0c0-1.3.4-2.3 1.1-3.3.3 1 .9 1.7 1.7 2 .2-3 1.4-5.6 2.2-7.9z"/></svg>
+          </button>
+        </div>
+
+        <h3 class="screen__headline">Let&rsquo;s <span class="highlight">crush</span><br>it, <span class="screen__greeting-name"></span></h3>
+
+        <div class="screen__ring">
+          <div class="ring" style="--ring-progress: 0.746" role="img" aria-label="1530 of 2050 kilocalories consumed, 520 remaining">
+            <svg class="ring__svg" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="ring__track" cx="100" cy="100" r="93"/>
+              <circle class="ring__fill" cx="100" cy="100" r="93"/>
+            </svg>
+            <div class="ring__center" aria-hidden="true">
+              <span class="ring__value">1 530</span>
+              <span class="ring__unit">of 2 050 kcal</span>
+              <span class="ring__remaining"><span class="badge badge--lime"><span class="badge__dot" aria-hidden="true"></span>520 kcal left</span></span>
+            </div>
+          </div>
+        </div>
+
+                        <div class="macros screen__macros">
+                          <div class="macro macro--protein" style="--macro-value: 92">
+                            <div class="macro__body">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Protein</p>
+                              <p class="macro__value">92<span class="macro__unit">g</span></p>
+                              <p class="macro__target">/ 120g target<span class="sr-only">, 77% reached</span></p>
+                            </div>
+                            <div class="macro__liquid" aria-hidden="true">
+                              <div class="macro__wave">
+                                <div class="macro__body macro__body--ink">
+                                  <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Protein</p>
+                                  <p class="macro__value">92<span class="macro__unit">g</span></p>
+                                  <p class="macro__target">/ 120g target</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="macro macro--carbs" style="--macro-value: 160">
+                            <div class="macro__body">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Carbs</p>
+                              <p class="macro__value">160<span class="macro__unit">g</span></p>
+                              <p class="macro__target">/ 245g target<span class="sr-only">, 65% reached</span></p>
+                            </div>
+                            <div class="macro__liquid" aria-hidden="true">
+                              <div class="macro__wave">
+                                <div class="macro__body macro__body--ink">
+                                  <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Carbs</p>
+                                  <p class="macro__value">160<span class="macro__unit">g</span></p>
+                                  <p class="macro__target">/ 245g target</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="macro macro--fat" style="--macro-value: 52">
+                            <div class="macro__body">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Fat</p>
+                              <p class="macro__value">52<span class="macro__unit">g</span></p>
+                              <p class="macro__target">/ 70g target<span class="sr-only">, 74% reached</span></p>
+                            </div>
+                            <div class="macro__liquid" aria-hidden="true">
+                              <div class="macro__wave">
+                                <div class="macro__body macro__body--ink">
+                                  <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Fat</p>
+                                  <p class="macro__value">52<span class="macro__unit">g</span></p>
+                                  <p class="macro__target">/ 70g target</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+        <button type="button" class="btn btn--primary btn--block screen__cta">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Log a meal
+        </button>
+
+        <div class="screen__meals">
+          <h4 class="screen__section-title">Today&rsquo;s meals</h4>
+        <article class="card meal-card">
+          <span class="meal-card__check" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+          <div class="meal-card__body">
+            <h5 class="meal-card__title">Avocado toast</h5>
+            <p class="meal-card__meta">Logged 09:14 &middot; 14g protein</p>
+          </div>
+          <span class="meal-card__kcal">320<span class="sr-only"> kilocalories</span></span>
+        </article>
+        <article class="card meal-card">
+          <span class="meal-card__check" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+          <div class="meal-card__body">
+            <h5 class="meal-card__title">Berry protein oats</h5>
+            <p class="meal-card__meta">Logged 12:40 &middot; 22g protein</p>
+          </div>
+          <span class="meal-card__kcal">310<span class="sr-only"> kilocalories</span></span>
+        </article>
+        <article class="card meal-card">
+          <span class="meal-card__check" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+          <div class="meal-card__body">
+            <h5 class="meal-card__title">Green crunch salad</h5>
+            <p class="meal-card__meta">Logged 18:05 &middot; 12g protein</p>
+          </div>
+          <span class="meal-card__kcal">260<span class="sr-only"> kilocalories</span></span>
+        </article>
+        <article class="card meal-card meal-card--pending">
+          <span class="meal-card__check" aria-hidden="true"><svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></span>
+          <div class="meal-card__body">
+            <h5 class="meal-card__title">Dinner</h5>
+            <p class="meal-card__meta">Not logged yet &middot; 520 kcal remaining</p>
+          </div>
+          <span class="meal-card__kcal">&mdash;<span class="sr-only"> kilocalories</span></span>
+        </article>
+        </div>
+      </div>
+
+      <nav class="bottom-nav" aria-label="Tracker screen navigation">
+        <a class="bottom-nav__item" href="#h-screens" aria-current="page"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span><span class="bottom-nav__label">Home</span></a>
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span><span class="bottom-nav__label">Meals</span></a>
+        <a class="bottom-nav__item bottom-nav__item--scan" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span><span class="bottom-nav__label">Scan</span></a>
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span><span class="bottom-nav__label">Stats</span></a>
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="bottom-nav__label">You</span></a>
+      </nav>
+    </div>
+
+    <!-- 2. Recipe finder -->
+    <div class="screen">
+      <div class="screen__body">
+        <h3 class="screen__title">Find a recipe</h3>
+
+        <div class="search screen__search">
+          <svg class="search__icon icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <label class="sr-only" for="s-screen">Search recipes</label>
+          <input class="input" id="s-screen" type="search" placeholder="Search 5,000+ healthy meals">
+        </div>
+
+        <div class="screen__pills">
+          <button type="button" class="tag tag--brand" aria-pressed="true">All</button>
+          <button type="button" class="tag tag--outline" aria-pressed="false">Vegan</button>
+          <button type="button" class="tag tag--outline" aria-pressed="false">Under 400</button>
+          <button type="button" class="tag tag--outline" aria-pressed="false">High protein</button>
+        </div>
+
+        <ul class="list screen__list">
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__thumb" role="img" aria-label="Avocado power bowl" style="--dish: url('assets/dishes/avocado-power-bowl.jpg')"></span>
+            <span class="list__body"><span class="list__title">Avocado power bowl</span><span class="list__meta">420 kcal &middot; 15 min</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__thumb list__thumb--deep" role="img" aria-label="Berry protein oats" style="--dish: url('assets/dishes/berry-protein-oats.jpg')"></span>
+            <span class="list__body"><span class="list__title">Berry protein oats</span><span class="list__meta">310 kcal &middot; 8 min</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__thumb list__thumb--bright" role="img" aria-label="Green crunch salad" style="--dish: url('assets/dishes/green-crunch-salad.jpg')"></span>
+            <span class="list__body"><span class="list__title">Green crunch salad</span><span class="list__meta">260 kcal &middot; 12 min</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__thumb list__thumb--deep" role="img" aria-label="Miso ginger noodles" style="--dish: url('assets/dishes/miso-ginger-noodles.jpg')"></span>
+            <span class="list__body"><span class="list__title">Miso ginger noodles</span><span class="list__meta">480 kcal &middot; 20 min</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__thumb" role="img" aria-label="Sweet potato hash" style="--dish: url('assets/dishes/sweet-potato-hash.jpg')"></span>
+            <span class="list__body"><span class="list__title">Sweet potato hash</span><span class="list__meta">390 kcal &middot; 18 min</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__thumb list__thumb--bright" role="img" aria-label="Lemon herb quinoa" style="--dish: url('assets/dishes/lemon-herb-quinoa.jpg')"></span>
+            <span class="list__body"><span class="list__title">Lemon herb quinoa</span><span class="list__meta">340 kcal &middot; 14 min</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+        </ul>
+
+        <button type="button" class="btn btn--secondary btn--block screen__scan">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg>
+          Scan a meal instead
+        </button>
+      </div>
+
+      <nav class="bottom-nav" aria-label="Recipe screen navigation">
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span><span class="bottom-nav__label">Home</span></a>
+        <a class="bottom-nav__item" href="#h-screens" aria-current="page"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span><span class="bottom-nav__label">Meals</span></a>
+        <a class="bottom-nav__item bottom-nav__item--scan" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span><span class="bottom-nav__label">Scan</span></a>
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span><span class="bottom-nav__label">Stats</span></a>
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="bottom-nav__label">You</span></a>
+      </nav>
+    </div>
+
+    <!-- 3. Recipe detail -->
+    <div class="screen">
+      <div class="screen__body">
+        <div class="screen__header">
+          <button type="button" class="btn btn--tertiary btn--icon" aria-label="Back to recipe list">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <h3 class="screen__title">Recipe</h3>
+          <button type="button" class="btn btn--tertiary btn--icon" aria-label="Save to favourites">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5c0 5-7 9.5-7 9.5z"/></svg>
+          </button>
+        </div>
+
+        <!-- Production: <img class="recipe-hero" src="..." alt="Avocado power bowl topped with seeds and lime"> -->
+        <div class="recipe-hero screen__hero" role="img" aria-label="Avocado power bowl topped with seeds and lime" style="--dish: url('assets/dishes/avocado-power-bowl-full.jpg')">
+          <span class="tag tag--cream recipe-hero__badge">15 min</span>
+        </div>
+
+        <div class="screen__heading">
+          <h4 class="recipe-title">Avocado power bowl</h4>
+          <p class="recipe-meta">420 kcal &middot; serves 1 &middot; 15 min</p>
+        </div>
+
+        <div class="screen__tags">
+          <span class="tag tag--subtle">Vegan</span>
+          <span class="tag tag--subtle">High fibre</span>
+          <span class="tag tag--success">Goal friendly</span>
+        </div>
+
+                        <div class="macros screen__macros macros--plain">
+                          <div class="macro macro--protein">
+                            <div class="macro__body">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Protein</p>
+                              <p class="macro__value">28<span class="macro__unit">g</span></p>
+                            </div>
+                          </div>
+                          <div class="macro macro--carbs">
+                            <div class="macro__body">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Carbs</p>
+                              <p class="macro__value">34<span class="macro__unit">g</span></p>
+                            </div>
+                          </div>
+                          <div class="macro macro--fat">
+                            <div class="macro__body">
+                              <p class="macro__label"><span class="macro__dot" aria-hidden="true"></span>Fat</p>
+                              <p class="macro__value">19<span class="macro__unit">g</span></p>
+                            </div>
+                          </div>
+                        </div>
+
+        <div class="screen__ingredients">
+          <h4 class="screen__section-title">Ingredients</h4>
+          <ul class="list">
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__body"><span class="list__title">Ripe avocado</span><span class="list__meta">1 whole &middot; 240 kcal</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__body"><span class="list__title">Cooked quinoa</span><span class="list__meta">120 g &middot; 130 kcal</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__body"><span class="list__title">Cherry tomatoes</span><span class="list__meta">80 g &middot; 15 kcal</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          <li class="list__item"><a class="list__link" href="#h-screens">
+            <span class="list__body"><span class="list__title">Pumpkin seeds</span><span class="list__meta">10 g &middot; 35 kcal</span></span>
+            <svg class="list__chevron icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </a></li>
+          </ul>
+        </div>
+
+        <button type="button" class="btn btn--primary btn--block screen__cta">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Log this meal
+        </button>
+      </div>
+
+      <nav class="bottom-nav" aria-label="Recipe detail navigation">
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span><span class="bottom-nav__label">Home</span></a>
+        <a class="bottom-nav__item" href="#h-screens" aria-current="page"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span><span class="bottom-nav__label">Meals</span></a>
+        <a class="bottom-nav__item bottom-nav__item--scan" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span><span class="bottom-nav__label">Scan</span></a>
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span><span class="bottom-nav__label">Stats</span></a>
+        <a class="bottom-nav__item" href="#h-screens"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="bottom-nav__label">You</span></a>
+      </nav>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Sprout Design System · light theme · all values from <code>tokens.css</code>. See <a href="README.md" style="color: var(--text-link); font-weight: var(--font-weight-semibold)">README.md</a> for rationale and usage.</p>
+</footer>
+
+</div>
+<!-- Streak modal. Opened by the streak badge in the screen header; see
+     components.js for the one line of script a native <dialog> needs. -->
+<dialog class="modal" id="streak-modal" aria-labelledby="streak-modal-title">
+  <div class="modal__panel">
+    <form method="dialog">
+      <button type="submit" class="modal__close" aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </form>
+    <svg class="modal__flame" viewBox="7 2 10 14.2" fill="currentColor" aria-hidden="true"><path d="M12 2c2.8 4.2 5 6 5 9.2a5 5 0 0 1-10 0c0-1.3.4-2.3 1.1-3.3.3 1 .9 1.7 1.7 2 .2-3 1.4-5.6 2.2-7.9z"/></svg>
+    <h2 class="modal__title" id="streak-modal-title">Good work!</h2>
+    <p class="modal__text">You&rsquo;ve looked after your eating <span class="count">12 days</span> in a row. Keep the run going.</p>
+    <ul class="week" aria-label="This week">
+      <li class="week__day week__day--done"><span class="week__label">Mon</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+      <li class="week__day week__day--done"><span class="week__label">Tue</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+      <li class="week__day week__day--done"><span class="week__label">Wed</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+      <li class="week__day week__day--done"><span class="week__label">Thu</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">tracked</span></li>
+      <li class="week__day week__day--today" aria-current="date"><span class="week__label">Fri</span><span class="week__mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span class="sr-only">today, tracked</span></li>
+      <li class="week__day"><span class="week__label">Sat</span><span class="week__mark"></span><span class="sr-only">still to come</span></li>
+      <li class="week__day"><span class="week__label">Sun</span><span class="week__mark"></span><span class="sr-only">still to come</span></li>
+    </ul>
+    <form method="dialog">
+      <button type="submit" class="btn btn--primary btn--block">Keep it up</button>
+    </form>
+  </div>
+</dialog>
+
+<script src="components.js"></script>
+</body>
+</html>

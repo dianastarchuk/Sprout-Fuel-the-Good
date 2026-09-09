@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprout &middot; Scan</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<link rel="stylesheet" href="../prototype.css">
+</head>
+<body class="proto">
+
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ring-gradient" x1="0" y1="1" x2="1" y2="0">
+      <stop class="ring-grad__from" offset="0"/>
+      <stop class="ring-grad__to" offset="1"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<nav class="proto__bar" aria-label="Prototype navigation">
+  <a class="proto__back" href="../index.html">&larr; All flows</a>
+  <span class="proto__crumb">Flow 1 &middot; Path A &middot; Step 1 of 3</span>
+</nav>
+
+<div class="screen">
+  <div class="screen__body">
+        <div class="screen__header">
+          <a class="btn btn--tertiary btn--icon" href="home.html" aria-label="Back"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+          <h1 class="screen__title">Scan</h1>
+          <span class="screen__header-spacer"></span>
+        </div>
+
+        <div class="viewfinder screen__hero">
+          <div class="viewfinder__guide">
+            <span class="viewfinder__subject" aria-hidden="true"></span>
+            <span class="viewfinder__corner viewfinder__corner--tl"></span>
+            <span class="viewfinder__corner viewfinder__corner--tr"></span>
+            <span class="viewfinder__corner viewfinder__corner--bl"></span>
+            <span class="viewfinder__corner viewfinder__corner--br"></span>
+          </div>
+          <p class="viewfinder__hint">Point the camera at your food</p>
+        </div>
+
+        <div class="screen__heading">
+          <h2 class="recipe-title">Centre the dish in the frame</h2>
+          <p class="recipe-meta">Works best in even light</p>
+        </div>
+
+        <a class="btn btn--primary btn--block screen__cta" href="scan-result.html">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8a2 2 0 0 1 2-2h2l1.2-2h5.6L16 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.5"/></svg>
+          Scan food
+        </a>
+
+        <a class="btn btn--tertiary btn--block screen__scan" href="add-meal.html">
+          
+          Enter manually instead
+        </a>
+  </div>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <a class="bottom-nav__item" href="home.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21v-7h6v7"/></svg></span><span class="bottom-nav__label">Home</span></a>
+        <a class="bottom-nav__item" href="find-recipe.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-1.5 2-2 4-2 6a2 2 0 0 0 2 2h1V3z"/><path d="M18 11v10"/></svg></span><span class="bottom-nav__label">Meals</span></a>
+        <a class="bottom-nav__item bottom-nav__item--scan" href="scan.html" aria-current="page"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V7a2 2 0 0 1 2-2h2M17 5h2a2 2 0 0 1 2 2v2M21 15v2a2 2 0 0 1-2 2h-2M7 19H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></span><span class="bottom-nav__label">Scan</span></a>
+        <a class="bottom-nav__item" href="stats.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20"/></svg></span><span class="bottom-nav__label">Stats</span></a>
+        <a class="bottom-nav__item" href="you.html"><span class="bottom-nav__icon-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="bottom-nav__label">You</span></a>
+      </nav>
+</div>
+
+</body>
+</html>
