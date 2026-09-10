@@ -119,7 +119,7 @@
   border-color: var(--interactive-dark);
 }
 .btn--tertiary:active:not(:disabled), .btn--tertiary.is-active {
-  background: var(--forest-100);
+  background: var(--surface-tint-strong);
   transform: scale(var(--press-scale));
 }
 .btn--tertiary:disabled, .btn--tertiary.is-disabled {
@@ -204,7 +204,7 @@ button.tag--outline:hover, button.tag--outline.is-hover {
   background: var(--surface-tint);
   border-color: var(--interactive-dark);
 }
-button.tag--outline:active, button.tag--outline.is-active { background: var(--forest-100); }
+button.tag--outline:active, button.tag--outline.is-active { background: var(--surface-tint-strong); }
 button.tag:focus-visible, button.tag.is-focus {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
@@ -246,7 +246,7 @@ button.tag:disabled, button.tag.is-disabled {
               box-shadow var(--duration-fast) var(--ease-standard);
 }
 .input::placeholder { color: var(--text-secondary); }
-.input:hover:not(:disabled), .input.is-hover { border-color: var(--forest-500); }
+.input:hover:not(:disabled), .input.is-hover { border-color: var(--border-hover); }
 .input:focus, .input.is-focus {
   outline: none;
   border-color: var(--field-border-focus);
@@ -348,7 +348,7 @@ button.tag:disabled, button.tag.is-disabled {
   color: var(--text-primary);
 }
 .field-action:active, .field-action.is-active {
-  background: var(--forest-100);
+  background: var(--surface-tint-strong);
   color: var(--text-primary);
 }
 /* Keyboard focus still needs an indicator (WCAG 2.4.7). offset 0 keeps the
@@ -700,13 +700,19 @@ button.tag:disabled, button.tag.is-disabled {
 .macro__body--ink {
   background: linear-gradient(180deg,
               var(--macro-accent) 0%,
-              var(--macro-ink) var(--macro-wave-ink-stop));
+              var(--macro-deep) var(--macro-wave-ink-stop));
 }
 .macro__body--ink .macro__value  { color: var(--macro-on-fill); }
 .macro__body--ink .macro__unit,
 .macro__body--ink .macro__target { color: var(--macro-on-fill-muted); }
 .macro__body--ink .macro__label  { background: var(--macro-on-fill-chip); }
-.macro__body--ink .macro__dot    { background: var(--macro-ink); }
+.macro__body--ink .macro__dot    { background: var(--macro-deep); }
+/* Everything above the waterline is --macro-deep, not --macro-ink. The fill
+   is the same colour in both themes, so the ink printed on it has to be too:
+   inheriting --macro-ink would put the dark theme's LIT shade on a 92% white
+   chip. --macro-deep is the light theme's ink, unthemed - which is exactly
+   the shade this chip has always worn. */
+.macro__body--ink .macro__label  { color: var(--macro-deep); }
 
 /* Cards describing a single dish have no daily target, so a fill level
    would mean nothing: they drop the target line and shrink to match. The
@@ -714,9 +720,11 @@ button.tag:disabled, button.tag.is-disabled {
 .macros--plain .macro { height: var(--macro-chip-height-sm); }
 .macros--plain .macro__label { margin-bottom: var(--macro-stack-gap-sm); }
 
-.macro--protein { --macro-accent: var(--macro-protein); --macro-ink: var(--macro-protein-ink); --macro-target: var(--macro-target-protein); }
-.macro--carbs   { --macro-accent: var(--macro-carbs);   --macro-ink: var(--macro-carbs-ink);   --macro-target: var(--macro-target-carbs); }
-.macro--fat     { --macro-accent: var(--macro-fat);     --macro-ink: var(--macro-fat-ink);     --macro-target: var(--macro-target-fat); }
+/* --macro-ink is the dry text on the card and follows the theme; --macro-deep
+   is the wet half and does not. See the note above .macro__body--ink. */
+.macro--protein { --macro-accent: var(--macro-protein); --macro-ink: var(--macro-protein-ink); --macro-deep: var(--macro-protein-deep); --macro-target: var(--macro-target-protein); }
+.macro--carbs   { --macro-accent: var(--macro-carbs);   --macro-ink: var(--macro-carbs-ink);   --macro-deep: var(--macro-carbs-deep);   --macro-target: var(--macro-target-carbs); }
+.macro--fat     { --macro-accent: var(--macro-fat);     --macro-ink: var(--macro-fat-ink);     --macro-deep: var(--macro-fat-deep);     --macro-target: var(--macro-target-fat); }
 
 /* Started a third of a loop apart, so the three surfaces read as separate
    vessels rather than one sheet of liquid seen through three windows. The
@@ -813,7 +821,7 @@ button.badge:focus-visible, button.badge.is-focus {
   background: var(--streak-dot-off);
 }
 .streak__dot--on { background: var(--streak-dot-on); }
-.streak__dot--today { background: var(--interactive-brand); box-shadow: 0 0 0 2px var(--forest-800); }
+.streak__dot--today { background: var(--interactive-brand); box-shadow: 0 0 0 2px var(--streak-dot-ring); }
 .streak__label {
   font-size: var(--streak-count-size);
   font-weight: var(--streak-count-weight);
@@ -963,7 +971,7 @@ button.badge:focus-visible, button.badge.is-focus {
   color: var(--text-on-inverse);
 }
 .week__day--today .week__mark {
-  border-color: var(--forest-800);
+  border-color: var(--week-mark-today-edge);
   background: var(--week-mark-today);
   color: var(--text-on-brand);
 }
@@ -1005,7 +1013,7 @@ button.badge:focus-visible, button.badge.is-focus {
   transition: background-color var(--duration-fast) var(--ease-standard);
 }
 .list__link:hover, .list__link.is-hover { background: var(--surface-tint); }
-.list__link:active, .list__link.is-active { background: var(--forest-100); }
+.list__link:active, .list__link.is-active { background: var(--surface-tint-strong); }
 .list__link:focus-visible, .list__link.is-focus {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: calc(var(--focus-ring-offset) * -1);
@@ -1134,6 +1142,7 @@ button.badge:focus-visible, button.badge.is-focus {
 .bottom-nav__item[aria-current="page"] { color: var(--nav-item-active); }
 .bottom-nav__item[aria-current="page"] .bottom-nav__icon-wrap {
   background: var(--surface-brand);
+  color: var(--nav-item-active-fg);
 }
 /* The active Scan circle takes the same lime as every other active tab, but it
    is the one case where the glyph sits ON that lime instead of beside it, so
@@ -1364,13 +1373,122 @@ button.badge:focus-visible, button.badge.is-focus {
 .screen__pills  { margin-top: var(--gap-search-pills); }
 .screen__list   { margin-top: var(--gap-pills-list); }
 .screen__scan   { margin-top: var(--gap-list-cta); }
+/* The appearance picker sits between a section heading and the list under it,
+   so it is the one block here that owns the gap below itself. */
+.screen__theme  { margin-bottom: var(--spacing-12); }
 
 .screen__ring { display: flex; justify-content: center; }
 .screen__pills { display: flex; flex-wrap: wrap; gap: var(--pill-gap); }
 .screen .list { max-width: none; }
+.screen .segmented--block { max-width: none; }
 .screen .macros { max-width: none; }
 .screen .search { max-width: none; }
 .screen .bottom-nav { max-width: none; border-radius: 0; }
+
+/* --------------------------------------------------------------------------
+   Device frame
+   Wraps a .screen in phone hardware: a metal rim, a black bezel, and the two
+   pieces of OS chrome that always sit on top of an app - the status bar with
+   its Dynamic Island, and the home indicator.
+
+   The chrome is part of the display, not extra height bolted on top: the
+   viewport stays exactly --screen-width x --screen-height, and the status bar
+   and home indicator take their bite out of it, leaving the app the same
+   space a real device would. That is why .screen loses its own height here
+   and becomes a flex child - it fills whatever is left.
+   -------------------------------------------------------------------------- */
+.device {
+  width: var(--device-width);
+  padding: var(--device-bezel);
+  /* Transparent border + two backgrounds is what lets the rim carry a
+     gradient: padding-box paints the black glass, border-box the metal. */
+  border: var(--device-rim) solid transparent;
+  border-radius: var(--device-radius);
+  background:
+    linear-gradient(var(--device-frame), var(--device-frame)) padding-box,
+    linear-gradient(145deg, var(--device-rim-from), var(--device-rim-to)) border-box;
+  box-shadow: var(--shadow-lg);
+}
+.device__viewport {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--screen-width);
+  height: var(--screen-height);
+  border-radius: var(--device-screen-radius);
+  background: var(--surface-canvas);
+  overflow: hidden;
+}
+/* Inside the frame the screen is the display itself, so it drops the border,
+   corner and shadow it uses when it stands alone on the styleguide page. */
+.device .screen {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* --- Status bar ----------------------------------------------------------- */
+.status-bar {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--statusbar-height);
+  padding: 0 var(--statusbar-padding-x);
+  color: var(--text-primary);
+  font-size: var(--statusbar-text-size);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-tight);
+  user-select: none;
+}
+/* Centred on the display, not between the two label groups: the island is a
+   hole in the glass and does not move when the time gets wider. */
+.status-bar__island {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--island-width);
+  height: var(--island-height);
+  border-radius: var(--radius-pill);
+  background: var(--device-frame);
+}
+.status-bar__indicators {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+.status-bar__icon {
+  height: var(--statusbar-icon-height);
+  width: auto;
+  display: block;
+}
+
+/* --- Home indicator -------------------------------------------------------
+   The band reads as an extension of the nav bar above it, which is how iOS
+   renders the bottom safe area over an opaque tab bar. */
+.home-indicator {
+  flex: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: var(--home-indicator-height);
+  padding-bottom: var(--home-indicator-inset);
+  background: var(--nav-bg);
+}
+.home-indicator::after {
+  content: "";
+  width: var(--home-indicator-width);
+  height: var(--home-indicator-thickness);
+  border-radius: var(--radius-pill);
+  background: var(--home-indicator-color);
+}
 
 .ring-block { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-16); }
 
@@ -1394,7 +1512,7 @@ button.badge:focus-visible, button.badge.is-focus {
   place-items: center;
   height: var(--viewfinder-height);
   border-radius: var(--radius-2xl);
-  background: var(--surface-inverse-deep);
+  background: var(--surface-camera);
   overflow: hidden;
 }
 .viewfinder__guide {
@@ -1439,7 +1557,7 @@ button.badge:focus-visible, button.badge.is-focus {
   text-align: center;
   font-size: var(--font-size-13);
   line-height: var(--line-height-normal);
-  color: var(--text-on-inverse-muted);
+  color: var(--text-on-camera);
   margin: 0;
 }
 
@@ -1539,7 +1657,7 @@ button.badge:focus-visible, button.badge.is-focus {
   flex: none;
   border-radius: var(--radius-full);
   background: var(--feedback-success);
-  color: var(--white);
+  color: var(--text-on-feedback);
 }
 .card--success .card__icon svg { width: var(--icon-sm); height: var(--icon-sm); }
 .card__title {
@@ -1648,7 +1766,7 @@ button.badge:focus-visible, button.badge.is-focus {
   flex: none;
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, var(--lime-300), var(--forest-600));
-  color: var(--text-on-inverse);
+  color: var(--avatar-fg);
   font-family: var(--font-family-display);
   font-variation-settings: "wdth" var(--font-width-display);
   font-weight: var(--font-weight-black);
@@ -1721,9 +1839,32 @@ button.badge:focus-visible, button.badge.is-focus {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
 }
-.segmented__option[aria-selected="true"] {
+/* Tabs report selection with aria-selected, radios with aria-checked. Both
+   mean "this one is on", so the fill answers to either and the markup is
+   free to use whichever role is truthful. */
+.segmented__option[aria-selected="true"],
+.segmented__option[aria-checked="true"] {
   background: var(--surface-brand);
   color: var(--text-on-brand);
+}
+.segmented__option .icon {
+  width: var(--segmented-icon);
+  height: var(--segmented-icon);
+  flex: none;
+}
+
+/* Settings variant. A preference is not a view over content, so it is a
+   radiogroup rather than a tablist, and it spans the column like the list it
+   sits beside instead of shrink-wrapping its labels. */
+.segmented--block {
+  display: flex;
+  width: 100%;
+  max-width: var(--screen-width);
+}
+.segmented--block .segmented__option {
+  flex: 1;
+  min-width: 0;
+  gap: var(--spacing-6);
 }
 
 /* Month view: fewer bars, so each one gets more room. */
@@ -1738,3 +1879,68 @@ button.badge:focus-visible, button.badge.is-focus {
    -------------------------------------------------------------------------- */
 [data-view="week"]  [data-period="month"],
 [data-view="month"] [data-period="week"] { display: none; }
+
+
+/* --------------------------------------------------------------------------
+   Theme toggle
+   Cycles auto -> light -> dark -> auto. Three states rather than two, because
+   "follow the OS" is a real setting and a two-way switch has no way back to
+   it once it has been touched.
+
+   One button, three icons, and CSS picks which one shows from the
+   data-theme-mode attribute theme.js writes back onto it. The label is a
+   sibling of the icons, not a title, so it is read out with the button.
+   -------------------------------------------------------------------------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--theme-toggle-gap);
+  height: var(--theme-toggle-height);
+  padding: 0 var(--theme-toggle-padding-x);
+  border: 1px solid var(--border-default);
+  border-radius: var(--theme-toggle-radius);
+  background: var(--surface-raised);
+  color: var(--text-secondary);
+  font-family: var(--font-family-body);
+  font-size: var(--theme-toggle-text-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition-base),
+              border-color var(--transition-base),
+              color var(--transition-base);
+}
+.theme-toggle:hover {
+  background: var(--surface-tint);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+.theme-toggle:active { background: var(--surface-tint-strong); }
+.theme-toggle:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+.theme-toggle .icon {
+  width: var(--theme-toggle-icon);
+  height: var(--theme-toggle-icon);
+  flex: none;
+}
+/* Only the icon matching the current mode is rendered. Default (no attribute
+   yet, e.g. script blocked) shows the auto glyph, which is also the truth. */
+.theme-toggle__icon { display: none; }
+.theme-toggle__icon--auto { display: block; }
+.theme-toggle[data-theme-mode="light"] .theme-toggle__icon--auto,
+.theme-toggle[data-theme-mode="dark"]  .theme-toggle__icon--auto { display: none; }
+.theme-toggle[data-theme-mode="light"] .theme-toggle__icon--light { display: block; }
+.theme-toggle[data-theme-mode="dark"]  .theme-toggle__icon--dark  { display: block; }
+
+/* Prototype pages park it out of the layout entirely: every screen is a fixed
+   440x956 frame centred on the page, and there is nowhere inside that frame a
+   theme switch could sit without becoming part of the design. */
+.theme-toggle--floating {
+  position: fixed;
+  top: var(--spacing-16);
+  right: var(--spacing-16);
+  z-index: var(--z-overlay);
+  box-shadow: var(--shadow-sm);
+}

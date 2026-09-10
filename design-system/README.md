@@ -1,11 +1,12 @@
 # Sprout Design System
 
-**Fuel the Good** — a light-theme design system for the Sprout calorie tracker and recipe finder.
+**Fuel the Good** — a design system for the Sprout calorie tracker and recipe finder, in light and dark.
 
 | File | What it is |
 |---|---|
 | `tokens.css` | Every design decision as a CSS custom property. The single source of truth. |
 | `components.html` | A live styleguide rendering every component in every state. Consumes only tokens. |
+| `theme.js` | Writes `[data-theme]` from `localStorage` before the first paint. Everything else about theming is CSS. |
 | `README.md` | This file — the rationale behind each decision, and how to use it. |
 
 Open `components.html` in any browser. No build step, no framework, no dependencies beyond two Google Fonts.
@@ -42,7 +43,7 @@ SEMANTIC     --surface-brand: var(--lime-500)     role-based. Use these.
 COMPONENT    --btn-radius: var(--radius-pill)     per-component knobs.
 ```
 
-**Build UI against layer 2 and 3 only.** If you find yourself writing `var(--lime-500)` in a component, a semantic token is missing — add it rather than reaching past the layer. The point of the indirection is that rebranding, or adding a dark theme later, touches layer 1 and 2 and nothing else.
+**Build UI against layer 2 and 3 only.** If you find yourself writing `var(--lime-500)` in a component, a semantic token is missing — add it rather than reaching past the layer. The point of the indirection is that rebranding, or adding a theme, touches layer 1 and 2 and nothing else — which is exactly what the dark theme cost: seventeen lines of component CSS, all of them places where a component had reached past the layer.
 
 ---
 
@@ -484,6 +485,43 @@ Mark the current tab with `aria-current="page"`, which drives the lime pill via 
 
 The raised Scan circle is the one tab whose glyph sits *on* the active lime rather than beside it, so it cannot keep the white it wears over its dark resting circle — that pairing is 1.17:1. Active, it takes `--nav-fab-active-fg` (`--text-on-brand`, **14.73:1** on lime). The rule that does this must follow the generic `[aria-current="page"]` rule in `components.css`: the two selectors weigh the same, so source order decides the background.
 
+### Device frame
+
+The prototype screens in `screens/` are wrapped in `.device` — the phone hardware plus the two pieces of OS chrome that always sit on top of an app:
+
+```html
+<div class="device">
+  <div class="device__viewport">
+    <div class="status-bar" aria-hidden="true">
+      <span class="status-bar__time">9:41</span>
+      <span class="status-bar__island"></span>
+      <span class="status-bar__indicators">…</span>
+    </div>
+    <div class="screen">…</div>
+    <div class="home-indicator" aria-hidden="true"></div>
+  </div>
+</div>
+```
+
+| Part | Token | Value |
+|---|---|---|
+| Bezel | `--device-bezel` | 13pt of black glass around the display |
+| Rim | `--device-rim` | 3pt polished metal edge |
+| Display corner | `--device-screen-radius` | 42pt |
+| Status bar | `--statusbar-height` | 59pt |
+| Dynamic Island | `--island-width` / `--island-height` | 125 x 36pt |
+| Home indicator | `--home-indicator-width` / `--home-indicator-thickness` | 140 x 5pt, 8pt off the bottom edge |
+
+Three decisions worth naming:
+
+**The chrome eats into the viewport, it is not added on top.** `.device__viewport` stays exactly `--screen-width` x `--screen-height`; the status bar and the home indicator take their bite out of it, so the app is left the same space a real device leaves it. `.screen` therefore drops its own fixed height inside a frame and becomes a flex child, along with the border, corner and shadow it wears when it stands alone on the styleguide page.
+
+**The frame does not theme.** Every other colour in the system is `light-dark()`. These are not: a phone's glass and aluminium are physical objects, and they do not repaint themselves when the app goes dark. The gradient rim is a transparent border with two backgrounds — `padding-box` paints the black glass, `border-box` the metal — which is the only way a border carries a gradient.
+
+**The chrome is `aria-hidden`.** A status bar and a home indicator are the device drawing over the app. They carry nothing a screen reader user needs, and the time in particular would be read as page content.
+
+**The island is centred on the display, not between the labels.** It is a hole in the glass at a fixed position; it must not shift when the clock gets a digit wider.
+
 ### List items
 
 ```html
@@ -510,13 +548,69 @@ Use `aria-disabled="true"` on a `<span class="list__link">` for unavailable rows
 
 **Adding a component.** Reference layer 2 and 3 only. If you reach for a primitive, add the missing semantic token instead. Add the component to `components.html` with all its states — the styleguide is the regression test.
 
-**Adding a dark theme.** Layer 1 stays; redefine layer 2 under `:root[data-theme="dark"]`. Because no component references a primitive directly, no component CSS changes. The forest ramp is already sized for it — the stylescape's dark screens are where those values came from.
+**Adding a colour to the dark theme.** Write it as `light-dark(<light>, <dark>)` in layer 2 or 3 of `tokens.css`, never as a second block. Measure the dark half against `--dark-canvas` *and* `--dark-raised`; the card is only 1.38× lighter than the canvas, so a value that passes on one nearly passes on the other, and "nearly" is where the failures were.
+
+---
+
+## Theming
+
+There is one set of tokens, not two. Every colour in layers 2 and 3 is written as `light-dark(<light>, <dark>)`, and `color-scheme` decides which half a page uses:
+
+```css
+:root                      { color-scheme: light dark; }   /* follow the OS */
+:root[data-theme="light"]  { color-scheme: light; }
+:root[data-theme="dark"]   { color-scheme: dark; }
+```
+
+`theme.js` writes that attribute from `localStorage` while the document is still parsing — load it in `<head>` **without** `defer`, or a stored dark preference lands after the browser has already painted a light page. The mode is always one of **Auto → Light → Dark**; Auto is a real setting, not the absence of one, so it stays reachable.
+
+The same script drives two controls, and a page may carry either or both:
+
+| Control | Markup | Where |
+|---|---|---|
+| Cycling button | `.theme-toggle[data-theme-toggle]`, three icons, one label | Parked outside the phone frame on the prototype screens and the styleguide — there is nowhere inside a 440×956 frame it could sit without becoming part of the design |
+| Three named options | `.segmented.segmented--block[role="radiogroup"][data-theme-choice]` with `[data-theme-set]` buttons | The Appearance picker under Preferences on the You screen — the setting as the app itself would ship it |
+
+Neither carries state in the HTML: `theme.js` writes `data-theme-mode` on the button, and `aria-checked` plus the roving `tabindex` on the options (arrow keys move the selection, as a radiogroup requires). A control added to a page after load works without re-running anything — the listeners are delegated from the document.
+
+Because `light-dark()` resolves against the `color-scheme` in force where a token is *used* rather than where it is declared, any subtree can be pinned on its own — `.theme-light` and `.theme-dark` do exactly that, and the styleguide uses them to show both themes on one page with no duplicated CSS.
+
+### Layer 1 is not themed
+
+A primitive is a fixed pigment; a token that changes its own hex is no longer one. The dark theme adds primitives of its own — `--dark-canvas`, `--dark-raised`, `--dark-sunken`, the lit macro and feedback hues — rather than rewriting the light ones. Every ratio quoted in this README therefore stays true for the palette it was measured against.
+
+### Five things that are not a straight swap
+
+**`--surface-inverse` mirrors.** An accent panel is defined by opposing the canvas, so on a dark canvas it goes light: forest-800 → sage-100. `.card--dark`, `.tag--dark`, the "Scan a meal instead" button and the raised Scan circle all follow it, and `--text-on-inverse` flips with it so every pairing survives.
+
+**`--surface-camera` does not.** The viewfinder stands in for a live camera image, not for chrome. It was always dark on purpose, which is why it needed a token of its own — following `--surface-inverse-deep` would have turned the camera white.
+
+**`--surface-sunken` inverts its direction.** In the light theme a well sits *below* the card. Below the dark canvas there is nowhere left to go, so in the dark theme it sits *above* it: forest-700 is the lightest of the three surfaces. A track reads by lifting off its card rather than sinking under it.
+
+**The focus ring swaps its two tones.** No single colour clears 3:1 against both the dark canvas and a lime button — lime wants a ring no lighter than L 0.25, the sunken track wants one no darker than L 0.30, and those bands do not meet. The ring was already two-tone, so the roles trade: `--focus-ring-color` goes to forest-50 and carries every dark surface (15.6:1 on the canvas, 11.3:1 on a card), and the forest-900 halo just outside it carries lime at 14.7:1.
+
+**`--macro-*-ink` splits in two.** `-ink` is the dry text painted on the macro card, so it follows the card: dark on a light one, lit on a dark one. `-deep` is the bottom of the liquid fill and the label chip printed on that fill — and the fill is the same colour in both themes, so `-deep` never moves. Without the split, the dark theme's lit shade would have landed on a 92%-white chip.
+
+### Dark ratios
+
+Measured on `--dark-canvas` (#0A1F16); the raised card costs about a quarter of each.
+
+| Token | Value | On canvas | On card |
+|---|---|---|---|
+| `--text-primary` | forest-50 | 15.55:1 | 11.28:1 |
+| `--text-secondary` | forest-200 | 11.82:1 | 8.57:1 |
+| `--text-tertiary` | forest-300 | 8.82:1 | 6.39:1 |
+| `--text-lime` | lime-500 | 14.61:1 | 10.59:1 |
+| `--border-strong` | forest-400 | 6.38:1 | 4.62:1 |
+
+The light theme's own values fail here in four specific places, all of them indicators rather than text: `--chart-bar` drops to 1.45:1 on the dark track, `--chart-bar-over` to 2.40:1, `--nav-item-inactive` to 2.83:1 on the dark bar, and `--ring-gradient-from` starts the arc at 2.7:1. Each is lifted to its light counterpart in the dark half of the token.
 
 ---
 
 ## Known constraints
 
-- **Light theme only**, by design. The token architecture supports a dark theme without touching component CSS, but no dark values are defined.
+- **`light-dark()` is required.** It is Baseline since mid-2024 (Chrome 123, Safari 17.5, Firefox 120). Older engines drop the declaration and leave those tokens unset. The fix, if it is ever needed, is a build step that expands each pair into two blocks — not a change to the tokens.
+- **`theme.js` must not be deferred.** Deferred, every load with a stored dark preference starts on a flash of the light theme.
 - `--text-tertiary` is deliberately restricted to ≥24px text and icons. It will fail an automated audit if used for body copy.
 - Recipe imagery is gradient placeholders. Real photography needs an overlay behind any text placed on it — none of the ratios here account for text over a photo.
 - Archivo's width axis needs a variable-font-capable browser. The fallback stack (`Arial Narrow`, `Helvetica Neue`) degrades to a fixed width; the layout does not break, but the condensed/expanded distinction is lost.

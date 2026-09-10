@@ -1,6 +1,6 @@
 /* ==========================================================================
    SPROUT DESIGN SYSTEM — tokens.css
-   "Fuel the Good"  ·  Light theme only
+   "Fuel the Good"  ·  Light + dark theme
    --------------------------------------------------------------------------
    Three layers, in dependency order:
      1. PRIMITIVES  raw palette + raw scales. Never referenced by components.
@@ -14,6 +14,23 @@
 
    All colour values were sampled from stylescape.png, not estimated.
    Contrast ratios in the comments are measured, not asserted.
+
+   THEMING
+   Every colour in layers 2 and 3 is written as light-dark(<light>, <dark>),
+   so a token is declared once and carries both themes. Which half is used is
+   decided by the color-scheme property, set at the bottom of this file:
+
+     :root                      color-scheme: light dark   follow the OS
+     :root[data-theme="light"]  color-scheme: light        forced light
+     :root[data-theme="dark"]   color-scheme: dark         forced dark
+
+   theme.js writes that attribute from localStorage before first paint. It
+   also means any subtree can be flipped on its own with color-scheme: dark
+   - the styleguide uses exactly that to show both themes on one page.
+
+   Layer 1 primitives are NOT themed: a primitive is a fixed pigment, and a
+   token that changes its own hex is no longer one. The dark theme adds its
+   own primitives instead, in the --dark-* block.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -25,6 +42,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
 :root {
+
+  /* Both halves of every light-dark() below are live; this is what picks
+     one. [data-theme] overrides it at the end of the file. */
+  color-scheme: light dark;
 
   /* ======================================================================
      LAYER 1 — PRIMITIVES
@@ -110,70 +131,165 @@
   --white:      #FFFFFF;
   --black:      #000000;
 
+  /* --- Dark-theme surfaces ------------------------------------------------
+     The stylescape's own dark greens, doing again what they did there:
+     carrying a background. The light theme re-cast them as text; the dark
+     theme hands them back their original job.
+
+     Note the order. --dark-sunken is the LIGHTEST of the three, not the
+     darkest: below the canvas there is nowhere left to go, so a well or a
+     progress track reads by lifting off its card rather than sinking under
+     it. That inversion is the one rule the dark theme does not share with
+     the light one.
+
+     Measured with --text-primary (#EFF6F2):
+       on --dark-canvas 15.55:1        on --dark-raised 11.28:1             */
+  --dark-backdrop:  #061410;  /* the page BEHIND the phone frame          */
+  --dark-canvas:    #0A1F16;  /* = forest-900, the app background         */
+  --dark-raised:    #0D3C2A;  /* = forest-800, cards and list rows        */
+  --dark-raised-hi: #12482F;  /* hover wash on a raised row               */
+  --dark-raised-2:  #16583A;  /* pressed / active wash                    */
+  --dark-sunken:    #14532D;  /* = forest-700, wells and tracks           */
+  --dark-line:      #1B4B36;  /* hairline divider on a dark surface       */
+  --dark-camera:    #050F0A;  /* the camera feed - dark in BOTH themes    */
+  --dark-accent:    #2B2A1C;  /* warm editorial panel, the cream analogue */
+
+  /* --- Lit macro hues -----------------------------------------------------
+     On a dark card the -ink shades are invisible, so each nutrient gets a
+     lit counterpart to write with. Measured on the 5% wash over
+     --dark-raised: protein 7.9:1, carbs 6.8:1, fat 5.8:1 - AA at any size.
+     The liquid FILL keeps the -ink shade in both themes; see --macro-*-deep.
+                                                                          */
+  --macro-green-lit: #9FE870;
+  --macro-teal-lit:  #5FD9C4;
+  --macro-amber-lit: #FF9E83;
+
+  /* --- Lit feedback hues ------------------------------------------------- */
+  --green-300:  #62D69A;
+  --red-300:    #FF8A80;
+
 
   /* ======================================================================
      LAYER 2 — SEMANTIC
      ====================================================================== */
 
-  /* --- Surfaces ---------------------------------------------------------- */
-  --surface-canvas:       var(--sage-100);   /* the app background           */
-  --surface-raised:       var(--white);      /* cards, search bar, list rows */
-  --surface-sunken:       var(--sage-200);   /* wells, progress tracks       */
-  --surface-accent:       var(--cream-200);  /* warm editorial badges        */
-  --surface-inverse:      var(--forest-800); /* dark accent panels           */
-  --surface-inverse-deep: var(--forest-900);
-  --surface-brand:        var(--lime-500);   /* primary CTA fill             */
-  --surface-brand-subtle: var(--lime-100);   /* selected tags, soft fills    */
-  --surface-tint:         var(--forest-50);  /* hover wash on light rows     */
+  /* --- Surfaces ------------------------------------------------------------
+     --surface-inverse is the one role that MIRRORS rather than darkens. An
+     accent panel is defined by opposing the canvas, so on a dark canvas it
+     goes light. .card--dark, .tag--dark, the "Scan a meal instead" button and
+     the raised Scan circle all follow it, and --text-on-inverse flips with it
+     so every pairing survives intact.
 
-  /* --- Text -------------------------------------------------------------- */
-  --text-primary:          var(--forest-900); /* 16.05:1 on canvas — AAA     */
-  --text-secondary:        var(--forest-600); /*  5.88:1 on canvas — AA      */
-  --text-tertiary:         var(--forest-500); /*  4.08:1 — >=24px or icons   */
-  --text-disabled:         var(--sage-500);   /*  2.33:1 — exempt, 1.4.3     */
-  --text-on-brand:         var(--forest-900); /* 14.73:1 on lime — AAA       */
-  --text-on-inverse:       var(--white);      /* 12.38:1 on forest-800 — AAA */
-  --text-on-inverse-muted: var(--forest-300); /*  6.39:1 on forest-800 — AA  */
-  --text-lime:             var(--lime-800);   /* the only legible lime text  */
-  --text-link:             var(--forest-700);
+     --surface-camera does the opposite and stays dark in both themes: the
+     viewfinder stands in for a live camera image, not for chrome, and a white
+     rectangle is not what a camera looks like.                             */
+  --surface-canvas:       light-dark(var(--sage-100), var(--dark-canvas));
+  --surface-raised:       light-dark(var(--white), var(--dark-raised));
+  --surface-sunken:       light-dark(var(--sage-200), var(--dark-sunken));
+  --surface-accent:       light-dark(var(--cream-200), var(--dark-accent));
+  --surface-inverse:      light-dark(var(--forest-800), var(--sage-100));
+  --surface-inverse-deep: light-dark(var(--forest-900), var(--white));
+  --surface-brand:        var(--lime-500);   /* CTA fill - brand, unthemed   */
+  --surface-brand-subtle: light-dark(var(--lime-100),
+                            color-mix(in srgb, var(--lime-500) 20%, var(--dark-raised)));
+  --surface-brand-faint:  light-dark(var(--lime-50),
+                            color-mix(in srgb, var(--lime-500) 10%, var(--dark-canvas)));
+  --surface-tint:         light-dark(var(--forest-50), var(--dark-raised-hi));
+  --surface-tint-strong:  light-dark(var(--forest-100), var(--dark-raised-2));
+  --surface-backdrop:     light-dark(var(--sage-200), var(--dark-backdrop));
+  --surface-camera:       light-dark(var(--forest-900), var(--dark-camera));
 
-  /* --- Borders ----------------------------------------------------------- */
-  --border-subtle:  var(--sage-300);  /* decorative dividers                 */
-  --border-default: var(--sage-400);  /* card outlines                       */
-  --border-strong:  var(--sage-600);  /* input borders — 3.32:1, 1.4.11 pass */
-  --border-brand:   var(--lime-700);
-  --border-inverse: var(--forest-800);
+  /* --- Text ----------------------------------------------------------------
+     Dark ratios are measured on --dark-canvas. The raised card is only 1.38x
+     lighter than the canvas, so each one loses about a quarter there and all
+     of them still clear their bar.
 
-  /* --- Interactive states ------------------------------------------------ */
+     --text-lime is the token that changes character rather than value. On a
+     light surface lime is unusable as text and has to fall back to lime-800;
+     on the dark canvas the brand anchor itself measures 14.61:1, so the dark
+     theme is the one that gets to print the real brand colour.             */
+  --text-primary:          light-dark(var(--forest-900), var(--forest-50));
+                                          /* 16.05:1 · dark 15.55:1 — AAA  */
+  --text-secondary:        light-dark(var(--forest-600), var(--forest-200));
+                                          /*  5.88:1 · dark 11.82:1 — AA   */
+  --text-tertiary:         light-dark(var(--forest-500), var(--forest-300));
+                                          /*  4.08:1 · dark  8.82:1        */
+  --text-disabled:         light-dark(var(--sage-500), var(--forest-500));
+                                          /*  exempt, WCAG 1.4.3           */
+  --text-on-brand:         var(--forest-900); /* 14.73:1 on lime — AAA      */
+  --text-on-inverse:       light-dark(var(--white), var(--forest-900));
+  --text-on-inverse-muted: light-dark(var(--forest-300), var(--forest-600));
+  --text-on-camera:        var(--forest-300); /* viewfinder hint, both themes */
+  --text-on-feedback:      light-dark(var(--white), var(--forest-900));
+  --text-lime:             light-dark(var(--lime-800), var(--lime-500));
+                                          /*  4.83:1 · dark 14.61:1        */
+  --text-link:             light-dark(var(--forest-700), var(--lime-400));
+
+  /* --- Borders -------------------------------------------------------------
+     --border-strong is the one with a hard floor: WCAG 1.4.11 asks 3:1 of an
+     input's boundary. The obvious dark pick, forest-500, reaches only 2.83:1
+     on --dark-raised, so the dark theme steps up to forest-400 - 4.62:1 on a
+     card, 6.38:1 on the canvas.                                            */
+  --border-subtle:  light-dark(var(--sage-300), var(--dark-line));
+  --border-default: light-dark(var(--sage-400), var(--forest-600));
+  --border-strong:  light-dark(var(--sage-600), var(--forest-400));
+  --border-hover:   light-dark(var(--forest-500), var(--forest-300));
+  --border-brand:   light-dark(var(--lime-700), var(--lime-500));
+  --border-inverse: light-dark(var(--forest-800), var(--sage-300));
+
+  /* --- Interactive states --------------------------------------------------
+     Hover lifts, active sinks. On a dark ground that reverses the hex order:
+     the lime button brightens on hover and dims on press, because "further
+     from the background" and "further from white" are the same direction in
+     the light theme and opposite directions here.
+
+     --interactive-dark keeps its name and loses its colour - it is the
+     "opposite of the canvas" fill, so it mirrors with --surface-inverse.   */
   --interactive-brand:        var(--lime-500);
-  --interactive-brand-hover:  var(--lime-600);
-  --interactive-brand-active: var(--lime-700);
-  --interactive-dark:         var(--forest-800);
-  --interactive-dark-hover:   var(--forest-700);
-  --interactive-dark-active:  var(--forest-900);
-  --interactive-disabled-bg:  var(--sage-200);
-  --interactive-disabled-fg:  var(--sage-500);
+  --interactive-brand-hover:  light-dark(var(--lime-600), var(--lime-400));
+  --interactive-brand-active: light-dark(var(--lime-700), var(--lime-600));
+  --interactive-dark:         light-dark(var(--forest-800), var(--sage-100));
+  --interactive-dark-hover:   light-dark(var(--forest-700), var(--sage-200));
+  --interactive-dark-active:  light-dark(var(--forest-900), var(--sage-300));
+  --interactive-disabled-bg:  light-dark(var(--sage-200), var(--dark-raised-hi));
+  --interactive-disabled-fg:  light-dark(var(--sage-500), var(--forest-500));
 
-  /* --- Feedback ---------------------------------------------------------- */
-  --feedback-success:         var(--green-600);  /* 5.06:1 on canvas */
-  --feedback-success-surface: var(--green-100);
+  /* --- Feedback -------------------------------------------------------------
+     The -surface tokens are near-white tints, so they cannot survive a
+     straight swap - a light patch on a dark card reads as a hole. The dark
+     theme mixes the same hue into the card instead, which keeps the tint
+     saying "this is the error card" without changing the card's weight.   */
+  --feedback-success:         light-dark(var(--green-600), var(--green-300));
+  --feedback-success-surface: light-dark(var(--green-100),
+                                color-mix(in srgb, var(--green-600) 30%, var(--dark-raised)));
   --feedback-warning:         var(--orange-500); /* fill / indicator only */
-  --feedback-warning-text:    var(--orange-800); /* 6.05:1 on canvas */
-  --feedback-warning-surface: var(--orange-100);
-  --feedback-error:           var(--red-600);    /* 6.15:1 on canvas */
-  --feedback-error-surface:   var(--red-100);
-  --feedback-info:            var(--forest-600);
-  --feedback-info-surface:    var(--forest-100);
+  --feedback-warning-text:    light-dark(var(--orange-800), var(--orange-300));
+  --feedback-warning-surface: light-dark(var(--orange-100),
+                                color-mix(in srgb, var(--orange-500) 26%, var(--dark-raised)));
+  --feedback-error:           light-dark(var(--red-600), var(--red-300));
+  --feedback-error-surface:   light-dark(var(--red-100),
+                                color-mix(in srgb, var(--red-600) 30%, var(--dark-raised)));
+  --feedback-info:            light-dark(var(--forest-600), var(--forest-300));
+  --feedback-info-surface:    light-dark(var(--forest-100), var(--dark-raised-2));
 
   /* --- Macro nutrients ----------------------------------------------------
      Fill tokens carry the brand hue; -text tokens are the legible variant.
      Never render a macro value in the raw fill colour on a light surface.  */
-  --macro-protein:     var(--macro-green);
-  --macro-protein-ink: var(--macro-green-ink);
-  --macro-carbs:       var(--macro-teal);
-  --macro-carbs-ink:   var(--macro-teal-ink);
-  --macro-fat:         var(--macro-amber);
-  --macro-fat-ink:     var(--macro-amber-ink);
+  --macro-protein:      var(--macro-green);
+  --macro-protein-ink:  light-dark(var(--macro-green-ink), var(--macro-green-lit));
+  --macro-protein-deep: var(--macro-green-ink);
+  --macro-carbs:        var(--macro-teal);
+  --macro-carbs-ink:    light-dark(var(--macro-teal-ink), var(--macro-teal-lit));
+  --macro-carbs-deep:   var(--macro-teal-ink);
+  --macro-fat:          var(--macro-amber);
+  --macro-fat-ink:      light-dark(var(--macro-amber-ink), var(--macro-amber-lit));
+  --macro-fat-deep:     var(--macro-amber-ink);
+
+  /* -ink is the DRY text, painted on the card, so it has to follow the card:
+     dark on a light one, lit on a dark one. -deep is the bottom of the liquid
+     fill and the label chip printed on that fill - and the fill is the same
+     colour in both themes, so -deep never moves. Splitting the two is what
+     lets the card invert without the liquid inverting with it.            */
 
   /* --- Focus -------------------------------------------------------------
      The ring itself is forest-900, NOT lime. WCAG 2.4.11 requires a focus
@@ -181,11 +297,21 @@
      1.62:1 on the canvas and 1.48:1 on a lime button — it would effectively
      disappear on the very control it matters most on. Forest-900 gives
      16.05:1 on the canvas and 14.73:1 on lime, so one ring works everywhere.
-     The brand colour is kept as a decorative halo outside the ring.        */
-  --focus-ring-color:  var(--forest-900);
+     The brand colour is kept as a decorative halo outside the ring.
+
+     The dark theme cannot buy its way out with one colour the way this one
+     did. Nothing clears 3:1 against the dark canvas AND a lime button at
+     once: lime wants a ring no lighter than L 0.25, the sunken track wants
+     one no darker than L 0.30, and those bands do not meet. So the ring goes
+     two-tone - which this ring already was - and the two roles simply swap. A
+     near-white ring carries every dark surface (15.6:1 on the canvas, 11.3:1
+     on a card), and the forest-900 halo just outside it carries lime at
+     14.7:1. Whichever surface a control sits on, one of the two edges is the
+     strong one.                                                            */
+  --focus-ring-color:  light-dark(var(--forest-900), var(--forest-50));
   --focus-ring-width:  2.2px;
   --focus-ring-offset: 1.5px;
-  --focus-ring-halo:   var(--lime-200);
+  --focus-ring-halo:   light-dark(var(--lime-200), var(--forest-900));
   --focus-ring-shadow: 0 0 0 calc(var(--focus-ring-width) + var(--focus-ring-offset) + 2.2px) var(--focus-ring-halo);
 
 
@@ -285,15 +411,29 @@
      ELEVATION
      Shadows are tinted with forest-900 rather than pure black, matching the
      soft green-cast shadows in the stylescape.
+
+     A box-shadow is not a colour, so light-dark() cannot wrap the whole
+     value - only the tint. Each shadow names a --shadow-color-* token and the
+     geometry stays shared. The dark tints go to true black at roughly five
+     times the alpha: a 6% green shadow is literally invisible on a #0A1F16
+     canvas. Even so, elevation in the dark theme is carried mainly by
+     --dark-raised sitting above --dark-canvas; the shadow only seats it.
      ====================================================================== */
+  --shadow-color-xs:  light-dark(rgba(10, 31, 22, 0.06), rgba(0, 0, 0, 0.34));
+  --shadow-color-sm:  light-dark(rgba(10, 31, 22, 0.08), rgba(0, 0, 0, 0.42));
+  --shadow-color-md:  light-dark(rgba(10, 31, 22, 0.10), rgba(0, 0, 0, 0.50));
+  --shadow-color-lg:  light-dark(rgba(10, 31, 22, 0.12), rgba(0, 0, 0, 0.58));
+  --shadow-color-nav: light-dark(rgba(10, 31, 22, 0.08), rgba(0, 0, 0, 0.46));
+  --shadow-color-fab: light-dark(rgba(10, 31, 22, 0.28), rgba(0, 0, 0, 0.60));
+
   --shadow-none:  none;
-  --shadow-xs:    0 0.7px 1.5px rgba(10, 31, 22, 0.06);
-  --shadow-sm:    0 1.5px 5.8px rgba(10, 31, 22, 0.08);
-  --shadow-md:    0 5.8px 17.5px rgba(10, 31, 22, 0.10);
-  --shadow-lg:    0 11.6px 29.1px rgba(10, 31, 22, 0.12);
+  --shadow-xs:    0 0.7px 1.5px var(--shadow-color-xs);
+  --shadow-sm:    0 1.5px 5.8px var(--shadow-color-sm);
+  --shadow-md:    0 5.8px 17.5px var(--shadow-color-md);
+  --shadow-lg:    0 11.6px 29.1px var(--shadow-color-lg);
   --shadow-brand: 0 4.4px 14.5px rgba(164, 213, 28, 0.35);  /* lime CTA glow */
-  --shadow-nav:   0 -1.5px 11.6px rgba(10, 31, 22, 0.08);   /* bottom tab bar */
-  --shadow-scan-button: 0 4.4px 11.6px rgba(10, 31, 22, 0.28); /* raised Scan FAB */
+  --shadow-nav:   0 -1.5px 11.6px var(--shadow-color-nav);  /* bottom tab bar */
+  --shadow-scan-button: 0 4.4px 11.6px var(--shadow-color-fab); /* raised Scan FAB */
 
 
   /* ======================================================================
@@ -337,13 +477,50 @@
   --screen-height:    695.3px;
   --screen-padding-x: var(--spacing-16);
 
+  /* --- Device frame -------------------------------------------------------
+     Physical phone chrome around a screen: bezel, status bar, Dynamic Island
+     and home indicator. Everything below is a real iOS point value carried
+     through this system's 0.7273 scale, the same one that turns the 440 x 956
+     viewport into --screen-width x --screen-height.
+
+     The frame is a physical object, not UI, so its greys are unthemed: a
+     phone's aluminium does not repaint itself when the app goes dark.     */
+  --device-bezel:       9.4px;   /* 13pt of black glass around the display */
+  --device-rim:         2.2px;   /* 3pt polished edge, the outermost band  */
+  --device-screen-radius: 30.5px;/* 42pt display corner                    */
+  --device-radius:      calc(var(--device-screen-radius)
+                             + var(--device-bezel) + var(--device-rim));
+  --device-width:       calc(var(--screen-width)
+                             + (var(--device-bezel) + var(--device-rim)) * 2);
+  --device-frame:       #101413;  /* black glass under the bezel           */
+  --device-rim-from:    #E2E6E4;  /* metal catches light top-left ...      */
+  --device-rim-to:      #6F7A76;  /* ... and falls away bottom-right       */
+
+  /* Status bar. 59pt tall, so the 36 x 125pt island clears the top edge by
+     the same 8.35px on either side once centred. */
+  --statusbar-height:    42.9px;
+  --statusbar-padding-x: 15.3px;  /* 21pt, iOS's own inset to the time     */
+  --statusbar-text-size: var(--font-size-13);
+  --island-width:        90.9px;
+  --island-height:       26.2px;
+  --statusbar-icon-height: 8.7px;
+
+  /* Home indicator. The 5 x 140pt pill sits 8pt off the bottom edge; the
+     band it sits in extends the nav bar, which is what iOS draws there. */
+  --home-indicator-height:    17.5px;
+  --home-indicator-width:     101.8px;
+  --home-indicator-thickness: 3.6px;
+  --home-indicator-inset:     5.8px;
+  --home-indicator-color:     color-mix(in srgb, var(--text-primary) 30%, transparent);
+
   /* --- Recipe detail ------------------------------------------------------ */
   --recipe-hero-height: 145.5px;
 
   /* --- Scan viewfinder ----------------------------------------------------
-     The camera feed is a media surface, not chrome, so it stays dark even in
-     the light theme - that is what a live camera image looks like. The UI
-     around it is light. Lime corner brackets come straight from the brand.  */
+     The camera feed is a media surface, not chrome, so it stays dark in BOTH
+     themes - that is what a live camera image looks like, and it is why it
+     reads from --surface-camera rather than --surface-inverse-deep, which
+     mirrors. Lime corner brackets come straight from the brand.            */
   --viewfinder-height:       261.8px;  /* must exceed guide + padding + hint */
   --viewfinder-guide-size:   174.5px;
   --viewfinder-corner-size:  29.1px;
@@ -373,11 +550,12 @@
   --badge-border:      var(--border-subtle);
   --badge-text-size:   var(--font-size-13);
   --badge-dot-size:    4.4px;
-  --badge-bg-lime:     var(--lime-100);
+  --badge-bg-lime:     light-dark(var(--lime-100),
+                       color-mix(in srgb, var(--lime-500) 22%, var(--dark-raised)));
   --badge-shadow:      var(--shadow-xs);
 
   /* --- Streak ------------------------------------------------------------ */
-  --streak-flame-color: var(--orange-500);
+  --streak-flame-color: var(--orange-500);  /* 3.27:1 on the dark badge */
   /* The flame's viewBox is cropped to the glyph itself ("7 2 10 14.2"), not
      the 24-unit box the path was drawn in. That box was two thirds empty, and
      the emptiness was not symmetric: it held the glyph high and padded both
@@ -394,8 +572,12 @@
   --streak-count-weight: var(--font-weight-medium);
   --streak-dot-size:     5.8px;
   --streak-dot-gap:      var(--spacing-4);
-  --streak-dot-on:       var(--forest-800);
-  --streak-dot-off:      var(--sage-400);
+  /* The "today" dot is lime and needs a ring to hold it off the badge, so
+     the filled dots cannot be lime too or the row loses its one accent.
+     They stay neutral and follow whichever surface they sit on.           */
+  --streak-dot-on:       light-dark(var(--forest-800), var(--forest-100));
+  --streak-dot-off:      light-dark(var(--sage-400), var(--forest-600));
+  --streak-dot-ring:     light-dark(var(--forest-800), var(--forest-50));
 
   /* --- Modal --------------------------------------------------------------
      A centred dialog sized to sit inside the 320px screen frame with the
@@ -406,7 +588,9 @@
   --modal-gap:        var(--spacing-16);
   --modal-bg:         var(--surface-raised);
   --modal-shadow:     var(--shadow-lg);
-  --modal-backdrop:   rgba(10, 31, 22, 0.44);
+  /* A 44% green scrim reads as a dim over a light page; over a dark one it
+     barely registers, so the dark theme scrims harder and in true black. */
+  --modal-backdrop:   light-dark(rgba(10, 31, 22, 0.44), rgba(0, 0, 0, 0.66));
   --modal-title-size: var(--font-size-20);
   --modal-text-size:  var(--font-size-13);
   /* Painted height of the flame, not a box two thirds of which is empty:
@@ -422,8 +606,12 @@
   --week-label-size:  var(--font-size-10);
   --week-mark-size:   var(--spacing-32);
   --week-mark-off:    var(--surface-sunken);
-  --week-mark-done:   var(--forest-800);
+  --week-mark-done:   light-dark(var(--forest-800), var(--forest-100));
   --week-mark-today:  var(--interactive-brand);
+  /* The outline separating today's lime mark from the sheet behind it. It is
+     a separator, so it tracks the sheet, not the mark: dark on a light sheet,
+     light on a dark one.                                                  */
+  --week-mark-today-edge: light-dark(var(--forest-800), var(--forest-50));
 
   /* --- Calorie ring ------------------------------------------------------
      Rendered in a 200-unit viewBox at 200px, so 1 user unit = 1px and the
@@ -433,8 +621,12 @@
   --ring-stroke:           14px;
   /* Gradient stroke, dark green into lime, following the arc. Referenced as
      a paint server; the flat brand lime is the fallback if the <defs> block
-     is missing from a page. */
-  --ring-gradient-from:    var(--forest-600);
+     is missing from a page.
+
+     forest-600 starts the arc at 2.7:1 on the dark canvas, under the 3:1 an
+     indicator owes WCAG 1.4.11, so the dark theme starts two steps lighter
+     at forest-400 (6.4:1) and runs to the same lime.                      */
+  --ring-gradient-from:    light-dark(var(--forest-600), var(--forest-400));
   --ring-gradient-to:      var(--lime-500);
   --ring-stroke-paint:     url(#ring-gradient);
   /* Soft lime bloom behind the ring. */
@@ -506,6 +698,8 @@
   --macro-wave-duration: 4000ms;   /* idle undulation, one loop per tile       */
   --macro-wave-stagger:  -1333ms;  /* a third of a loop between nutrients      */
   --macro-wave-ink-stop: 100%;     /* gradient has reached the ink shade here  */
+  /* The liquid is the same colour in both themes, so what is written on it
+     is too. None of the three tokens below is themed.                     */
   --macro-on-fill:        var(--white);
   /* Composited over the fill, so it dims to the nutrient's own hue
      without naming it - a mix with var(--macro-ink) would be invalid
@@ -568,7 +762,7 @@
   --today-date:              "Oct 24";
   --eyebrow-dot-size:        4.4px;
   --eyebrow-dot-color:       var(--lime-500);
-  --eyebrow-sep-color:       var(--sage-400);
+  --eyebrow-sep-color:       light-dark(var(--sage-400), var(--forest-600));
   --eyebrow-gap:             var(--spacing-8);
   --greeting-headline-size:  var(--font-size-26);
   --greeting-gap:            var(--spacing-4);
@@ -581,6 +775,10 @@
   /* The dark outline is what makes the lime legible - lime on the canvas is
      1.09:1 on its own. Never drop the stroke to "clean up" the look. */
   --highlight-stroke-width:     1.5px;
+  /* Unthemed on purpose. In the dark theme forest-900 IS the canvas, so the
+     stroke goes invisible and the lime word is simply lime - which is what it
+     wanted to be all along, and can be, because lime measures 14.61:1 on that
+     canvas. The stroke only ever existed for the light theme.             */
   --highlight-stroke-color:     var(--forest-900);
   --highlight-underline-color:  var(--lime-500);
   --highlight-underline-weight: 1.5px;
@@ -596,6 +794,7 @@
   --segmented-track:     var(--surface-sunken);
   --segmented-radius:    var(--radius-pill);
   --segmented-text-size: var(--font-size-13);
+  --segmented-icon:      var(--icon-md);
 
   /* --- Weekly chart -------------------------------------------------------
      Bars are an indicator, so they clear 3:1 against their track: forest-600
@@ -610,15 +809,24 @@
   --chart-bar-width:   24.7px;
   --chart-bar-width-wide: 48px;  /* month view: fewer, wider bars */
   --chart-bar-gap:     var(--spacing-14);
+  /* Measured on the dark --chart-track (#14532D), where the light theme's
+     bars collapse: forest-600 falls to 1.45:1 and orange-600 to 2.40:1, both
+     under the 3:1 an indicator owes. The dark theme lifts each hue to its
+     light counterpart - 4.71:1 and 4.54:1 - and leaves today's lime bar with
+     its dark outline exactly as it is, that being the one treatment which
+     already works on any ground.                                          */
   --chart-track:       var(--surface-sunken);
-  --chart-bar:         var(--forest-600);
-  --chart-bar-over:    var(--orange-600);
+  --chart-bar:         light-dark(var(--forest-600), var(--forest-300));
+  --chart-bar-over:    light-dark(var(--orange-600), var(--orange-300));
   --chart-bar-today:   var(--lime-500);
   --chart-today-edge:  var(--forest-900);
   --chart-radius:      var(--radius-pill);
   --chart-day-size:    var(--font-size-10);
 
   /* --- Avatar -------------------------------------------------------------- */
+  /* The initial sits on a lime-to-forest gradient, not on a surface, so it
+     cannot follow --text-on-inverse once that mirrors. Unthemed.          */
+  --avatar-fg:         var(--white);
   --avatar-size:       46.5px;
   --avatar-size-sm:    var(--spacing-40);
   --avatar-text-size:  var(--font-size-26);
@@ -634,8 +842,15 @@
   --nav-label-size:    var(--font-size-10);
   --nav-label-weight:  var(--font-weight-medium);
   --nav-bg:            var(--surface-raised);
-  --nav-item-active:   var(--forest-900);
-  --nav-item-inactive: var(--forest-500);
+  --nav-item-active:   light-dark(var(--forest-900), var(--forest-50));
+  /* forest-500 gives 2.83:1 on the dark bar and this is a 10px label, which
+     owes 4.5:1. forest-300 pays it, at 6.39:1.                            */
+  --nav-item-inactive: light-dark(var(--forest-500), var(--forest-300));
+  /* The active tab's glyph sits ON the lime pill, not beside it, so it takes
+     the forest lime is built to carry in both themes - the light label colour
+     would be 1.17:1 there. The label itself sits on the bar and keeps
+     --nav-item-active. */
+  --nav-item-active-fg: var(--text-on-brand);
   /* Active Scan circle. The glyph sits ON the lime rather than beside it, so
      it cannot stay white: that is 1.17:1. Lime is a fill in this system and
      --text-on-brand is the forest it is built to carry, at 14.73:1. */
@@ -669,7 +884,8 @@
   --field-bg:           var(--surface-raised);
   --field-border:       var(--border-strong);
   --field-border-width: 1.5px;
-  --field-border-focus: var(--forest-900);  /* focus must not LOWER contrast */
+  --field-border-focus: light-dark(var(--forest-900), var(--forest-50));
+                                          /* focus must not LOWER contrast */
   --field-border-error: var(--feedback-error);
 
   /* --- In-field action button (search clear) ------------------------------
@@ -686,7 +902,39 @@
   --icon-sm: 11.6px;
   --icon-md: 14.5px;
   --icon-lg: 17.5px;
+
+  /* --- Theme toggle -------------------------------------------------------
+     The control that writes [data-theme]. Prototype chrome rather than app
+     UI - no screen in the spec carries one - but built from the same tokens
+     as everything else so it cannot drift away from the system.           */
+  --theme-toggle-height:    var(--tap-min);
+  --theme-toggle-padding-x: var(--spacing-12);
+  --theme-toggle-gap:       var(--spacing-8);
+  --theme-toggle-radius:    var(--radius-pill);
+  --theme-toggle-icon:      var(--icon-md);
+  --theme-toggle-text-size: var(--font-size-13);
 }
+
+
+/* ==========================================================================
+   THEME SWITCH
+   The entire dark theme resolves from these two declarations. :root carries
+   both schemes, so an untouched page follows the OS; [data-theme] pins one,
+   and theme.js writes that attribute from localStorage before first paint.
+
+   Because light-dark() resolves against the color-scheme in force where a
+   token is USED rather than where it is declared, the same mechanism works
+   on any subtree: color-scheme: dark on a container renders everything
+   inside it in the dark theme whatever the page is doing. The styleguide
+   shows both themes on one page that way, with no duplicated CSS.
+   ========================================================================== */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+
+/* Opt a subtree out of the page's theme. Used by the styleguide's paired
+   specimens, and available to any page that needs a fixed-theme island. */
+.theme-light { color-scheme: light; }
+.theme-dark  { color-scheme: dark; }
 
 
 /* ==========================================================================

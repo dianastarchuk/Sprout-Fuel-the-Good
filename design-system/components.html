@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sprout Design System — Component Styleguide</title>
-<meta name="description" content="Live styleguide for the Sprout calorie tracker and recipe finder. Light theme only.">
+<meta name="description" content="Live styleguide for the Sprout calorie tracker and recipe finder. Light and dark themes.">
 
 <!-- Google Fonts are imported by tokens.css so the token file is self-sufficient.
      These hints just open the connections earlier. -->
@@ -38,6 +38,33 @@ body {
   margin: 0 auto;
   padding: var(--spacing-48) var(--spacing-24) var(--spacing-80);
 }
+
+/* --- Paired theme specimens ----------------------------------------------
+   Two halves of one component, each pinned to a theme with .theme-light /
+   .theme-dark. Those classes set color-scheme, which is all light-dark()
+   needs, so both halves render from the same CSS as the live page. */
+.pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-16);
+  margin-bottom: var(--spacing-24);
+}
+.pair__half {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--surface-canvas);
+  padding: var(--spacing-24);
+  color: var(--text-primary);
+}
+.pair__label {
+  margin: 0 0 var(--spacing-16);
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.pair__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-12); }
 
 /* --- Display type helper ------------------------------------------------- */
 .display {
@@ -100,7 +127,7 @@ body {
 
 .note {
   border-left: 3px solid var(--border-brand);
-  background: var(--lime-50);
+  background: var(--surface-brand-faint);
   padding: var(--spacing-12) var(--spacing-16);
   border-radius: var(--radius-sm);
   font-size: var(--font-size-14);
@@ -254,9 +281,20 @@ td code, th code, p code {
 
 footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-top: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: var(--font-size-14); }
 </style>
+<!-- Sets [data-theme] from localStorage before the first paint. Must not be
+     deferred: deferred, a stored dark preference lands after the browser has
+     already drawn a light page. -->
+<script src="theme.js"></script>
 </head>
 
 <body>
+
+<button type="button" class="theme-toggle theme-toggle--floating" data-theme-toggle aria-label="Theme">
+  <svg class="icon theme-toggle__icon theme-toggle__icon--auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+  <svg class="icon theme-toggle__icon theme-toggle__icon--light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2.5 12h2M19.5 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  <svg class="icon theme-toggle__icon theme-toggle__icon--dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.6 8.6 0 0 1 9.4 4 8.6 8.6 0 1 0 20 14.6z"/></svg>
+  <span class="theme-toggle__label">Auto</span>
+</button>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <svg class="svg-defs" aria-hidden="true" focusable="false">
@@ -275,13 +313,119 @@ footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-t
   <p class="eyebrow">Sprout · Fuel the Good</p>
   <h1 class="display page-title">Design<br>System<span class="accent">.</span></h1>
   <p class="page-lede">
-    A light-theme component library for the Sprout calorie tracker and recipe finder.
+    A component library for the Sprout calorie tracker and recipe finder, in light and dark.
     Every value on this page resolves from <code>tokens.css</code> — no hardcoded colours,
-    sizes, or spacing. If a token changes, this page changes with it.
+    sizes, or spacing. If a token changes, this page changes with it. The control in the
+    top-right corner cycles <strong>Auto → Light → Dark</strong>; Auto follows your
+    operating system.
   </p>
 </header>
 
 <main id="main">
+
+<!-- ======================================================================
+     FOUNDATIONS — THEMING
+     ====================================================================== -->
+<section class="section" aria-labelledby="h-theming">
+  <h2 id="h-theming">Theming</h2>
+  <p>
+    There is one set of tokens, not two. Every colour in layers 2 and 3 of
+    <code>tokens.css</code> is written as <code>light-dark(&lt;light&gt;, &lt;dark&gt;)</code>,
+    and the <code>color-scheme</code> property decides which half a page uses:
+    <code>:root</code> declares <code>light dark</code> so an untouched page follows the
+    operating system, and <code>[data-theme]</code> pins one. <code>theme.js</code> writes that
+    attribute from <code>localStorage</code> while the document is still parsing, so a stored
+    preference is in place before the first paint.
+  </p>
+  <p>
+    Because <code>light-dark()</code> resolves against the <code>color-scheme</code> in force
+    where a token is <em>used</em> rather than where it is declared, any subtree can be pinned on
+    its own. Both halves of every pair below are the same markup and the same stylesheet; only
+    <code>.theme-light</code> / <code>.theme-dark</code> differ.
+  </p>
+
+  <div class="pair">
+    <div class="pair__half theme-light">
+      <p class="pair__label">Light</p>
+      <div class="pair__row">
+        <button class="btn btn--primary" type="button">Add meal</button>
+        <button class="btn btn--secondary" type="button">Scan</button>
+        <span class="tag tag--dark">Inverse</span>
+      </div>
+    </div>
+    <div class="pair__half theme-dark">
+      <p class="pair__label">Dark</p>
+      <div class="pair__row">
+        <button class="btn btn--primary" type="button">Add meal</button>
+        <button class="btn btn--secondary" type="button">Scan</button>
+        <span class="tag tag--dark">Inverse</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>What the dark theme does differently</h3>
+  <table>
+    <caption>Five decisions that are not a straight swap of light values for dark ones.</caption>
+    <thead>
+      <tr><th scope="col">Role</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>--surface-inverse</code></td>
+        <td>forest-800</td>
+        <td>sage-100</td>
+        <td>An accent panel is defined by opposing the canvas, so it mirrors rather than darkens.
+            <code>.card--dark</code>, <code>.tag--dark</code>, the secondary button and the Scan
+            circle all follow it, and <code>--text-on-inverse</code> flips with it.</td>
+      </tr>
+      <tr>
+        <td><code>--surface-camera</code></td>
+        <td colspan="2">forest-900 &mdash; unchanged</td>
+        <td>The viewfinder stands in for a live camera image, not for chrome. It was always dark
+            on purpose, so it does not mirror; it needed its own token to stop following
+            <code>--surface-inverse-deep</code>.</td>
+      </tr>
+      <tr>
+        <td><code>--surface-sunken</code></td>
+        <td>sage-200, below the card</td>
+        <td>forest-700, <em>above</em> it</td>
+        <td>Below the dark canvas there is nowhere left to go, so a well or a progress track reads
+            by lifting off its card rather than sinking under it.</td>
+      </tr>
+      <tr>
+        <td><code>--focus-ring-color</code></td>
+        <td>forest-900, halo lime-200</td>
+        <td>forest-50, halo forest-900</td>
+        <td>No single colour clears 3:1 against both the dark canvas and a lime button. The ring
+            was already two-tone, so the two roles swap: the pale ring carries every dark surface,
+            the dark halo carries lime.</td>
+      </tr>
+      <tr>
+        <td><code>--macro-*-ink</code></td>
+        <td colspan="2">splits into <code>-ink</code> and <code>-deep</code></td>
+        <td><code>-ink</code> is the dry text on the card and follows the theme; <code>-deep</code>
+            is the liquid fill and the label printed on it, and the fill is the same colour in
+            both themes, so it does not.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>Layer 1 is not themed.</strong> A primitive is a fixed pigment; a token that changes
+    its own hex is no longer one. The dark theme adds primitives of its own
+    (<code>--dark-canvas</code>, <code>--dark-raised</code>, the lit macro hues) rather than
+    rewriting the light ones, so every ratio quoted in this guide stays true for the palette it
+    was measured on.
+  </div>
+
+  <div class="note note--warn">
+    <strong>Browser support.</strong> <code>light-dark()</code> is what makes one declaration
+    carry both themes. It is Baseline since mid-2024 (Chrome&nbsp;123, Safari&nbsp;17.5,
+    Firefox&nbsp;120). Older engines drop the declaration, leaving those tokens unset &mdash; so if
+    this page ever renders unstyled, that is the reason, and the fix is a build step that expands
+    the pairs into two blocks, not a change to the tokens.
+  </div>
+</section>
 
 <!-- ======================================================================
      FOUNDATIONS — COLOR
@@ -290,8 +434,8 @@ footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-t
   <h2 id="h-color">Color</h2>
   <p>
     Sampled directly from the brand stylescape. The dark forest greens, which the
-    stylescape uses as backgrounds, are re-cast here as text, icon and dark-accent-surface
-    colours — the light canvas stays constant.
+    stylescape uses as backgrounds, are re-cast by the light theme as text, icon and
+    dark-accent-surface colours &mdash; and handed back their original job by the dark one — the light canvas stays constant.
   </p>
 
   <h3>Lime — primary accent</h3>
@@ -696,6 +840,39 @@ footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-t
       <button type="button" class="segmented__option" role="tab" id="demo-tab-month" aria-selected="false" tabindex="-1">Month</button>
     </div>
   </div>
+
+  <h3>Settings variant</h3>
+  <p>
+    The appearance picker on the You screen. A preference is not a view over content, so this one
+    is a <code>role="radiogroup"</code> of <code>role="radio"</code> buttons and reports itself with
+    <code>aria-checked</code>; the fill answers to either attribute, so nothing about the styling
+    changes. <code>.segmented--block</code> makes it span its column instead of shrink-wrapping,
+    and options may carry an icon beside the label.
+  </p>
+  <p>
+    It is the same setting as the toggle in the top-right corner, spelled out rather than cycled —
+    a screen with room for three labels should show all three. <code>theme.js</code> drives both,
+    so the control below is live: press it and this page changes with it. No option is marked
+    checked in the markup; the script writes <code>aria-checked</code> and the roving
+    <code>tabindex</code> from the stored mode, and the arrow keys move the selection.
+  </p>
+
+  <div class="tray tray--canvas">
+    <div class="segmented segmented--block" role="radiogroup" aria-label="Appearance" data-theme-choice>
+      <button type="button" class="segmented__option" role="radio" data-theme-set="auto">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+        Auto
+      </button>
+      <button type="button" class="segmented__option" role="radio" data-theme-set="light">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2.5 12h2M19.5 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        Light
+      </button>
+      <button type="button" class="segmented__option" role="radio" data-theme-set="dark">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.6 8.6 0 0 1 9.4 4 8.6 8.6 0 1 0 20 14.6z"/></svg>
+        Dark
+      </button>
+    </div>
+  </div>
 </section>
 
 
@@ -934,7 +1111,7 @@ footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-t
   </div>
 
   <h3>Dark accent card</h3>
-  <p>The forest surface from the stylescape's quote card, retained as a punctuation element inside the light theme.</p>
+  <p>The forest surface from the stylescape's quote card, kept as a punctuation element. It is an inverse surface, so in the dark theme it mirrors and goes light &mdash; punctuation is a contrast with the page, not a particular colour.</p>
   <div class="tray tray--canvas">
     <article class="card card--dark" style="max-width: 420px">
       <p style="font-size: var(--font-size-18); line-height: var(--line-height-normal); font-weight: var(--font-weight-semibold); margin: 0 0 var(--spacing-12)">
@@ -1417,7 +1594,7 @@ footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-t
 <section class="section" aria-labelledby="h-viewfinder">
   <h2 id="h-viewfinder">Scan viewfinder</h2>
   <p>
-    The camera region on the Scan screen, and the one dark surface in a light theme. It is dark
+    The camera region on the Scan screen, and the one surface that is dark in both themes. It is dark
     on purpose: it stands in for a live camera image, which is a media surface rather than UI
     chrome, so the theme's rules stop at its edge. Everything around it stays light.
   </p>
@@ -1430,7 +1607,10 @@ footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-t
   </p>
 
   <div class="tray tray--canvas">
-    <div class="viewfinder" style="width: var(--screen-width); max-width: 100%">
+    <!-- Rendered at the width it actually gets on a screen: the 320px screen
+         minus the body's 2 x --screen-padding-x, so the specimen and the Scan
+         screen are the same box, not two boxes 23px apart in width. -->
+    <div class="viewfinder" style="width: calc(var(--screen-width) - 2 * var(--screen-padding-x)); max-width: 100%">
       <div class="viewfinder__guide">
         <span class="viewfinder__subject" aria-hidden="true"></span>
         <span class="viewfinder__corner viewfinder__corner--tl"></span>
@@ -1907,7 +2087,7 @@ footer { margin-top: var(--spacing-64); padding-top: var(--spacing-24); border-t
 </main>
 
 <footer>
-  <p>Sprout Design System · light theme · all values from <code>tokens.css</code>. See <a href="README.md" style="color: var(--text-link); font-weight: var(--font-weight-semibold)">README.md</a> for rationale and usage.</p>
+  <p>Sprout Design System · light + dark · all values from <code>tokens.css</code>. See <a href="README.md" style="color: var(--text-link); font-weight: var(--font-weight-semibold)">README.md</a> for rationale and usage.</p>
 </footer>
 
 </div>
