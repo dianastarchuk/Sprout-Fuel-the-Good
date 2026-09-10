@@ -28,7 +28,7 @@ screenshots/            ← screenshots referenced by this README
 
 ## 1. Stylescape
 
-**Figma file:** _<!-- paste the Figma link here -->_
+**Figma file:** https://www.figma.com/design/If4h7T1bKuSPjebZ4DRjc1/preview-2340x640?node-id=0-1&t=PyOtjEKzBhMo48Am-1
 
 ![Sprout stylescape](design-system/stylescape/stylescape.png)
 
